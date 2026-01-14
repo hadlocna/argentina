@@ -372,14 +372,6 @@ const CAST_MEMBERS = [
   }
 ];
 
-const HOUSE_RULES = [
-  'Nathan gets the first bedroom (no hot tub access).',
-  'No judging Nate for his 28 hours of flight time euphoria.',
-  'What happens in Buenos Aires gets documented on WhatsApp.',
-  'Anyone mentioning “work from home” gets left at La Boca.',
-  'Fab owes Nathan. Never forget.'
-];
-
 const FAQS = [
   {
     question: 'Why Buenos Aires?',
@@ -394,22 +386,9 @@ const FAQS = [
     answer: 'Maybe? Probably? We booked something fully refundable just in case.'
   },
   {
-    question: 'Can we join?',
-    answer: 'Nathan asked if we’re inviting anyone else. We said yes… then forgot. So, maybe next time.'
-  },
-  {
     question: 'What should we expect?',
     answer: 'Three grown men acting like college kids, excellent Argentine wine, street tango, someone definitely getting lost, Nathan in bed by 9 PM, and memories that will fuel group chats for years.'
   }
-];
-
-const BUDGET_BREAKDOWN = [
-  { label: 'Airbnb Total', value: '$1,272' },
-  { label: 'Nathan (longest stay + bed-maker tax)', value: '$1,000' },
-  { label: 'Nate', value: '$136' },
-  { label: 'Nasir', value: '$136' },
-  { label: 'Flights', value: 'Stupid long and expensive' },
-  { label: 'Everything else', value: 'More money for beers' }
 ];
 
 const DEFINITELY_HAPPEN = [
@@ -430,12 +409,6 @@ const PROBABLY_NOT = [
   'Coming home with money left over'
 ];
 
-const EMERGENCY_CONTACTS = [
-  { label: 'Alana (Nate’s wife)', detail: '“He said he’d find an overnight flight on the 13th to make it work.”' },
-  { label: 'Ava (Nasir’s fiancée)', detail: 'Currently in Portland doing “work from home week.”' },
-  { label: 'Fab (Nathan’s wife)', detail: 'Owes him approximately six months of free time.' },
-  { label: 'All three therapists', detail: 'On speed dial.' }
-];
 
 const App = () => {
   const [selectedDest, setSelectedDest] = useState(null);
@@ -501,7 +474,7 @@ const App = () => {
       {/* Header */}
       <header className="relative h-72 sm:h-80 md:h-96 flex items-end p-6 sm:p-8 overflow-hidden">
         <video
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.5]"
+          className="absolute inset-0 w-full h-full object-cover object-[center_20%] brightness-[0.5]"
           autoPlay
           muted
           loop
@@ -615,31 +588,6 @@ const App = () => {
               </div>
             </div>
 
-            <div className="grid gap-6 mb-8 md:grid-cols-2">
-              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                <h3 className="text-xl font-black text-white mb-3">House rules at República Árabe Siria 3026</h3>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  {HOUSE_RULES.map((rule) => (
-                    <li key={rule} className="flex gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-green-400 mt-1" />
-                      <span>{rule}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
-                <h3 className="text-xl font-black text-white mb-3">Trip budget breakdown</h3>
-                <ul className="space-y-2 text-sm text-slate-300">
-                  {BUDGET_BREAKDOWN.map((row) => (
-                    <li key={row.label} className="flex items-start justify-between gap-4">
-                      <span>{row.label}</span>
-                      <span className="text-blue-300 font-semibold">{row.value}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
             <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
               <h3 className="text-xl font-black text-white mb-4">FAQ (a.k.a. the chaos brief)</h3>
               <div className="space-y-4">
@@ -674,18 +622,6 @@ const App = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
-            </div>
-
-            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
-              <h3 className="text-xl font-black text-white mb-3">Emergency contacts (and emotional support)</h3>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {EMERGENCY_CONTACTS.map((contact) => (
-                  <div key={contact.label} className="bg-black/40 border border-slate-800 rounded-2xl p-4">
-                    <p className="text-sm font-semibold text-blue-300">{contact.label}</p>
-                    <p className="text-xs text-slate-400 mt-1">{contact.detail}</p>
-                  </div>
-                ))}
               </div>
             </div>
 
