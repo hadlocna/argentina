@@ -1107,13 +1107,33 @@ const App = () => {
                 </h2>
                 <p className="text-slate-400 leading-relaxed text-base sm:text-lg mb-8">{selectedDest.description}</p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  <div className="bg-white/5 p-5 rounded-3xl flex items-center gap-4 border border-white/5">
-                    <Navigation className="w-6 h-6 text-blue-500" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Distance</p>
-                      <p className="text-white font-bold">{selectedDest.distance}</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+                  <div className="bg-white/5 p-4 rounded-3xl flex flex-col justify-center items-center border border-white/5">
+                    <Navigation className="w-5 h-5 text-blue-500 mb-2" />
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Distance</p>
+                    <p className="text-white font-bold text-sm text-center">{selectedDest.distance}</p>
+                  </div>
+                  <div className="bg-white/5 p-4 rounded-3xl flex flex-col justify-center items-center border border-white/5">
+                    <Clock className="w-5 h-5 text-blue-500 mb-2" />
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Drive</p>
+                    <p className="text-white font-bold text-sm text-center">{selectedDest.driveTime}</p>
+                  </div>
+                  {selectedDest.price && (
+                    <div className="bg-white/5 p-4 rounded-3xl flex flex-col justify-center items-center border border-white/5">
+                      <DollarSign className="w-5 h-5 text-green-500 mb-2" />
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Price</p>
+                      <p className="text-white font-bold text-sm">{selectedDest.price}</p>
                     </div>
+                  )}
+                </div>
+
+                {selectedDest.vibe && (
+                  <div className="bg-purple-600/10 p-5 rounded-3xl border border-purple-600/20 mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="w-4 h-4 text-purple-400" />
+                      <h4 className="text-purple-300 font-black uppercase text-xs tracking-widest">The Vibe</h4>
+                    </div>
+                    <p className="text-sm text-slate-200 italic">"{selectedDest.vibe}"</p>
                   </div>
                   <div className="bg-white/5 p-5 rounded-3xl flex items-center gap-4 border border-white/5">
                     <Clock className="w-6 h-6 text-blue-500" />
@@ -1121,8 +1141,9 @@ const App = () => {
                       <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Drive Time</p>
                       <p className="text-white font-bold">{selectedDest.driveTime}</p>
                     </div>
+                    <p className="text-sm text-slate-200">{selectedDest.mustTry}</p>
                   </div>
-                </div>
+                )}
 
                 <div className="space-y-6 mb-10">
                   <div className="bg-blue-600/5 p-6 rounded-3xl border border-blue-600/20">
