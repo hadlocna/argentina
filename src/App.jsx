@@ -1135,14 +1135,6 @@ const App = () => {
                     </div>
                     <p className="text-sm text-slate-200 italic">"{selectedDest.vibe}"</p>
                   </div>
-                  <div className="bg-white/5 p-5 rounded-3xl flex items-center gap-4 border border-white/5">
-                    <Clock className="w-6 h-6 text-blue-500" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Drive Time</p>
-                      <p className="text-white font-bold">{selectedDest.driveTime}</p>
-                    </div>
-                    <p className="text-sm text-slate-200">{selectedDest.mustTry}</p>
-                  </div>
                 )}
 
                 <div className="space-y-6 mb-10">
