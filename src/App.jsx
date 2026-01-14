@@ -336,6 +336,107 @@ const BOOKINGS_CHECKLIST = [
   { item: 'Download Cabify App', date: 'Before arrival', priority: 'critical', bookBy: 'Now' }
 ];
 
+const CAST_MEMBERS = [
+  {
+    name: 'Nate',
+    title: 'The OG BA Expert',
+    description: 'The man, the myth, the guy who actually knows where we are going. Birthday boy trading Hawaii for South American chaos.',
+    bullets: [
+      'Last visited BA in 2012, still claims he could run the city',
+      '28-hour flight strategist with layovers he calls “me time”',
+      'Convinced Alana this trip is essential for his mental health',
+      'May never return (his words, not ours)'
+    ]
+  },
+  {
+    name: 'Nasir',
+    title: 'The Future Groom',
+    description: 'Bachelor party edition. The man Ava put a ring on and the diplomat of the group.',
+    bullets: [
+      'Columbus, OH’s finest export to Argentina',
+      'Will be scouting the “finest bars of the city” for research',
+      'Motto: “From señor to mamacita!” 🔥',
+      'Currently practicing his tango for the wedding'
+    ]
+  },
+  {
+    name: 'Nathan',
+    title: 'Dad Mode Activated',
+    description: 'The responsible one who loves a clean bed and a reasonable bedtime.',
+    bullets: [
+      'Lives in Lisbon, sleeps in Lisbon time',
+      'Professional bed-maker and designated early-bedder',
+      'Fab owes him about six months for the 11-day single dad stint',
+      'Gets bedroom #1 because there’s no hot tub'
+    ]
+  }
+];
+
+const HOUSE_RULES = [
+  'Nathan gets the first bedroom (no hot tub access).',
+  'No judging Nate for his 28 hours of flight time euphoria.',
+  'What happens in Buenos Aires gets documented on WhatsApp.',
+  'Anyone mentioning “work from home” gets left at La Boca.',
+  'Fab owes Nathan. Never forget.'
+];
+
+const FAQS = [
+  {
+    question: 'Why Buenos Aires?',
+    answer: "Nate’s birthday + Nasir’s bachelor party + Nathan needed a vacation from his vacation as a single dad."
+  },
+  {
+    question: "Who’s in charge?",
+    answer: 'Technically Nate because he knows BA. Realistically, chaos is in charge.'
+  },
+  {
+    question: 'Will we go to Uruguay?',
+    answer: 'Maybe? Probably? We booked something fully refundable just in case.'
+  },
+  {
+    question: 'Can we join?',
+    answer: 'Nathan asked if we’re inviting anyone else. We said yes… then forgot. So, maybe next time.'
+  },
+  {
+    question: 'What should we expect?',
+    answer: 'Three grown men acting like college kids, excellent Argentine wine, street tango, someone definitely getting lost, Nathan in bed by 9 PM, and memories that will fuel group chats for years.'
+  }
+];
+
+const BUDGET_BREAKDOWN = [
+  { label: 'Airbnb Total', value: '$1,272' },
+  { label: 'Nathan (longest stay + bed-maker tax)', value: '$1,000' },
+  { label: 'Nate', value: '$136' },
+  { label: 'Nasir', value: '$136' },
+  { label: 'Flights', value: 'Stupid long and expensive' },
+  { label: 'Everything else', value: 'More money for beers' }
+];
+
+const DEFINITELY_HAPPEN = [
+  'Nathan going to bed first every night',
+  'Someone saying “This could be you again” while looking at old photos',
+  'Nate getting bored at the Houston airport and loving every minute',
+  'Nasir trying to coordinate everything then saying “any date is cool on my end”',
+  'All of us pretending we’re younger than we actually are',
+  'Booking things that are “100% refundable”',
+  'The moms judging us via WhatsApp'
+];
+
+const PROBABLY_NOT = [
+  'Anyone making it to breakfast',
+  'Responsible decision-making after 10 PM',
+  'Nathan staying up past midnight',
+  'All of us agreeing on anything without a three-week WhatsApp debate',
+  'Coming home with money left over'
+];
+
+const EMERGENCY_CONTACTS = [
+  { label: 'Alana (Nate’s wife)', detail: '“He said he’d find an overnight flight on the 13th to make it work.”' },
+  { label: 'Ava (Nasir’s fiancée)', detail: 'Currently in Portland doing “work from home week.”' },
+  { label: 'Fab (Nathan’s wife)', detail: 'Owes him approximately six months of free time.' },
+  { label: 'All three therapists', detail: 'On speed dial.' }
+];
+
 const App = () => {
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeTab, setActiveTab] = useState('itinerary');
@@ -399,11 +500,23 @@ const App = () => {
     <div className="min-h-screen bg-[#050505] text-slate-200 font-sans pb-24">
       {/* Header */}
       <header className="relative h-72 sm:h-80 md:h-96 flex items-end p-6 sm:p-8 overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.5]"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=1200&q=80"
+        >
+          <source src="https://cdn.midjourney.com/video/aca202ff-e5a3-4428-9253-780be28e2d06/2.mp4" type="video/mp4" />
+        </video>
         <img
           src="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=1200&q=80"
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.4]"
+          className="absolute inset-0 w-full h-full object-cover opacity-25"
           alt="BA skyline"
         />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70" />
         <div className="relative z-10 w-full">
           <div className="flex gap-2 mb-3">
             <span className="bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
@@ -419,6 +532,12 @@ const App = () => {
               UNLEASHED
             </span>
           </h1>
+          <p className="text-sm sm:text-base text-slate-200 mt-3 font-semibold tracking-wide uppercase">
+            Three Idiots Take Buenos Aires
+          </p>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            A bachelor party, a birthday, and one guy who just wants to go to bed.
+          </p>
           <p className="text-slate-400 text-xs sm:text-sm mt-4 flex items-center gap-2 font-medium">
             <MapPin className="w-4 h-4 text-red-500" /> Base: {BASE_ADDRESS}
           </p>
@@ -470,6 +589,104 @@ const App = () => {
                 polo on horseback, and enough insider tips to make you feel like a local. Click any item with an arrow to see full details,
                 navigation, and pro tips. Ready? Let's go.
               </p>
+            </div>
+
+            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
+              <h2 className="text-2xl font-black text-white mb-3">Meet the cast of characters</h2>
+              <p className="text-sm text-slate-400 mb-6">
+                Official trip motto: <span className="text-blue-400 font-semibold">“We’re not getting any younger, but we’re definitely getting dumber together.”</span>
+              </p>
+              <div className="grid gap-4 sm:grid-cols-3">
+                {CAST_MEMBERS.map((member) => (
+                  <div key={member.name} className="bg-black/40 border border-slate-800 rounded-2xl p-4">
+                    <p className="text-xs uppercase tracking-[0.3em] text-blue-400 font-bold">{member.title}</p>
+                    <h3 className="text-xl font-black text-white mt-2">{member.name}</h3>
+                    <p className="text-xs text-slate-400 mt-2">{member.description}</p>
+                    <ul className="mt-3 space-y-2 text-xs text-slate-300">
+                      {member.bullets.map((bullet) => (
+                        <li key={bullet} className="flex gap-2">
+                          <Circle className="w-3 h-3 text-blue-500 mt-1" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 mb-8 md:grid-cols-2">
+              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                <h3 className="text-xl font-black text-white mb-3">House rules at República Árabe Siria 3026</h3>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  {HOUSE_RULES.map((rule) => (
+                    <li key={rule} className="flex gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-green-400 mt-1" />
+                      <span>{rule}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                <h3 className="text-xl font-black text-white mb-3">Trip budget breakdown</h3>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  {BUDGET_BREAKDOWN.map((row) => (
+                    <li key={row.label} className="flex items-start justify-between gap-4">
+                      <span>{row.label}</span>
+                      <span className="text-blue-300 font-semibold">{row.value}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
+              <h3 className="text-xl font-black text-white mb-4">FAQ (a.k.a. the chaos brief)</h3>
+              <div className="space-y-4">
+                {FAQS.map((faq) => (
+                  <div key={faq.question} className="border-b border-slate-800 pb-4 last:border-b-0 last:pb-0">
+                    <p className="text-sm font-semibold text-blue-400">{faq.question}</p>
+                    <p className="text-sm text-slate-300 mt-1">{faq.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-6 mb-8 md:grid-cols-2">
+              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                <h3 className="text-xl font-black text-white mb-3">Things that will definitely happen</h3>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  {DEFINITELY_HAPPEN.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 mt-1" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                <h3 className="text-xl font-black text-white mb-3">Things that probably won’t happen</h3>
+                <ul className="space-y-2 text-sm text-slate-300">
+                  {PROBABLY_NOT.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <X className="w-4 h-4 text-red-400 mt-1" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
+              <h3 className="text-xl font-black text-white mb-3">Emergency contacts (and emotional support)</h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {EMERGENCY_CONTACTS.map((contact) => (
+                  <div key={contact.label} className="bg-black/40 border border-slate-800 rounded-2xl p-4">
+                    <p className="text-sm font-semibold text-blue-300">{contact.label}</p>
+                    <p className="text-xs text-slate-400 mt-1">{contact.detail}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <DayCard
