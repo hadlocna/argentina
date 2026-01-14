@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
@@ -14,21 +14,25 @@ import {
   Zap,
   Briefcase,
   ShieldCheck,
-  Coffee,
-  Pizza,
-  Wine,
-  Flame,
-  Sparkles,
-  Camera,
   Phone,
   DollarSign,
-  AlertCircle,
   MessageCircle,
-  Heart,
-  BookOpen,
-  Sunrise,
-  Moon,
-  TrendingUp
+  Coffee,
+  Home,
+  AlertCircle,
+  Plane,
+  Wine,
+  ShoppingBag,
+  Camera,
+  Palmtree,
+  Building,
+  Sparkles,
+  TrendingUp,
+  CheckCircle2,
+  Circle,
+  Wallet,
+  CreditCard,
+  Banknote
 } from 'lucide-react';
 
 const BASE_ADDRESS = 'República Árabe Siria 3026, Palermo, Buenos Aires';
@@ -38,443 +42,317 @@ const DESTINATIONS = {
     id: 'ultra',
     title: 'Ultra Buenos Aires',
     category: 'Festival',
-    image:
-      'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
-    description:
-      "One of the world's premier electronic music festivals. Multiple stages, top-tier international DJs, and a high-production light show at Parque de la Ciudad.",
+    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80',
+    description: "One of the world's premier electronic music festivals. Multiple stages, top-tier international DJs, and a high-production light show at Parque de la Ciudad.",
     distance: '12 km',
     driveTime: '25-30 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Parque+de+la+Ciudad,+Buenos+Aires`,
     website: 'https://ultrabuenosaires.com/',
     contact: 'N/A - Official App Only',
-    why: "Look, this is THE reason you're here. 40,000 people losing their minds to Armin, Hardwell, Tiësto. The production is INSANE - lasers, pyro, the whole shebang. But real talk: leaving is chaos. Walk 10 mins away from the gates before ordering a Cabify or you'll be standing there for 2 hours watching your battery die.",
-    tips: '💡 SCREENSHOT YOUR QR CODE NOW. Like right now. Signal is non-existent once everyone arrives. Also bring a portable charger, sunscreen (it's HOT), and hide a backup 5000 peso note in your shoe. Trust me.',
-    mustTry: 'Position yourself near the main stage for closing sets. The energy is unreal.',
-    price: '$$$$',
-    vibe: 'Mass euphoria with 40K of your closest friends'
+    why: "It's the heart of the trip. The energy is UNREAL, but getting an Uber/Cabify back is a nightmare—leave 20 mins before the headliner ends OR walk 10 mins away from the main gate before calling a ride. Trust me on this.",
+    tips: 'Screenshot your QR code. Cell signal = zero once 40,000+ people show up. Bring a portable charger or your phone is dead by 6 PM. The water stations are free but the lines are long—fill up early.'
   },
   'bad-bunny': {
     id: 'bad-bunny',
     title: 'Bad Bunny @ River Plate',
     category: 'Concert',
-    image:
-      'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=800&q=80',
-    description:
-      "The 'Most Wanted Tour' at El Monumental stadium. Reggaeton at its absolute peak.",
+    image: 'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=800&q=80',
+    description: "The 'Most Wanted Tour' at El Monumental stadium. Reggaeton at its absolute peak. This stadium is where Messi played, where Argentina won the World Cup vibes live on—it's iconic.",
     distance: '3.5 km',
     driveTime: '12 mins',
     walkTime: '40 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Estadio+Mâs+Monumental`,
     website: 'https://www.cariola.com.ar/',
-    why: "El Monumental is LEGENDARY - this is where Maradona played, where Argentina won championships. And now? Bad Bunny turning it into the biggest reggaeton party in South America. The stadium is close enough to Palermo that if traffic gets insane (which it will), you can literally walk home in 40 minutes. Some nights that's faster than waiting for a ride.",
-    tips: '🚶 Hot tip: Enter through the quiet side streets of Belgrano (not the main avenue). After the show, walk AWAY from Libertador before calling a ride - you'll save an hour of waiting. The streets get absolutely mobbed.',
-    mustTry: 'Get there early to see the crowd energy build up. Argentines go HARD for reggaeton.',
-    price: '$$$',
-    vibe: 'Stadium-sized reggaeton madness with 70,000 singing along'
+    why: "Because it's Bad Bunny. At River Plate. In South America. If the traffic gets blocked post-show (it will), just walk back to Palermo—it's faster, safer, and you'll burn off some empanada guilt.",
+    tips: 'Enter through the Belgrano side streets. Avoid Avenida del Libertador like the plague if driving. The merch lines are 90 minutes long—skip it or buy on the way out.'
   },
   'don-julio': {
     id: 'don-julio',
     title: 'Don Julio Parrilla',
     category: 'Steakhouse',
-    image:
-      'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
-    description:
-      "World's #1 Steakhouse (World's 50 Best). Incredible grass-fed beef and elite service.",
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    description: "World's #1 Steakhouse (World's 50 Best Restaurants). Grass-fed Argentine beef, wine cellar that'll make you weep, service that makes you feel like royalty. This is THE dinner.",
     distance: '1.2 km',
     driveTime: '5 mins',
     walkTime: '15 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Don+Julio,+Guatemala+4699`,
     website: 'https://www.parrilladonjulio.com/',
     contact: '+54 11 4832-3654',
-    why: "This is it. THE meal. Ranked #1 steakhouse in the world. The beef is grass-fed perfection, aged to hell, grilled over wood fire. The wine cellar has 6,000+ bottles. You'll see couples getting engaged here. It's that kind of vibe.",
-    tips: "📅 Book 90 DAYS out (I'm not kidding). If it's full, hit up 'El Preferido de Palermo' across the street - same owners, more casual, still incredible. Order the 'bife de chorizo' medium-rare and the mollejas (sweetbreads). Trust.",
-    mustTry: 'Bife de Chorizo (prime strip) + Malbec from Catena Zapata. Let the waiter choose your wine.',
-    price: '$$$$',
-    vibe: 'Refined carnivore temple where beef is religion'
+    why: "It's the mandatory 'Big Meal'. The wine cellar alone is worth the Uber fare. You'll order the bife de chorizo, drink a $15 Malbec that tastes like $150, and understand why Argentina is obsessed with beef.",
+    tips: "Book 90 days out or you're not getting in. If it's full, try 'El Preferido de Palermo' across the street (same owners, more casual). Go hungry. Like, skip-lunch hungry."
   },
   polo: {
     id: 'polo',
     title: 'Polo Day Estancia',
     category: 'Adventure',
-    image:
-      'https://images.unsplash.com/photo-1551698618-1fed5d971203?auto=format&fit=crop&w=800&q=80',
-    description:
-      'Head to a private ranch outside the city. Asado lunch, pro match, and polo lessons.',
+    image: 'https://images.unsplash.com/photo-1551698618-1fed5d971203?auto=format&fit=crop&w=800&q=80',
+    description: 'Head to a private ranch outside the city. Watch a pro polo match, take lessons from actual pros, unlimited asado lunch with Malbec flowing like water. Best hangover cure ever invented.',
     distance: '70 km',
     driveTime: '1 hour (Van provided)',
     directions: 'Transport provided from Palermo center.',
     website: 'https://argentinapoloday.com.ar/',
     contact: '+54 9 11 6688-2922',
-    why: "After Ultra and Bad Bunny, you NEED this. Fresh country air, badass horses, unlimited Malbec, and the best asado you'll eat all week. They'll teach you to hit the ball and you'll feel like a damn champion. Plus the photos are fire.",
-    tips: '🐴 Wear jeans and closed shoes (no sandals). They provide helmets. Don't stress about skill - they'll have you whacking balls within 20 mins. Pace yourself on the wine at lunch or the afternoon lessons get interesting lol.',
-    mustTry: 'The asado is unlimited - chorizo, short ribs, chimichurri. Eat ALL of it.',
-    price: '$$$',
-    vibe: 'Bougie cowboy energy with unlimited wine'
+    why: 'Best way to reset after Ultra weekend. Fresh air, elite horses, unlimited wine, and you get to hit a ball on horseback like a complete legend. Great for Instagram too.',
+    tips: "Wear jeans and closed-toe shoes. They'll have you playing polo in 30 mins—it's easier than it looks. The asado lunch is massive, so pace yourself on the wine."
   },
   'la-bomba': {
     id: 'la-bomba',
     title: 'La Bomba de Tiempo',
     category: 'Nightlife',
-    image:
-      'https://images.unsplash.com/photo-1514525253361-bee8718a300c?auto=format&fit=crop&w=800&q=80',
-    description:
-      'Improvisational percussion at CC Konex. An old factory turned massive drum rave.',
+    image: 'https://images.unsplash.com/photo-1514525253361-bee8718a300c?auto=format&fit=crop&w=800&q=80',
+    description: 'Improvisational percussion show at CC Konex. Every Monday for 15+ years. An old factory turned into a drum rave. 20+ percussionists improvising for 2 hours straight. Locals only vibe.',
     distance: '4.5 km',
     driveTime: '15 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Ciudad+Cultural+Konex`,
     website: 'https://www.cckonex.org/',
-    why: "Every. Single. Monday. For 15+ years. This isn't a tourist trap - it's where porteños (BA locals) go to dance to 20 drummers improvising for 2 hours straight. The crowd is mixed - students, families, old hippies, travelers. Everyone loses their mind together. It's beautiful chaos.",
-    tips: '🎫 Buy tickets online 1 week before - it ALWAYS sells out by Monday at 7 PM. Doors at 7:30, drums start at 8:30. Get there early for good spots. Bring cash for drinks (beer is cheap). The vibe builds slowly then EXPLODES.',
-    mustTry: 'Stand near the drums for the full sensory overload. The bass rattles your ribs.',
-    price: '$',
-    vibe: 'Sweaty drum circle that turns into a 2000-person dance party'
+    why: "It's where porteños (locals) actually go. Massive energy, great for meeting people, and it's a Monday tradition in BA. Think warehouse rave meets drum circle meets art installation.",
+    tips: 'Buy tickets online 1 week ahead. Doors at 7 PM, show starts at 8 PM, sold out by 6:45 PM. Get there early for a good spot on the dance floor.'
   },
   colonia: {
     id: 'colonia',
-    title: 'Colonia del Sacramento',
+    title: 'Colonia del Sacramento (Uruguay)',
     category: 'Day Trip',
-    image:
-      'https://images.unsplash.com/photo-1590013330452-9769910d3257?auto=format&fit=crop&w=800&q=80',
-    description: 'Ferry across the Rio de la Plata to a Portuguese colonial town in Uruguay.',
-    distance: '6 km (to Ferry)',
-    driveTime: '20 mins to port',
+    image: 'https://images.unsplash.com/photo-1590013330452-9769910d3257?auto=format&fit=crop&w=800&q=80',
+    description: 'Ferry across the Río de la Plata to Uruguay. Cobblestone streets, Portuguese colonial vibes, rent a golf cart and cruise. Perfect recovery day after the festival madness.',
+    distance: '6 km (to Ferry Terminal)',
+    driveTime: '20 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Buquebus,+Buenos+Aires`,
     website: 'https://www.buquebus.com/',
-    why: "Perfect recovery day. You'll ferry across the massive Rio de la Plata (it's basically an ocean) to this cute colonial Portuguese town. Rent a golf cart, cruise cobblestone streets, eat ice cream, take photos. It's a whole different vibe from BA's chaos.",
-    tips: '🛂 BRING YOUR PASSPORT (for real - it's customs). Ferry check-in is like an airport - arrive 1 hour early. Book round-trip in advance. In Colonia, rent a golf cart at the port (~$40 USD for 4 hours). Hit the lighthouse and the historic quarter.',
-    mustTry: 'Get alfajores at a local shop and eat them by the water. Peak vacation vibes.',
-    price: '$$',
-    vibe: 'Chill coastal town where you accidentally end up in Uruguay'
+    why: 'Best recovery day. Golf cart around a UNESCO World Heritage town, eat incredible uruguayan food, walk off the weekend. Plus you get another stamp in the passport.',
+    tips: 'You MUST bring your physical passport. Ferry check-in is like TSA—arrive 1 hour early. Book the fast ferry (1 hour) not the slow one (3 hours). Rent a golf cart the second you arrive.'
   },
   faena: {
     id: 'faena',
-    title: 'Faena Hotel Pool',
+    title: 'Faena Hotel Pool & Library',
     category: 'Luxe',
-    image:
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-    description: 'The most exclusive hotel in Puerto Madero. The pool is a scene.',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    description: "The most exclusive hotel in Puerto Madero. Red velvet everything, Philippe Starck design, the pool is a scene. This is where celebrities and futbol players hang.",
     distance: '8 km',
     driveTime: '25 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Faena+Hotel+Buenos+Aires`,
-    why: "If you want to feel like a baller for a day, this is it. Philippe Starck designed everything. The pool is all white with red velvet curtains and models everywhere. The vibe is 'I definitely have a Swiss bank account.' Great for Instagram and people watching.",
-    tips: "💳 Book a 'Day Pass' ($80-120 USD) or just reserve a table at Rojo Tango for drinks - that gets you pool access too. Dress code is resort casual (aka look good). Go late afternoon when the lighting is perfect.",
-    mustTry: 'Order a cocktail at the Library Lounge and pretend you own a yacht.',
-    price: '$$$$',
-    vibe: 'Ultra-luxury eye candy where everyone is suspiciously attractive'
+    why: 'The ultimate flex. High-end crowd, Instagram gold, and honestly just fun to see how the other half lives in BA. Great for a chill afternoon.',
+    tips: "Book a 'Day Pass' ($80-100 USD) or reserve a table at Rojo Tango bar to access the pool. Dress code is real—no flip flops."
   },
   'tres-monos': {
     id: 'tres-monos',
     title: 'Tres Monos',
     category: 'Cocktail Bar',
-    image:
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
-    description: 'Award-winning cocktail den with inventive drinks and buzzy crowd.',
+    image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
+    description: "Award-winning cocktail bar with a buzzy crowd. Inventive drinks, great music, and that 'cool kids' vibe without being pretentious.",
     distance: '2.3 km',
     driveTime: '9 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Tres+Monos,+Buenos+Aires`,
-    website: 'https://www.tresmonosbar.com/',
-    why: "Part of the World's 50 Best Bars list. The cocktails are next-level - they'll make you something custom based on your mood. The crowd is young, cool, and actually local. Perfect spot after polo day when you're feeling fancy but not stuffy.",
-    tips: '🍸 Arrive before 10 PM or you'll wait 30+ mins. Sit at the bar and tell them what flavors you like - they'll create something wild. Cash or card both work. Budget ~$15 USD per cocktail.',
-    mustTry: 'Ask for their off-menu creations. The bartenders are artists.',
-    price: '$$$',
-    vibe: 'Moody cocktail lab where drinks come with smoke and flowers'
-  },
-  'la-cabrera': {
-    id: 'la-cabrera',
-    title: 'La Cabrera Parrilla',
-    category: 'Steakhouse',
-    image:
-      'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
-    description: 'Casual parrilla with MASSIVE portions and incredible value.',
-    distance: '1.8 km',
-    driveTime: '7 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/La+Cabrera,+Buenos+Aires`,
-    why: 'If Don Julio is booked or you want something more chill, La Cabrera is the move. The steaks are HUGE (easily shareable) and come with like 10 side dishes. Great wine list, fun atmosphere, and way easier to get a table.',
-    tips: "🥩 The portions are INSANE - one steak feeds 2 people. Seriously. Order one, share, and get more if you're still hungry. Show up at 7:30 PM or 10:30 PM to avoid the 9 PM dinner rush.",
-    mustTry: 'Ojo de Bife (ribeye) with the included sides (they bring like 8 little dishes!)',
-    price: '$$$',
-    vibe: 'Lively parrilla where portions are absurd and everyone is happy'
-  },
-  'el-cuartito': {
-    id: 'el-cuartito',
-    title: 'El Cuartito Pizza',
-    category: 'Pizza',
-    image:
-      'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80',
-    description: 'Legendary Argentine pizza spot open since 1934.',
-    distance: '4.2 km',
-    driveTime: '15 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/El+Cuartito,+Buenos+Aires`,
-    why: "Argentine pizza is its own thing - thick, LOADED with cheese, kinda greasy in the best way. El Cuartito has been doing it since 1934. The walls are covered in football (soccer) memorabilia. It's a classic BA experience and perfect for a late-night munchies run.",
-    tips: '🍕 Order "muzzarella" (cheese) or "napolitana" (cheese, tomato, garlic). Portions are huge. Grab a Quilmes beer. Cash only! There's usually a wait but it moves fast. Stand at the bar if you want to eat quick.',
-    mustTry: 'Muzzarella pizza + fernet con coca (the local drink - tastes like medicine but you'll grow to love it).',
-    price: '$',
-    vibe: 'Old-school pizzeria where everyone argues about football'
-  },
-  'ninina-bakery': {
-    id: 'ninina-bakery',
-    title: 'Ninina Bakery',
-    category: 'Cafe',
-    image:
-      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80',
-    description: 'Instagram-perfect bakery with the best croissants and pastries.',
-    distance: '2.1 km',
-    driveTime: '8 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Ninina+Bakery,+Buenos+Aires`,
-    why: "This is where you cure your hangover with carbs. The croissants are French-level good, the vibes are immaculate (all white interior, flowers everywhere), and the coffee is strong. It's the perfect 'I need to feel human again' spot after Ultra weekend.",
-    tips: '☕ Get there before 10 AM on weekends or you'll wait. Order at the counter, grab a table. The almond croissant is STUPID good. They have oat milk. Bring your camera - everything is photogenic.',
-    mustTry: 'Almond croissant + flat white. Get a pain au chocolat for the road.',
-    price: '$$',
-    vibe: 'Parisian bakery vibes where everyone looks good eating carbs'
-  },
-  'lattente': {
-    id: 'lattente',
-    title: 'L\'Attenté Café',
-    category: 'Cafe',
-    image:
-      'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80',
-    description: 'Specialty coffee roaster with insane brunch.',
-    distance: '1.6 km',
-    driveTime: '6 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/L\'Attenté,+Buenos+Aires`,
-    why: 'Best coffee in Palermo, hands down. They roast their own beans, the baristas actually know what they're doing, and the brunch menu is fire. Good vibes, fast WiFi if you need to answer emails (lol who works on vacation).',
-    tips: '🥑 Brunch gets PACKED 10 AM - 1 PM on weekends. Go early or go late. The avocado toast is huge. They have cold brew on tap. Solid spot to plan your day while caffeinating.',
-    mustTry: 'Flat white + the salmon toast. Their house blend is smooth.',
-    price: '$$',
-    vibe: 'Third-wave coffee shop where everyone is on their MacBook'
+    website: 'https://www.instagram.com/tresmonosbar/',
+    why: "Perfect nightcap after polo. Top 50 bars energy without the tourist crush. Bartenders actually chat with you here.",
+    tips: 'Arrive before 10 PM or face a 30-min wait. Ask for a custom drink—tell them what you like and let them freestyle. Cash only sometimes, bring backup.'
   },
   'floreria-atlantico': {
     id: 'floreria-atlantico',
     title: 'Florería Atlántico',
     category: 'Speakeasy',
-    image:
-      'https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&w=800&q=80',
-    description: 'Hidden bar behind a flower shop. Ranked in World's 50 Best.',
-    distance: '5.1 km',
+    image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80',
+    description: "Walk into a flower shop. Open the fridge door. Descend into one of the world's best cocktail bars. James Bond vibes.",
+    distance: '5.2 km',
     driveTime: '18 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Florería+Atlántico,+Buenos+Aires`,
-    why: "This is THE speakeasy everyone talks about. You walk into what looks like a flower shop, open the cooler door, and descend into this underground cocktail bar. It's been on the World's 50 Best list multiple times. The drinks are incredible and the whole thing feels like a secret mission.",
-    tips: "🌹 Reserve online a few days ahead. It's small and always packed. When you arrive, act like you're buying flowers, then someone will let you through the cooler. Cocktails run ~$12-15 USD. Dress nice-ish.",
-    mustTry: 'Let the bartender surprise you. They're wizards.',
-    price: '$$$',
-    vibe: 'Hidden underground bar that feels like you discovered a secret'
+    why: "Because the entrance is literally through a refrigerator in a flower shop. And the drinks are world-class. And it's just cool.",
+    tips: 'Make a reservation or arrive right at 8 PM when they open. The mezcal cocktails here are unreal. Pricey but worth every peso.'
   },
-  'boticario': {
-    id: 'boticario',
-    title: 'Boticario Bar',
-    category: 'Bar',
-    image:
-      'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80',
-    description: 'Neighborhood bar in Palermo with craft cocktails and chill vibes.',
-    distance: '900 m',
+  'la-cabrera': {
+    id: 'la-cabrera',
+    title: 'La Cabrera',
+    category: 'Steakhouse',
+    image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
+    description: "Backup steak option if Don Julio is booked. Still incredible, more casual, portions are MASSIVE, and they bring like 12 free side dishes.",
+    distance: '800m',
     driveTime: '4 mins',
-    walkTime: '11 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Boticario,+Buenos+Aires`,
-    why: 'Super close to your base, perfect for a nightcap without committing to a big night out. The cocktails are solid, the crowd is mixed locals and travelers, and the vibe is relaxed. Good spot to decompress after Ultra Day 1.',
-    tips: '🍹 No reservations needed. Just walk in. Sit at the bar if you want to chat with bartenders. They have a good whiskey selection and make a mean gin and tonic.',
-    mustTry: 'Old fashioned or ask what gin they recommend.',
-    price: '$$',
-    vibe: 'Cozy neighborhood bar where you end up staying longer than planned'
+    walkTime: '10 mins',
+    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/La+Cabrera,+Cabrera+5099`,
+    why: "Because Don Julio might be full. This is Plan B, but honestly it's still a 9/10 steak experience. The portions are stupid big.",
+    tips: 'They have two locations on the same block—both are good. Arrive at 8:30 PM or make a reservation. The chorizo steak is the move.'
   },
-  'uptown': {
-    id: 'uptown',
-    title: 'Uptown Speakeasy',
-    category: 'Speakeasy',
-    image:
-      'https://images.unsplash.com/photo-1570649236495-42fa5fe5c48d?auto=format&fit=crop&w=800&q=80',
-    description: 'Subway-themed speakeasy with creative cocktails.',
-    distance: '5.8 km',
-    driveTime: '20 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Uptown,+Buenos+Aires`,
-    why: "Themed like a 1920s NYC subway station. You enter through a hidden door, everything is vintage tiles and old train signs, and the cocktails are theatrical as hell (smoke, fire, the works). It's fun without being too touristy.",
-    tips: "🚇 Reserve a few days ahead. The entrance is tricky - look for the 'Downtown Matías' sign. Password changes weekly (check their Instagram). Cocktails are pricey but huge.",
-    mustTry: 'Anything with mezcal. The presentation is always wild.',
-    price: '$$$',
-    vibe: 'Subway-themed speakeasy where drinks come with a show'
+  'club-araoz': {
+    id: 'club-araoz',
+    title: 'Club Araoz',
+    category: 'Nightlife',
+    image: 'https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800&q=80',
+    description: 'Small underground club with house and techno. No phones on the dance floor policy. Locals only. Best vibes in Palermo.',
+    distance: '1.8 km',
+    driveTime: '8 mins',
+    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Club+Araoz,+Palermo`,
+    why: "Real deal nightlife. Not touristy, great music, and the crowd is actually there to dance, not take Instagram stories.",
+    tips: 'Cash only at the door. Gets good after 2 AM. They have a strict no-photos rule on the floor—respect it.'
   },
   'pony-line': {
     id: 'pony-line',
-    title: 'Pony Line Burgers',
-    category: 'Burgers',
-    image:
-      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80',
-    description: 'Late-night gourmet burgers at the Four Seasons.',
-    distance: '6.2 km',
-    driveTime: '22 mins',
+    title: 'Pony Line (Four Seasons)',
+    category: 'Late Night Eats',
+    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80',
+    description: 'Best burger in BA. Located in the Four Seasons. Open late. Perfect drunk food after La Bomba or any night out.',
+    distance: '3.2 km',
+    driveTime: '12 mins',
     directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Four+Seasons+Buenos+Aires`,
-    why: "After La Bomba or a night out, you'll want something greasy and delicious. Pony Line serves fancy burgers until 2 AM. It's at the Four Seasons so the vibe is upscale, but the burgers are LEGIT. Perfect drunk food that doesn't feel like a mistake.",
-    tips: '🍔 Open late (until 2 AM!). The truffle burger is the move. Pair with their fries and a beer. Expect to pay ~$25 USD for burger + drink but it's worth it.',
-    mustTry: 'Truffle burger + a pint. Add bacon.',
-    price: '$$$',
-    vibe: 'Upscale burger joint that saves you at 1 AM'
-  },
-  'cafe-tortoni': {
-    id: 'cafe-tortoni',
-    title: 'Café Tortoni',
-    category: 'Historic Cafe',
-    image:
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-    description: 'Historic café open since 1858. BA institution.',
-    distance: '6.8 km',
-    driveTime: '25 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Cafe+Tortoni,+Buenos+Aires`,
-    why: "It's the oldest café in BA (since 1858!). Super touristy but worth it once for the history. Gorgeous interior, old-school waiters in vests, and you can feel the weight of everyone who's sat in those same chairs for 165 years. Get a coffee and a slice of cake, people-watch.",
-    tips: '☕ Touristy AF so keep expectations realistic. Go mid-afternoon to avoid crowds. Order the hot chocolate and a slice of their classic cake. Cash preferred. Take photos but don't Instagram the whole time - just vibe.',
-    mustTry: 'Chocolate caliente (hot chocolate) and a slice of rogel cake.',
-    price: '$$',
-    vibe: 'Old-world elegance where history is palpable'
-  },
-  'san-telmo-market': {
-    id: 'san-telmo-market',
-    title: 'San Telmo Market',
-    category: 'Market',
-    image:
-      'https://images.unsplash.com/photo-1555529669-2269763671c0?auto=format&fit=crop&w=800&q=80',
-    description: 'Historic indoor market with antiques, crafts, and street food.',
-    distance: '7.2 km',
-    driveTime: '28 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Mercado+de+San+Telmo,+Buenos+Aires`,
-    why: "San Telmo is the oldest neighborhood in BA, and this market has been here since 1897. It's a maze of antique stalls, vintage finds, and food vendors. Great for souvenirs, people-watching, and soaking in old Buenos Aires vibes. Sundays there's a MASSIVE outdoor market too.",
-    tips: '🛍️ Go Wednesday afternoon for fewer crowds, or Sunday for the full street fair experience. Bring cash for small vendors. Lots of pickpockets so keep your wallet front pocket. Stop for empanadas and fresh juice.',
-    mustTry: 'Grab empanadas from one of the food stalls inside. Wander aimlessly.',
-    price: '$',
-    vibe: 'Vintage treasure hunt in a historic indoor market'
-  },
-  'tea-connection': {
-    id: 'tea-connection',
-    title: 'Tea Connection',
-    category: 'Cafe',
-    image:
-      'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=800&q=80',
-    description: 'Local coffee/tea chain with good WiFi and solid food.',
-    distance: 'Multiple locations - closest is 800m',
-    driveTime: '3 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Tea+Connection+Palermo`,
-    why: "It's a chain but it's GOOD and reliable. Great for breakfast, coffee, and actually has fast WiFi if you need to do any trip planning or answer messages. They have tons of locations so there's probably one close to wherever you are.",
-    tips: '☕ Get the medialunas (Argentine croissants) with your coffee. They have oat milk and almond milk. Good spot to caffeinate and make a game plan for the day.',
-    mustTry: 'Flat white + 3 medialunas (they're small, you'll want more than one).',
-    price: '$',
-    vibe: 'Reliable cafe chain that doesn't disappoint'
-  },
-  'elena': {
-    id: 'elena',
-    title: 'Elena at Four Seasons',
-    category: 'Fine Dining',
-    image:
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80',
-    description: 'High-end steakhouse at the Four Seasons hotel.',
-    distance: '6.2 km',
-    driveTime: '22 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Four+Seasons+Buenos+Aires`,
-    why: "If Don Julio and La Cabrera are both fully booked, Elena is the backup plan. It's in the Four Seasons so the service is flawless, the steaks are excellent, and the wine list is deep. More formal vibe but still worth it.",
-    tips: '🍷 Book a few days ahead. Dress code is smart casual. The bife de lomo (tenderloin) is butter-soft. Splurge on a nice Malbec.',
-    mustTry: 'Bife de lomo + grilled provoleta (cheese) appetizer.',
-    price: '$$$$',
-    vibe: 'Polished hotel restaurant where everything is perfect'
-  },
-  'tequila-nightclub': {
-    id: 'tequila-nightclub',
-    title: 'Tequila Nightclub',
-    category: 'Nightclub',
-    image:
-      'https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=800&q=80',
-    description: 'Exclusive nightclub in Puerto Madero. The place to close out the trip.',
-    distance: '8.5 km',
-    driveTime: '28 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Tequila+Buenos+Aires`,
-    why: "Tequila is where the beautiful people go. It's hard to get in, the drinks are expensive, but if you're doing one big club night, this is it. DJs, lights, bottle service, models everywhere. Very much the 'look how cool we are' energy.",
-    tips: '🎉 Dress to impress (no sneakers, no shorts). Arrive before midnight to skip the worst of the line. Cover is usually $20-30 USD. Drinks are $$ inside. Go with confidence and act like you belong.',
-    mustTry: 'Get a table if you can split the cost. Bottle service gets you space and clout.',
-    price: '$$$$',
-    vibe: 'Elite nightclub where everyone is trying to look cooler than they are'
-  },
-  'casa-saltshaker': {
-    id: 'casa-saltshaker',
-    title: 'Casa SaltShaker',
-    category: 'Puerta Cerrada',
-    image:
-      'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80',
-    description: 'Hidden dinner in a chef\'s home. Closed-door restaurant.',
-    distance: 'Location revealed upon booking',
-    driveTime: '~15 mins from Palermo',
-    directions: 'Address sent after reservation',
-    website: 'http://www.casasaltshaker.com/',
-    why: "This is a wild experience. You book online, they send you a secret address, you show up at someone's apartment, and eat a multi-course meal with 10 strangers around a dining table. The chef (Dan) is American and hilarious. Food is incredible. You'll make friends.",
-    tips: '🍽️ Book at LEAST 2 weeks ahead (it's tiny and popular). BYOB (bring your own wine - there's a shop nearby). Expect 3+ hours. Come hungry and ready to chat. One of the most unique meals you'll have.',
-    mustTry: 'Everything - it's a tasting menu. Dan changes it based on what's fresh.',
-    price: '$$$',
-    vibe: 'Secret dinner party where you make 10 new friends'
-  },
-  'anchoita': {
-    id: 'anchoita',
-    title: 'Anchoita',
-    category: 'Trendy Restaurant',
-    image:
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-    description: 'The coolest restaurant in BA right now. Super hard to book.',
-    distance: '3.8 km',
-    driveTime: '14 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Anchoita,+Buenos+Aires`,
-    why: "Everyone is talking about Anchoita. It's tiny, the food is creative and delicious, the vibes are immaculate. If you can get a reservation (big if), it's the flex of the trip. Think small plates, natural wine, industrial-chic interior.",
-    tips: '📲 Reservations open 30 days out on their website - SET AN ALARM. It books out in minutes. If you can't get in, try walk-in at 6 PM right when they open. Expect to spend ~$50-70 USD per person with drinks.',
-    mustTry: 'Whatever the special is. The tuna and the grilled octopus are standouts.',
-    price: '$$$',
-    vibe: 'Hot restaurant where everyone is stylish and the food is fire'
-  },
-  'ocho-ceballos': {
-    id: 'ocho-ceballos',
-    title: '878 Bar (Ocho Siete Ocho)',
-    category: 'Cocktail Bar',
-    image:
-      'https://images.unsplash.com/photo-1598614187854-26a60e982dc4?auto=format&fit=crop&w=800&q=80',
-    description: 'Experimental cocktail bar with molecular gastronomy vibes.',
-    distance: '4.7 km',
-    driveTime: '17 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/878+Buenos+Aires`,
-    why: 'If you want WEIRD cocktails (in a good way), this is your spot. They do molecular mixology - drinks that smoke, freeze, foam, change colors. It's like a science experiment you can drink. Super creative, fun date spot or "wow" moment.',
-    tips: '🧪 Reservations recommended. Tell them you want the "experimental" cocktails. Budget $15-20 per drink. The bartenders will explain the process - it's part of the show.',
-    mustTry: 'Ask for their most theatrical drink. Commit to the experience.',
-    price: '$$$',
-    vibe: 'Mad scientist cocktail bar where drinks come with a chemistry lesson'
-  },
-  'la-carniceria': {
-    id: 'la-carniceria',
-    title: 'La Carnicería',
-    category: 'Casual Dining',
-    image:
-      'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80',
-    description: 'Casual meat-focused spot. Great for a solo first-night dinner.',
-    distance: '1.4 km',
-    driveTime: '6 mins',
-    walkTime: '17 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/La+Carnicería+Palermo`,
-    why: "Perfect spot for your first night when you arrive solo. It's casual, the food is great (meat-focused, duh), and it's close to your base. You won't feel weird eating alone. Just get a steak, a beer, and decompress from travel.",
-    tips: '🥩 No reservation needed usually. Sit at the bar if solo. Order the "parrillada" if you want a mix of meats. Good house wine. Cash or card.',
-    mustTry: 'Chorizo steak + a Quilmes. Keep it simple.',
-    price: '$$',
-    vibe: 'Neighborhood spot where solo dining feels natural'
-  },
-  'milion': {
-    id: 'milion',
-    title: 'Milion',
-    category: 'Bar & Restaurant',
-    image:
-      'https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80',
-    description: 'Stunning mansion turned bar with an epic garden.',
-    distance: '2.7 km',
-    driveTime: '11 mins',
-    directions: `https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Milion,+Buenos+Aires`,
-    why: "This place is GORGEOUS. It's a restored 1920s mansion with crystal chandeliers, multiple bars, and a massive outdoor garden. Great for drinks with a group, date night, or just impressing yourself. The whole place feels like old-money Buenos Aires.",
-    tips: '🏛️ Reservations for dinner. For drinks, just walk in and head upstairs or to the garden. Dress nicely. Cocktails are pricey but you're paying for the ambiance. Go at sunset for the best lighting.',
-    mustTry: 'Get a drink in the garden then explore the whole mansion.',
-    price: '$$$',
-    vibe: 'Opulent mansion bar that feels like Gatsby's house'
+    why: 'Sometimes you just need a perfect burger at midnight. This is that place. Hotel bar vibe but the food is legit.',
+    tips: 'Open until 1 AM. The truffle fries are mandatory. Dress code is casual but no tank tops/flip flops.'
   }
 };
+
+const NEIGHBORHOODS = [
+  {
+    name: 'Palermo Soho',
+    vibe: 'Hip, artsy, tons of bars and restaurants',
+    why: "Where you're staying. Best area for nightlife, food, and walking around. Think Brooklyn but with better steak.",
+    highlights: ['Plaza Serrano', 'Street art', 'Boutique shopping', 'Craft beer bars']
+  },
+  {
+    name: 'Palermo Hollywood',
+    vibe: 'Media district turned foodie paradise',
+    why: 'Slightly more upscale than Soho. Home to many top restaurants and cocktail bars.',
+    highlights: ['Don Julio', 'Tres Monos', 'TV studios', 'Trendy restaurants']
+  },
+  {
+    name: 'San Telmo',
+    vibe: 'Historic, cobblestone, antique markets',
+    why: 'Old-school Buenos Aires. Sunday market is incredible. Tango shows every night.',
+    highlights: ['Sunday Market', 'Plaza Dorrego', 'Antique shops', 'Street tango']
+  },
+  {
+    name: 'Puerto Madero',
+    vibe: 'Waterfront, modern, upscale',
+    why: "BA's newest neighborhood. Great for a sunset walk, fancy dinners, Faena Hotel.",
+    highlights: ['Puente de la Mujer', 'Waterfront walks', 'High-end restaurants', 'Faena']
+  },
+  {
+    name: 'Recoleta',
+    vibe: 'Paris vibes, cemetery, old money',
+    why: 'Fancy neighborhood with European architecture. Home to the famous cemetery where Evita is buried.',
+    highlights: ['Recoleta Cemetery', 'Teatro Colón', 'Museums', 'Cafés']
+  }
+];
+
+const FOOD_GUIDE = [
+  {
+    dish: 'Bife de Chorizo',
+    description: 'The king of Argentine steaks. Basically a strip steak but better.',
+    where: 'Don Julio, La Cabrera',
+    price: '$$$'
+  },
+  {
+    dish: 'Empanadas',
+    description: 'Meat pies. Get carne (beef), jamón y queso (ham & cheese), or humita (corn).',
+    where: 'Literally everywhere. El Sanjuanino is solid.',
+    price: '$'
+  },
+  {
+    dish: 'Choripán',
+    description: 'Chorizo sandwich. Best drunk food ever invented.',
+    where: 'Street carts, Costanera Norte on weekends',
+    price: '$'
+  },
+  {
+    dish: 'Milanesa',
+    description: 'Breaded meat cutlet the size of your head. Napolitana style = with tomato sauce & cheese.',
+    where: 'Any bodegón (classic restaurant)',
+    price: '$$'
+  },
+  {
+    dish: 'Asado',
+    description: 'The whole barbecue experience. Ribs, sausages, sweetbreads, everything.',
+    where: 'Polo day, Don Julio, La Cabrera',
+    price: '$$$'
+  },
+  {
+    dish: 'Medialunas',
+    description: 'Argentine croissants. Sweet or savory. Breakfast staple.',
+    where: 'Any café. Order with a cortado.',
+    price: '$'
+  },
+  {
+    dish: 'Dulce de Leche',
+    description: 'Caramel crack. In everything. On everything. Buy jars to bring home.',
+    where: 'Havanna stores, any supermarket',
+    price: '$'
+  }
+];
+
+const SPANISH_PHRASES = [
+  { spanish: '¡Hola! ¿Cómo estás?', english: 'Hey! How are you?', phonetic: 'OH-lah KOH-moh ehs-TAHS' },
+  { spanish: 'Una cerveza, por favor', english: 'A beer, please', phonetic: 'OO-nah sehr-VEH-sah por fah-VOR' },
+  { spanish: 'La cuenta, por favor', english: 'The check, please', phonetic: 'Lah KWEN-tah por fah-VOR' },
+  { spanish: '¿Cuánto sale?', english: 'How much is it?', phonetic: 'KWAN-toh SAH-leh' },
+  { spanish: 'Está buenísimo', english: "This is awesome/delicious", phonetic: 'ehs-TAH bweh-NEE-see-moh' },
+  { spanish: '¿Dónde está el baño?', english: 'Where is the bathroom?', phonetic: 'DOHN-deh ehs-TAH el BAH-nyoh' },
+  { spanish: 'No entiendo', english: "I don't understand", phonetic: 'noh en-tee-EN-doh' },
+  { spanish: 'Boludo/Che', english: 'Dude/Hey (very Argentine)', phonetic: 'boh-LOO-doh / cheh' },
+  { spanish: '¿Todo bien?', english: 'All good? / Everything okay?', phonetic: 'TOH-doh bee-EN' }
+];
+
+const MONEY_TIPS = [
+  {
+    title: 'Use the "Blue" Dollar Rate',
+    content: "Argentina has two exchange rates: official and 'blue' (street rate). Blue is ~40% better. Use Western Union or bring USD cash to exchange at 'cuevas' (exchange houses). Never exchange at the airport.",
+    icon: <DollarSign className="w-5 h-5 text-green-500" />
+  },
+  {
+    title: 'Bring USD Cash',
+    content: "Seriously. Bring $500+ in clean USD bills. You'll get WAY more pesos exchanging cash than using ATMs. Argentines prefer $100 bills (best rate) but $50s and $20s work too.",
+    icon: <Banknote className="w-5 h-5 text-green-500" />
+  },
+  {
+    title: 'Credit Cards = Tourist Price',
+    content: "Cards get the official rate, which sucks. Use cash whenever possible. Save cards for hotels and big purchases only.",
+    icon: <CreditCard className="w-5 h-5 text-yellow-500" />
+  },
+  {
+    title: 'ATMs = Rip-off (but necessary)',
+    content: "ATM fees are brutal ($10-15 per withdrawal) and daily limits are low. Use Banco Galicia ATMs for best limits. Only use if you run out of USD to exchange.",
+    icon: <Wallet className="w-5 h-5 text-red-500" />
+  },
+  {
+    title: 'Argentina is CHEAP (with blue rate)',
+    content: "With the blue dollar rate: Empanadas = $1, Beer = $2, Nice dinner = $30, Taxi across town = $5. Budget $100-150/day and you'll live like a king.",
+    icon: <TrendingUp className="w-5 h-5 text-blue-500" />
+  }
+];
+
+const EMERGENCY_INFO = [
+  { label: 'Emergency Number', value: '911', icon: <Phone /> },
+  { label: 'Tourist Police', value: '0800-999-5000', icon: <ShieldCheck /> },
+  { label: 'US Embassy', value: '+54 11 5777-4533', icon: <AlertCircle /> },
+  { label: 'Poison Control', value: '0800-333-0160', icon: <AlertCircle /> },
+  { label: 'Hospital Alemán (English)', value: '+54 11 4827-7000', icon: <AlertCircle /> }
+];
+
+const BOOKINGS_CHECKLIST = [
+  { item: 'Don Julio Dinner Reservation', date: 'Feb 18, 8:30 PM', priority: 'critical', bookBy: '90 days before' },
+  { item: 'Ultra Buenos Aires Tickets', date: 'Feb 14-15', priority: 'critical', bookBy: 'ASAP - selling out' },
+  { item: 'Bad Bunny Concert Tickets', date: 'Feb 15, 8 PM', priority: 'critical', bookBy: 'Already on sale' },
+  { item: 'Polo Day Estancia', date: 'Feb 17', priority: 'high', bookBy: '2-3 weeks before' },
+  { item: 'La Bomba de Tiempo Tickets', date: 'Feb 16', priority: 'high', bookBy: '1 week before' },
+  { item: 'Colonia Ferry (Buquebus)', date: 'Feb 19', priority: 'medium', bookBy: '1 week before' },
+  { item: 'Anchoita Dinner', date: 'Feb 20', priority: 'medium', bookBy: '2-3 weeks before' },
+  { item: 'Florería Atlántico Reservation', date: 'TBD', priority: 'low', bookBy: 'Few days before' },
+  { item: 'Faena Pool Day Pass', date: 'Feb 20', priority: 'low', bookBy: 'Few days before' },
+  { item: 'Download Cabify App', date: 'Before arrival', priority: 'critical', bookBy: 'Now' }
+];
 
 const App = () => {
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeTab, setActiveTab] = useState('itinerary');
+  const [checkedBookings, setCheckedBookings] = useState([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('ba-bookings');
+    if (saved) setCheckedBookings(JSON.parse(saved));
+  }, []);
+
+  const toggleBooking = (index) => {
+    const updated = checkedBookings.includes(index)
+      ? checkedBookings.filter(i => i !== index)
+      : [...checkedBookings, index];
+    setCheckedBookings(updated);
+    localStorage.setItem('ba-bookings', JSON.stringify(updated));
+  };
 
   const DayCard = ({ day, date, title, items, badge, description }) => (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-6 hover:border-blue-500/30 transition-all shadow-xl">
@@ -519,6 +397,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-200 font-sans pb-24">
+      {/* Header */}
       <header className="relative h-72 sm:h-80 md:h-96 flex items-end p-6 sm:p-8 overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=1200&q=80"
@@ -530,6 +409,9 @@ const App = () => {
             <span className="bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
               Feb 13 - 22, 2026
             </span>
+            <span className="bg-green-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
+              9 DAYS
+            </span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">
             BA{' '}
@@ -540,29 +422,34 @@ const App = () => {
           <p className="text-slate-400 text-xs sm:text-sm mt-4 flex items-center gap-2 font-medium">
             <MapPin className="w-4 h-4 text-red-500" /> Base: {BASE_ADDRESS}
           </p>
+          <p className="text-slate-500 text-xs mt-2">
+            Your guide to surviving and thriving in Buenos Aires. Everything you need, nothing you don't.
+          </p>
         </div>
       </header>
 
+      {/* Tabs */}
       <nav className="sticky top-0 z-30 bg-black/90 backdrop-blur-xl border-b border-slate-800 overflow-x-auto shadow-2xl">
         <div className="flex min-w-max">
-          {['itinerary', 'food', 'nightlife', 'secrets', 'money', 'emergency', 'spanish', 'packing'].map((tab) => (
+          {['itinerary', 'bookings', 'neighborhoods', 'food', 'money', 'spanish', 'emergency', 'secrets', 'packing'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`py-4 sm:py-5 px-3 sm:px-6 text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all whitespace-nowrap ${
+              className={`py-4 sm:py-5 px-4 sm:px-6 text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all whitespace-nowrap ${
                 activeTab === tab
                   ? 'text-blue-500 border-b-2 border-blue-500'
                   : 'text-slate-500 hover:text-slate-300'
               }`}
             >
-              {tab === 'itinerary' && <Calendar className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'food' && <Utensils className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'nightlife' && <Music className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'secrets' && <Zap className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'money' && <DollarSign className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'emergency' && <Phone className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'spanish' && <MessageCircle className="inline-block w-4 h-4 mb-1 mr-1" />}
-              {tab === 'packing' && <Briefcase className="inline-block w-4 h-4 mb-1 mr-1" />}
+              {tab === 'itinerary' && <Calendar className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'bookings' && <CheckCircle2 className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'neighborhoods' && <Building className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'food' && <Utensils className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'money' && <DollarSign className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'spanish' && <MessageCircle className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'emergency' && <Phone className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'secrets' && <Zap className="inline-block w-4 h-4 mb-1 mr-2" />}
+              {tab === 'packing' && <Briefcase className="inline-block w-4 h-4 mb-1 mr-2" />}
               {tab}
             </button>
           ))}
@@ -570,175 +457,467 @@ const App = () => {
       </nav>
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 pt-10">
+        {/* ITINERARY TAB */}
         {activeTab === 'itinerary' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 p-6 rounded-3xl mb-8">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-yellow-400" />
+                Welcome to Your BA Adventure
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                This isn't just an itinerary—it's your survival guide. We've packed Ultra, Bad Bunny, world-class steaks,
+                polo on horseback, and enough insider tips to make you feel like a local. Click any item with an arrow to see full details,
+                navigation, and pro tips. Ready? Let's go.
+              </p>
+            </div>
+
             <DayCard
               day="FRI"
               date="FEB 13"
               title="The Solo Landing"
-              description="You're here first. Flight lands evening, check into the base, decompress. This is your night to scout Palermo, grab dinner solo, and prep for the chaos ahead. Stock up on water, Gatorade, and a nice bottle of Malbec."
+              description="First to arrive. Use this quiet night to scope the neighborhood, stock supplies, and adjust to the 12-hour time difference. BA doesn't wake up until noon anyway."
               items={[
-                { icon: <MapPin />, label: 'Check-in at Base', sub: 'República Árabe Siria 3026 - Your home for 10 days' },
-                {
-                  icon: <Utensils />,
-                  label: 'Solo Dinner (8-9 PM)',
-                  sub: "La Carnicería - Casual parrilla, 17-min walk",
-                  destId: 'la-carniceria'
-                },
-                {
-                  icon: <Briefcase />,
-                  label: 'Supply Run',
-                  sub: 'Jumbo or Carrefour - Water, snacks, beer, Malbec, sunscreen'
-                },
-                {
-                  icon: <Coffee />,
-                  label: 'Morning Coffee (optional)',
-                  sub: 'Find a local cafe, get your bearings',
-                  destId: 'tea-connection'
-                }
+                { icon: <Plane />, label: 'Arrival at EZE Airport', sub: 'Taxi to base ~$25 USD (1 hour drive)' },
+                { icon: <Home />, label: 'Check-in at Base', sub: 'República Árabe Siria 3026, Palermo' },
+                { icon: <Utensils />, label: 'Solo Steak Recon', sub: "La Carnicería (10 min walk) - casual, great meat", destId: 'la-cabrera' },
+                { icon: <ShoppingBag />, label: 'Supply Run', sub: 'Jumbo: water, Gatorade, Quilmes beer, Malbec, snacks' },
+                { icon: <Coffee />, label: 'Evening Walk', sub: 'Stroll Palermo Soho, get the lay of the land' }
               ]}
             />
+
             <DayCard
               day="SAT"
               date="FEB 14"
-              title="The Boys Arrive → ULTRA DAY 1"
+              title="The Boys Arrive + Ultra Day 1"
               badge="Festival"
-              description="The crew lands in the morning. Drop bags, quick shower, grab empanadas for the road. Gates open at 2 PM but go by 4 PM. Lineup is stacked. This is what you came for. Bring portable charger, sunscreen, and good vibes. Get ready to lose your mind."
+              description="The crew unites. Drop the bags and head straight to Ultra. Tonight is about energy, top DJs, and losing your mind on the dance floor. Come back late, sleep later."
               items={[
-                { icon: <Clock />, label: 'Friend Arrival (~10 AM)', sub: 'Cabify from EZE airport to base (1 hour)' },
-                { icon: <Coffee />, label: 'Quick Breakfast/Lunch', sub: 'Grab empanadas or medialunas to-go' },
-                { icon: <Music />, label: 'Ultra Day 1 (2 PM-1 AM)', sub: 'Parque de la Ciudad - Gates open 2PM, leave by 3:45', destId: 'ultra' },
-                { icon: <GlassWater />, label: 'Post-Festival Wind-Down (IF awake)', sub: "Boticario for a nightcap - 11 min walk from base", destId: 'boticario' }
+                { icon: <Clock />, label: 'Morning Arrivals', sub: 'Airport pickups / Uber to base' },
+                { icon: <Coffee />, label: 'Brunch & Strategy', sub: 'Café Tortoni or local café - fuel up' },
+                { icon: <Music />, label: 'Ultra Day 1', sub: 'Gates at 2 PM. Plan: arrive at 4 PM, stay until 11:30 PM', destId: 'ultra' },
+                { icon: <GlassWater />, label: 'Post-Ultra Debrief', sub: "Drinks at Boticario Bar if you have energy left" }
               ]}
             />
+
             <DayCard
               day="SUN"
               date="FEB 15"
-              title="ULTRA DAY 2 → BAD BUNNY"
-              badge="LEGENDARY"
-              description="This is the sickest day and also the most brutal. Ultra closing sets in the afternoon, then straight to River Plate for Bad Bunny at 8 PM. 70,000 people singing reggaeton. You'll be DESTROYED by midnight. Pace yourself. Hydrate. This is the story you'll tell for years."
+              title="The Iron Man Challenge"
+              badge="Epic Day"
+              description="Ultra Day 2 followed by Bad Bunny at River Plate. This is the most physical day of the trip. Pace yourself on the afternoon. Save energy for Benito. You'll thank me later."
               items={[
-                { icon: <Sunrise />, label: 'Late Wake-Up + Fuel', sub: 'Sleep til 11, get croissants + coffee', destId: 'ninina-bakery' },
-                { icon: <Music />, label: 'Ultra Day 2 (2-8 PM)', sub: 'Closing sets - Don't miss the finales!', destId: 'ultra' },
-                { icon: <Clock />, label: '⚡ CRITICAL WINDOW', sub: 'Leave Ultra by 6:30 PM, Cabify straight to River Plate' },
-                {
-                  icon: <Music />,
-                  label: 'Bad Bunny @ River Plate (8 PM)',
-                  sub: 'Doors at 7, show at 8. Go EARLY to get in. 12-min drive from base',
-                  destId: 'bad-bunny'
-                },
-                { icon: <GlassWater />, label: 'Late Night Food (if alive)', sub: 'Pony Line burgers til 2 AM', destId: 'pony-line' }
+                { icon: <Coffee />, label: 'Recovery Brunch', sub: 'Late start. Eggs, coffee, hydration.' },
+                { icon: <Music />, label: 'Ultra Day 2', sub: 'Final sets. Leave by 7 PM for Bad Bunny.', destId: 'ultra' },
+                { icon: <Zap />, label: 'Bad Bunny @ River Plate', sub: '8 PM doors. Reggaeton til midnight.', destId: 'bad-bunny' },
+                { icon: <Utensils />, label: 'Late Night Fuel', sub: 'Pony Line burger or street choripán', destId: 'pony-line' }
               ]}
             />
+
             <DayCard
               day="MON"
               date="FEB 16"
-              title="Recovery → La Bomba"
-              description="Your bodies are WRECKED. Sleep til noon minimum. Gentle day - walk around Palermo, get coffee, maybe hit a museum if you're feeling cultured lol. Tonight is La Bomba - THE Monday night tradition in BA. 20 drummers, 2000 people dancing. Doors 7:30, drums start 8:30. Buy tickets NOW."
+              title="Recovery + Monday Night Ritual"
+              description="Sleep in. This is mandatory. Your body needs it. Spend the afternoon horizontal. Then rally for La Bomba—it's every Monday and you can't miss it."
               items={[
-                { icon: <Clock />, label: 'Sleep Until Noon', sub: 'Mandatory. Your body needs this.' },
-                { icon: <Coffee />, label: 'Slow Brunch (1-2 PM)', sub: 'L\'Attenté for coffee + proper food', destId: 'lattente' },
-                { icon: <MapPin />, label: 'Explore Palermo (optional)', sub: 'Walk around, window shop, be tourists' },
-                {
-                  icon: <Music />,
-                  label: 'La Bomba de Tiempo (8:30 PM)',
-                  sub: '20 drummers improvising for 2 hours. LOCALS ONLY vibe. 🎫 Buy tix online NOW!',
-                  destId: 'la-bomba'
-                },
-                { icon: <Utensils />, label: 'Late Night Burger (1 AM)', sub: 'Pony Line burgers to close it out', destId: 'pony-line' }
+                { icon: <Clock />, label: 'Sleep Until Noon', sub: 'Seriously. No shame. This is the plan.' },
+                { icon: <Coffee />, label: 'Slow Afternoon', sub: 'Walk Palermo, get empanadas, hydrate' },
+                { icon: <Music />, label: 'La Bomba de Tiempo', sub: '8 PM. Percussion rave at an old factory.', destId: 'la-bomba' },
+                { icon: <Utensils />, label: 'Late Burger', sub: 'Pony Line @ Four Seasons', destId: 'pony-line' }
               ]}
             />
+
             <DayCard
               day="TUE"
               date="FEB 17"
               title="The Polo Flex"
               badge="Elite"
-              description="Country air to cure the hangover. Best day of the trip for photos."
+              description="Best hangover cure ever: fresh air, horses, unlimited wine, and learning to play polo. Van picks you up, brings you back. All you do is show up and look cool."
               items={[
-                {
-                  icon: <Star />,
-                  label: 'Private Polo Day',
-                  sub: 'Horses and Unlimited Asado',
-                  destId: 'polo'
-                },
-                {
-                  icon: <GlassWater />,
-                  label: 'Tres Monos Cocktails',
-                  sub: "World's Top 50 bar",
-                  destId: 'tres-monos'
-                }
+                { icon: <Star />, label: 'Polo Day Estancia', sub: '9 AM pickup. Full day: lessons, match, asado lunch.', destId: 'polo' },
+                { icon: <Clock />, label: 'Return to Palermo', sub: 'Back by 6 PM, nap if needed' },
+                { icon: <GlassWater />, label: 'Tres Monos Cocktails', sub: "Top 50 bar. Arrive before 10 PM.", destId: 'tres-monos' }
               ]}
             />
+
             <DayCard
               day="WED"
               date="FEB 18"
-              title="Old School BA"
-              description="San Telmo antiques and the ultimate steak night."
+              title="Old School BA + The Big Steak"
+              description="Explore historic San Telmo in the afternoon. Antiques, street tango, cobblestones. Then: Don Julio. The main event. The steak you'll talk about for years."
               items={[
-                { icon: <MapPin />, label: 'San Telmo Market', sub: 'Wander the antique halls' },
-                { icon: <Utensils />, label: 'Don Julio Dinner', sub: 'The main event', destId: 'don-julio' }
+                { icon: <Clock />, label: 'Lazy Morning', sub: 'Sleep in, coffee, chill' },
+                { icon: <MapPin />, label: 'San Telmo Market', sub: 'Wander antiques, Plaza Dorrego, street tango' },
+                { icon: <Coffee />, label: 'Café Afternoon', sub: 'Espresso at a classic BA café' },
+                { icon: <Utensils />, label: 'Don Julio Dinner', sub: '8:30 PM reservation. THE steak dinner.', destId: 'don-julio' },
+                { icon: <Wine />, label: 'Post-Dinner Drinks', sub: 'Digestif at Florería Atlántico', destId: 'floreria-atlantico' }
               ]}
             />
+
             <DayCard
               day="THU"
               date="FEB 19"
               title="Uruguay Escape"
-              description="International waters. A peaceful town for a change of pace."
+              description="Ferry to Colonia del Sacramento. Golf carts, cobblestone streets, uruguayan wine, zero stress. Perfect reset day. Bring your passport or you're not getting on the boat."
               items={[
-                {
-                  icon: <Navigation />,
-                  label: 'Colonia del Sacramento',
-                  sub: 'Ferry day trip',
-                  destId: 'colonia'
-                },
-                { icon: <GlassWater />, label: 'Uptown', sub: 'Subway-themed speakeasy' }
+                { icon: <Plane />, label: 'Ferry to Colonia', sub: '8 AM or 9 AM fast ferry (1 hour)', destId: 'colonia' },
+                { icon: <Camera />, label: 'Golf Cart Day', sub: 'Rent cart, cruise historic quarter, lighthouse, coast' },
+                { icon: <Utensils />, label: 'Lunch in Uruguay', sub: 'Try uruguayan chivito sandwich' },
+                { icon: <Navigation />, label: 'Return Ferry', sub: 'Evening ferry back to BA' },
+                { icon: <GlassWater />, label: 'BA Nightcap', sub: 'Low-key drinks in Palermo' }
               ]}
             />
+
             <DayCard
               day="FRI"
               date="FEB 20"
               title="The Grand Finale"
-              badge="ALL OUT"
-              description="Last big night in BA. Go full luxury mode. Day pass at Faena to feel like millionaires, dinner at the hottest spot (if you got that reservation), then close it out at Tequila - the most exclusive club in the city. Dress to impress. This is the victory lap."
+              badge="Final Bash"
+              description="Last big night. Faena pool party during the day, elite dinner at Anchoita, then close it out at Tequila nightclub. Go big or go home. Actually, go big—you're not home yet."
               items={[
-                { icon: <Sunrise />, label: 'Morning: Café Tortoni', sub: 'Historic café since 1858. Tourist trap but worth it once.', destId: 'cafe-tortoni' },
-                { icon: <Sparkles />, label: 'Faena Pool (3-7 PM)', sub: 'Day pass $80-120. Pool, drinks, luxury vibes.', destId: 'faena' },
-                { icon: <Utensils />, label: 'Dinner: Anchoita (9 PM)', sub: 'If you got the rez. Otherwise La Cabrera.', destId: 'anchoita' },
-                { icon: <GlassWater />, label: 'Pre-Game: Milion (11 PM)', sub: '1920s mansion bar. Drinks in the garden.', destId: 'milion' },
-                { icon: <Music />, label: 'Tequila Nightclub (1 AM)', sub: 'Dress code. No sneakers. Bottle service if you ball out.', destId: 'tequila-nightclub' }
+                { icon: <Palmtree />, label: 'Faena Pool Party', sub: 'Book day pass. Arrive at noon. Red velvet vibes.', destId: 'faena' },
+                { icon: <Utensils />, label: 'Anchoita Dinner', sub: 'Trendiest dinner in town (if you can get a table)' },
+                { icon: <Music />, label: 'Tequila Nightclub', sub: 'Most exclusive club in BA. Dress well. Arrive after 1 AM.' },
+                { icon: <Zap />, label: 'Alternate: Club Araoz', sub: 'Underground house/techno if Tequila is too much', destId: 'club-araoz' }
               ]}
             />
+
             <DayCard
               day="SAT"
               date="FEB 21"
               title="The Flex Day"
-              description="No plans. Walk Palermo, buy leather jackets, drink coffee."
+              description="No agenda. Sleep late. Walk Palermo. Buy leather jackets (seriously, they're incredible). Get coffee. Take it easy. You've earned it."
               items={[
-                { icon: <Briefcase />, label: 'Leather Shopping', sub: 'Murillo 666 district' },
-                { icon: <MapPin />, label: 'Teatro Colón Tour', sub: 'World-class opera house tour' }
+                { icon: <Clock />, label: 'Sleep In', sub: 'No alarm. No plans. Just vibes.' },
+                { icon: <ShoppingBag />, label: 'Leather Shopping', sub: 'Murillo 666 district - custom jackets $200-400' },
+                { icon: <Coffee />, label: 'Café Culture', sub: 'LAB, Lattente, or Full City Coffee' },
+                { icon: <Camera />, label: 'Teatro Colón Tour', sub: 'World-class opera house (optional)' },
+                { icon: <Utensils />, label: 'Farewell Dinner', sub: 'Pick your favorite spot from the week' }
               ]}
             />
+
             <DayCard
               day="SUN"
               date="FEB 22"
-              title="Departure"
-              items={[{ icon: <Navigation />, label: 'EZE Airport', sub: 'Travel day. Recovery begins.' }]}
+              title="Departure Day"
+              description="Pack up. Head to EZE. Start planning the next trip because you're definitely coming back."
+              items={[
+                { icon: <Coffee />, label: 'Final Argentine Coffee', sub: 'One last cortado and medialunas' },
+                { icon: <Plane />, label: 'EZE Airport', sub: 'Allow 1.5 hours for taxi, arrive 3 hours early' },
+                { icon: <Navigation />, label: 'Adiós, Buenos Aires', sub: 'Recovery begins. Memories forever.' }
+              ]}
             />
           </div>
         )}
 
+        {/* BOOKINGS TAB */}
+        {activeTab === 'bookings' && (
+          <div className="animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 p-6 rounded-3xl mb-6">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-400" />
+                Booking Tracker
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Check off items as you book them. This list is saved in your browser. Red = critical, Yellow = important, Green = nice to have.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {BOOKINGS_CHECKLIST.map((booking, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => toggleBooking(idx)}
+                  className={`bg-slate-900/60 border rounded-2xl p-5 cursor-pointer transition-all ${
+                    checkedBookings.includes(idx)
+                      ? 'border-green-500/50 bg-green-500/5'
+                      : booking.priority === 'critical'
+                      ? 'border-red-500/30 hover:border-red-500/50'
+                      : booking.priority === 'high'
+                      ? 'border-yellow-500/30 hover:border-yellow-500/50'
+                      : 'border-slate-700 hover:border-slate-600'
+                  }`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="mt-1">
+                      {checkedBookings.includes(idx) ? (
+                        <CheckCircle2 className="w-6 h-6 text-green-500" />
+                      ) : (
+                        <Circle className="w-6 h-6 text-slate-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <h3 className={`font-bold text-white ${checkedBookings.includes(idx) ? 'line-through opacity-50' : ''}`}>
+                          {booking.item}
+                        </h3>
+                        <span
+                          className={`text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider ${
+                            booking.priority === 'critical'
+                              ? 'bg-red-600 text-white'
+                              : booking.priority === 'high'
+                              ? 'bg-yellow-600 text-white'
+                              : 'bg-slate-600 text-white'
+                          }`}
+                        >
+                          {booking.priority}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 mb-1">{booking.date}</p>
+                      <p className="text-xs text-slate-500">Book by: {booking.bookBy}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 bg-blue-600/10 border border-blue-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase">Pro Booking Tips</h3>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li>• Don Julio books out 90 days in advance. Set a calendar alert.</li>
+                <li>• Ultra and Bad Bunny sell out. Get tickets ASAP once on sale.</li>
+                <li>• La Bomba de Tiempo tickets go live 1 week before—buy online or it's sold out.</li>
+                <li>• Colonia ferry: book the "fast ferry" (1 hour), not the slow one (3 hours).</li>
+                <li>• Download Cabify NOW. You'll need it for Ultra and Bad Bunny rides.</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* NEIGHBORHOODS TAB */}
+        {activeTab === 'neighborhoods' && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 p-6 rounded-3xl">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <Building className="w-5 h-5 text-purple-400" />
+                BA Neighborhood Guide
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Buenos Aires is HUGE (48 neighborhoods!). Here are the ones you'll actually spend time in.
+              </p>
+            </div>
+
+            {NEIGHBORHOODS.map((hood, idx) => (
+              <div key={idx} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+                <h3 className="text-xl font-black text-white mb-2">{hood.name}</h3>
+                <p className="text-sm text-blue-400 mb-3 italic">{hood.vibe}</p>
+                <p className="text-sm text-slate-300 mb-4 leading-relaxed">{hood.why}</p>
+                <div className="flex flex-wrap gap-2">
+                  {hood.highlights.map((highlight, i) => (
+                    <span key={i} className="bg-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-slate-400">
+                      {highlight}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* FOOD GUIDE TAB */}
+        {activeTab === 'food' && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 border border-orange-500/30 p-6 rounded-3xl">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <Utensils className="w-5 h-5 text-orange-400" />
+                What to Eat (and Where)
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Argentina = beef, wine, and carbs. Here's what to order and where to find it. Come hungry.
+              </p>
+            </div>
+
+            {FOOD_GUIDE.map((food, idx) => (
+              <div key={idx} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-lg font-black text-white">{food.dish}</h3>
+                  <span className="text-green-400 font-bold text-sm">{food.price}</span>
+                </div>
+                <p className="text-sm text-slate-300 mb-3 leading-relaxed">{food.description}</p>
+                <p className="text-xs text-slate-500">
+                  <span className="font-bold text-blue-400">Where:</span> {food.where}
+                </p>
+              </div>
+            ))}
+
+            <div className="bg-yellow-600/10 border border-yellow-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase flex items-center gap-2">
+                <Zap className="w-4 h-4 text-yellow-500" />
+                Food Pro Tips
+              </h3>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li>• Argentines eat dinner at 10 PM. If you show up at 7 PM, the restaurant will be empty.</li>
+                <li>• "Cubierto" = table charge ($2-5). It's normal. Includes bread.</li>
+                <li>• Tipping: 10% is standard. Servers make low wages—don't skip this.</li>
+                <li>• Wine is cheaper than water. Embrace it. Malbec from Mendoza is the move.</li>
+                <li>• Street food is safe and delicious. Get the choripán from street carts.</li>
+                <li>• Vegetarian? Good luck. But Hierbabuena and Artemisia have you covered.</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* MONEY TAB */}
+        {activeTab === 'money' && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-green-600/20 to-emerald-600/20 border border-green-500/30 p-6 rounded-3xl">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-green-400" />
+                Money in Argentina (Read This!)
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Argentina's economy is... complicated. Follow these tips and you'll save 40%+. Ignore them and you're getting ripped off.
+              </p>
+            </div>
+
+            {MONEY_TIPS.map((tip, idx) => (
+              <div key={idx} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+                <h3 className="text-lg font-black text-white mb-3 flex items-center gap-2">
+                  {tip.icon}
+                  {tip.title}
+                </h3>
+                <p className="text-sm text-slate-300 leading-relaxed">{tip.content}</p>
+              </div>
+            ))}
+
+            <div className="bg-blue-600/10 border border-blue-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase">Sample Daily Budget (with Blue Rate)</h3>
+              <div className="space-y-2 text-sm text-slate-300">
+                <div className="flex justify-between border-b border-slate-700 pb-2">
+                  <span>Breakfast (café + medialunas)</span>
+                  <span className="font-bold">$5</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-700 pb-2">
+                  <span>Lunch (empanadas + beer)</span>
+                  <span className="font-bold">$10</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-700 pb-2">
+                  <span>Dinner (nice restaurant + wine)</span>
+                  <span className="font-bold">$40</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-700 pb-2">
+                  <span>Drinks / nightlife</span>
+                  <span className="font-bold">$25</span>
+                </div>
+                <div className="flex justify-between border-b border-slate-700 pb-2">
+                  <span>Transport (Cabify / taxis)</span>
+                  <span className="font-bold">$15</span>
+                </div>
+                <div className="flex justify-between pt-2 font-black text-green-400">
+                  <span>TOTAL PER DAY</span>
+                  <span>$95</span>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-4">
+                Add ~$300 for Don Julio dinner, ~$150 for polo day, ~$200 for Ultra tickets. You're looking at $1,500-2,000 for
+                the entire 9-day trip (excluding flights/accommodation).
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* SPANISH TAB */}
+        {activeTab === 'spanish' && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-pink-600/20 to-purple-600/20 border border-pink-500/30 p-6 rounded-3xl">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-pink-400" />
+                Essential Spanish Phrases
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Most porteños speak some English, but knowing a few phrases goes a long way. Argentine Spanish has a unique accent
+                and uses "vos" instead of "tú"—but don't stress, they'll understand you.
+              </p>
+            </div>
+
+            {SPANISH_PHRASES.map((phrase, idx) => (
+              <div key={idx} className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+                <div className="flex items-start gap-4">
+                  <MessageCircle className="w-5 h-5 text-blue-500 mt-1" />
+                  <div className="flex-1">
+                    <p className="text-lg font-black text-white mb-1">{phrase.spanish}</p>
+                    <p className="text-sm text-slate-400 mb-1">{phrase.english}</p>
+                    <p className="text-xs text-slate-600 italic">{phrase.phonetic}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            <div className="bg-yellow-600/10 border border-yellow-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase">Language Pro Tips</h3>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li>• "Boludo" = dude/bro. You'll hear it constantly. It's friendly (usually).</li>
+                <li>• "Che" = hey. Very Argentine. Think "ey, che boludo!"</li>
+                <li>• Porteños speak FAST. Don't worry—most will slow down if you ask.</li>
+                <li>• "Y" and "LL" sound like "sh" or "zh" in BA. "Yo" = "sho", "calle" = "ca-she".</li>
+                <li>• Google Translate works great for menus and signs. Download offline Spanish.</li>
+                <li>• Learn "Disculpa" (excuse me) and "Gracias" (thanks)—you'll use them 100x/day.</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* EMERGENCY TAB */}
+        {activeTab === 'emergency' && (
+          <div className="space-y-6 animate-in fade-in duration-500">
+            <div className="bg-gradient-to-r from-red-600/20 to-orange-600/20 border border-red-500/30 p-6 rounded-3xl">
+              <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">
+                <Phone className="w-5 h-5 text-red-400" />
+                Emergency Contacts
+              </h2>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                Buenos Aires is generally safe, especially in Palermo. But save these numbers just in case. Screenshot this page.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {EMERGENCY_INFO.map((info, idx) => (
+                <a
+                  key={idx}
+                  href={`tel:${info.value}`}
+                  className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 flex items-center gap-4 hover:border-red-500/30 transition-all"
+                >
+                  <div className="text-red-500 bg-red-500/10 p-3 rounded-lg">{info.icon}</div>
+                  <div className="flex-1">
+                    <p className="font-bold text-white text-sm">{info.label}</p>
+                    <p className="text-blue-400 font-mono text-sm">{info.value}</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-slate-600" />
+                </a>
+              ))}
+            </div>
+
+            <div className="bg-blue-600/10 border border-blue-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase">Safety Tips</h3>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li>• Palermo, Recoleta, Puerto Madero = very safe. La Boca = sketchy after dark (avoid unless guided tour).</li>
+                <li>• The "fake wallet" trick: carry a small decoy wallet with $20-30 in case of pickpockets.</li>
+                <li>• Don't flash expensive watches, jewelry, or cameras on the street.</li>
+                <li>• Use Cabify/Uber from the app—never hail street taxis at night.</li>
+                <li>• Keep your phone charged and share live location with the group when out late.</li>
+                <li>• Hospitals: Hospital Alemán and Swiss Medical both have English-speaking staff.</li>
+                <li>• Pharmacies ("Farmacia") are everywhere. Most meds available over-the-counter.</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* SECRETS TAB */}
         {activeTab === 'secrets' && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-blue-600/10 border border-blue-500/30 p-6 rounded-3xl">
-              <h3 className="text-xl font-black text-white mb-4 uppercase">Pro Tip: The Cabify Hack</h3>
+              <h3 className="text-xl font-black text-white mb-4 uppercase flex items-center gap-2">
+                <Zap className="w-5 h-5 text-yellow-500" />
+                Pro Tip: The Cabify Hack
+              </h3>
               <p className="text-sm text-slate-300 leading-relaxed mb-4">
-                Uber is 50/50 in BA. <strong>Cabify</strong> is 100%. Download it now. You can book rides in
-                advance and the drivers are professional. It's the only way to get home from Ultra without getting
-                scammed by street taxis.
+                Uber is 50/50 in BA. <strong>Cabify</strong> is 100%. Download it now. You can book rides in advance, drivers are
+                professional, and it's the ONLY way to get home from Ultra without getting scammed by street taxis charging 5x the normal fare.
               </p>
               <div className="flex flex-wrap gap-2">
-                <span className="bg-blue-600 px-3 py-1 rounded text-[10px] font-bold">CABIFY APP</span>
-                <span className="bg-blue-600 px-3 py-1 rounded text-[10px] font-bold">PRE-BOOKING</span>
+                <span className="bg-blue-600 px-3 py-1 rounded text-[10px] font-bold">DOWNLOAD NOW</span>
+                <span className="bg-blue-600 px-3 py-1 rounded text-[10px] font-bold">PRE-BOOK RIDES</span>
+                <span className="bg-blue-600 px-3 py-1 rounded text-[10px] font-bold">ENGLISH APP</span>
               </div>
             </div>
 
@@ -747,617 +926,170 @@ const App = () => {
                 <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
                   <Zap className="w-4 h-4 text-yellow-500" /> Artlab (Chacarita)
                 </h4>
-                <p className="text-xs text-slate-400">
-                  If Ultra is too 'mainstream', head to Artlab. It's a digital arts center with the best sound
-                  system in South America and deep techno vibes.
+                <p className="text-xs text-slate-400 mb-3">
+                  If Ultra feels too mainstream, head to Artlab. Digital arts center with the best sound system in South America
+                  and deep techno vibes. Locals only. Open Friday/Saturday nights.
                 </p>
+                <a
+                  href={`https://www.google.com/maps/dir/${encodeURIComponent(BASE_ADDRESS)}/Artlab+Buenos+Aires`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-400 text-xs hover:underline"
+                >
+                  Get directions →
+                </a>
               </div>
+
               <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
                 <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
-                  <Utensils className="w-4 h-4 text-green-500" /> Puerta Cerrada
+                  <Utensils className="w-4 h-4 text-green-500" /> Casa Saltshaker (Puerta Cerrada)
                 </h4>
-                <p className="text-xs text-slate-400">
-                  Hidden 'closed-door' restaurants. <strong>Casa Saltshaker</strong> is the go-to. You eat in a
-                  chef's living room with 10 strangers. Best way to meet people.
+                <p className="text-xs text-slate-400 mb-3">
+                  Hidden "closed-door" restaurant. You eat in a chef's living room with 10 strangers. Multi-course tasting menu.
+                  Best way to meet people. Book 1-2 weeks ahead via their website.
                 </p>
+                <a
+                  href="https://www.casasaltshaker.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-400 text-xs hover:underline"
+                >
+                  Book here →
+                </a>
               </div>
-              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-                <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
+
+              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800" onClick={() => setSelectedDest(DESTINATIONS['floreria-atlantico'])}>
+                <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2 cursor-pointer">
                   <MapPin className="w-4 h-4 text-red-500" /> Florería Atlántico
                 </h4>
+                <p className="text-xs text-slate-400 mb-3">
+                  Walk into a flower shop on Arroyo street. Open the refrigerator door. Walk down into one of the world's best
+                  cocktail bars. James Bond vibes. Make a reservation or arrive at 8 PM sharp.
+                </p>
+                <button className="text-blue-400 text-xs hover:underline">See full details →</button>
+              </div>
+
+              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
+                <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
+                  <Coffee className="w-4 h-4 text-amber-500" /> Café Secreto Morning Routine
+                </h4>
+                <p className="text-xs text-slate-400 mb-3">
+                  Skip Starbucks. Go to "LAB" or "Lattente" for proper cortados. Order "medialunas de manteca" (butter croissants)
+                  and a cortado ($3 total). Stand at the bar like a local. Perfect hangover cure.
+                </p>
+              </div>
+
+              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
+                <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
+                  <Wine className="w-4 h-4 text-purple-500" /> Wine Shop Hack
+                </h4>
+                <p className="text-xs text-slate-400 mb-3">
+                  "Winery" wine shop in Palermo lets you buy bottles at store price and drink them there for a small corkage fee ($5).
+                  Perfect for a pre-dinner wine tasting. Try Malbecs from Mendoza and Cafayate.
+                </p>
+              </div>
+
+              <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
+                <h4 className="font-black text-white mb-2 uppercase flex items-center gap-2">
+                  <Music className="w-4 h-4 text-pink-500" /> Post-Ultra 24hr Spots
+                </h4>
                 <p className="text-xs text-slate-400">
-                  Walk into a flower shop, open the refrigerator door, and walk down into a world-class basement
-                  bar.
+                  If you're still awake at 5 AM: <strong>El Cuartito</strong> (pizza), <strong>Calle Florida</strong> (24hr
+                  empanadas), or just grab street choripán. BA nightlife goes until the sun comes up—embrace it.
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {activeTab === 'food' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-br from-orange-600/10 to-red-600/10 border border-orange-500/30 p-6 rounded-3xl">
-              <h2 className="text-3xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <Utensils className="text-orange-500" /> The Food Bible
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Listen, BA is a MEAT city, but there's so much more. Here's the definitive guide broken down by vibe.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <Flame className="text-red-500" /> Steakhouses (Parrillas)
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['don-julio'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Don Julio</h4>
-                  <span className="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded">$$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">World #1. THE meal. Book 90 days out or cry.</p>
-                <p className="text-xs text-blue-400">👉 Bife de Chorizo + Catena Zapata Malbec</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['la-cabrera'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">La Cabrera</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">More casual, HUGE portions, tons of sides. Easier to book.</p>
-                <p className="text-xs text-blue-400">👉 One steak feeds 2 people (seriously)</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['elena'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Elena (Four Seasons)</h4>
-                  <span className="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded">$$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Backup plan. Flawless service, excellent steaks.</p>
-                <p className="text-xs text-blue-400">👉 Bife de lomo + provoleta appetizer</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <Coffee className="text-yellow-500" /> Breakfast & Cafes
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['ninina-bakery'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Ninina Bakery</h4>
-                  <span className="text-xs bg-green-600/20 text-green-400 px-2 py-1 rounded">$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Hangover cure HQ. French croissants, Instagram heaven.</p>
-                <p className="text-xs text-blue-400">👉 Almond croissant + flat white</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['lattente'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">L'Attenté</h4>
-                  <span className="text-xs bg-green-600/20 text-green-400 px-2 py-1 rounded">$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Best coffee in Palermo. Killer brunch menu.</p>
-                <p className="text-xs text-blue-400">👉 Salmon toast + house blend coffee</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['tea-connection'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Tea Connection</h4>
-                  <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Reliable chain. Good WiFi, solid medialunas.</p>
-                <p className="text-xs text-blue-400">👉 3 medialunas + coffee (they're small!)</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <Pizza className="text-red-500" /> Pizza & Casual
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['el-cuartito'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">El Cuartito</h4>
-                  <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Since 1934. Thick, cheesy Argentine pizza perfection.</p>
-                <p className="text-xs text-blue-400">👉 Muzzarella + fernet con coca</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['pony-line'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Pony Line</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Late night burgers at Four Seasons. Open til 2 AM!</p>
-                <p className="text-xs text-blue-400">👉 Truffle burger + bacon</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <Sparkles className="text-purple-500" /> Special Experiences
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['casa-saltshaker'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Casa SaltShaker</h4>
-                  <span className="text-xs bg-purple-600/20 text-purple-400 px-2 py-1 rounded">SECRET</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Secret dinner party in chef's apartment. BYOB. Make friends.</p>
-                <p className="text-xs text-blue-400">👉 Book 2 weeks ahead. Bring wine!</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['anchoita'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Anchoita</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">THE hot spot. Books out in minutes. Small plates, natural wine.</p>
-                <p className="text-xs text-blue-400">👉 Set alarm for 30 days out!</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'nightlife' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-br from-purple-600/10 to-pink-600/10 border border-purple-500/30 p-6 rounded-3xl">
-              <h2 className="text-3xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <Moon className="text-purple-500" /> Night Progression Guide
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed mb-4">
-                Here's how a proper night out works in BA: Dinner at 9 PM → Drinks at 11 PM → Club at 1 AM → After-party at 5 AM. Yes, really.
-              </p>
-              <div className="bg-purple-600/10 p-4 rounded-2xl border border-purple-600/20">
-                <p className="text-xs text-purple-300 font-bold uppercase tracking-wider mb-2">PRO TIP</p>
-                <p className="text-sm text-slate-300">Porteños don't even THINK about clubbing before 1 AM. If you show up at 11 PM, you'll be alone with the staff.</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <GlassWater className="text-blue-500" /> Bars & Cocktails
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['floreria-atlantico'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Florería Atlántico</h4>
-                  <span className="text-xs bg-gold-600/20 text-yellow-400 px-2 py-1 rounded">WORLD'S 50 BEST</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">THE speakeasy. Enter through flower shop cooler. Reserve ahead.</p>
-                <p className="text-xs text-blue-400">👉 Let bartender surprise you</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['tres-monos'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Tres Monos</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Custom cocktails based on your mood. Young, cool crowd.</p>
-                <p className="text-xs text-blue-400">👉 Arrive before 10 PM</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['uptown'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Uptown</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Subway-themed speakeasy. Theatrical cocktails (smoke, fire!).</p>
-                <p className="text-xs text-blue-400">👉 Check Instagram for weekly password</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['ocho-ceballos'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">878 Bar</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">Molecular mixology. Science experiments you can drink.</p>
-                <p className="text-xs text-blue-400">👉 Ask for most theatrical drink</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['milion'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Milion</h4>
-                  <span className="text-xs bg-orange-600/20 text-orange-400 px-2 py-1 rounded">$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">1920s mansion with garden. Feels like Gatsby's house.</p>
-                <p className="text-xs text-blue-400">👉 Go at sunset for best vibes</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-white uppercase flex items-center gap-2">
-                <Music className="text-pink-500" /> Clubs & Live Music
-              </h3>
-              <div onClick={() => setSelectedDest(DESTINATIONS['la-bomba'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">La Bomba de Tiempo</h4>
-                  <span className="text-xs bg-blue-600/20 text-blue-400 px-2 py-1 rounded">MONDAYS</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">20 drummers, 2000 people, pure chaos. Locals' favorite.</p>
-                <p className="text-xs text-blue-400">👉 Buy tickets 1 week ahead!</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-              <div onClick={() => setSelectedDest(DESTINATIONS['tequila-nightclub'])} className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all group">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-black text-white text-lg">Tequila</h4>
-                  <span className="text-xs bg-red-600/20 text-red-400 px-2 py-1 rounded">$$$$</span>
-                </div>
-                <p className="text-xs text-slate-400 mb-2">THE exclusive club. Models everywhere. Dress to impress.</p>
-                <p className="text-xs text-blue-400">👉 Arrive before midnight, dress code enforced</p>
-                <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all mt-2" />
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" /> Hidden Gems
-              </h3>
-              <div className="space-y-3 text-sm text-slate-300">
-                <p><strong className="text-white">Artlab (Chacarita)</strong> - Digital arts center with best sound system in SA. Deep techno vibes if Ultra feels too mainstream.</p>
-                <p><strong className="text-white">INcanto Club</strong> - Underground electronic spot. No tourists, just locals and serious music heads.</p>
-                <p><strong className="text-white">Niceto Club</strong> - Thursday's "Club 69" party is legendary. Been running for 20+ years.</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'money' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-br from-green-600/10 to-emerald-600/10 border border-green-500/30 p-6 rounded-3xl">
-              <h2 className="text-3xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <DollarSign className="text-green-500" /> Money & Currency Pro Tips
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Argentina's economy is... interesting. Here's how to not get ripped off.
-              </p>
-            </div>
-
-            <div className="bg-blue-600/10 p-6 rounded-3xl border border-blue-500/30">
-              <h3 className="text-xl font-black text-white mb-4 uppercase">The Blue Dollar Rate</h3>
-              <p className="text-sm text-slate-300 mb-4">
-                There are TWO exchange rates in Argentina: Official (bad) and Blue Dollar (good). The blue dollar is the street rate, and it's WAY better (like 30-50% better).
-              </p>
-              <div className="bg-blue-600/20 p-4 rounded-2xl mb-4">
-                <p className="text-xs text-blue-300 font-bold uppercase mb-2">HOW IT WORKS</p>
-                <p className="text-sm text-slate-200 mb-3">Change money at "casas de cambio" (exchange houses) or "arbolitos" (street money changers on Florida Street). Western Union also gives good rates.</p>
-                <p className="text-xs text-slate-400">💡 Check the current rate on "dolarblue.net" before exchanging.</p>
-              </div>
-              <div className="bg-red-600/20 p-4 rounded-2xl border border-red-600/30">
-                <p className="text-xs text-red-300 font-bold uppercase mb-2">⚠️ AVOID</p>
-                <p className="text-sm text-slate-200">ATMs give you the official rate (scam). Only use ATMs if you're desperate.</p>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-green-500" /> What Stuff Costs (Feb 2026)
-              </h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Coffee</span>
-                  <span className="text-white font-bold">~$2-3 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Beer (bar)</span>
-                  <span className="text-white font-bold">~$3-5 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Pizza slice</span>
-                  <span className="text-white font-bold">~$2-3 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Empanadas (dozen)</span>
-                  <span className="text-white font-bold">~$8-12 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Casual dinner</span>
-                  <span className="text-white font-bold">~$15-25 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Nice steakhouse</span>
-                  <span className="text-white font-bold">~$60-100 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Cocktail (nice bar)</span>
-                  <span className="text-white font-bold">~$10-15 USD</span>
-                </div>
-                <div className="flex justify-between items-center pb-3 border-b border-slate-800">
-                  <span className="text-slate-300">Cabify ride (Palermo)</span>
-                  <span className="text-white font-bold">~$3-8 USD</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Bottle of wine (shop)</span>
-                  <span className="text-white font-bold">~$5-15 USD</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase">Credit Cards & Tipping</h3>
-              <div className="space-y-4 text-sm text-slate-300">
-                <div>
-                  <p className="font-bold text-white mb-2">💳 Credit Cards</p>
-                  <p>Some tourist places give you the blue rate on cards now (as of 2025-2026). Always ask "¿Dan el dólar blue?" before paying. Cash is still king though.</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white mb-2">🙏 Tipping</p>
-                  <p>Standard is 10% in restaurants. Round up for taxis/Cabify. Bartenders appreciate 10-20 pesos per drink.</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white mb-2">💵 How Much Cash to Bring</p>
-                  <p>Bring USD cash (crisp, new bills - they won't accept worn ones). ~$100-150 USD per day should cover everything comfortably.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'emergency' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-br from-red-600/10 to-orange-600/10 border border-red-500/30 p-6 rounded-3xl">
-              <h2 className="text-3xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <AlertCircle className="text-red-500" /> Emergency & Important Info
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Hopefully you won't need this, but here's everything just in case.
-              </p>
-            </div>
-
-            <div className="bg-red-600/10 p-6 rounded-3xl border border-red-500/30">
-              <h3 className="text-xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <Phone className="text-red-400" /> Emergency Numbers
-              </h3>
-              <div className="space-y-3">
-                <div className="bg-slate-900 p-4 rounded-2xl">
-                  <p className="text-xs text-slate-400 uppercase mb-1">Police</p>
-                  <p className="text-2xl font-black text-white">911</p>
-                </div>
-                <div className="bg-slate-900 p-4 rounded-2xl">
-                  <p className="text-xs text-slate-400 uppercase mb-1">Ambulance</p>
-                  <p className="text-2xl font-black text-white">107</p>
-                </div>
-                <div className="bg-slate-900 p-4 rounded-2xl">
-                  <p className="text-xs text-slate-400 uppercase mb-1">Tourist Police (English)</p>
-                  <p className="text-2xl font-black text-white">+54 11 5050-9260</p>
-                </div>
-                <div className="bg-slate-900 p-4 rounded-2xl">
-                  <p className="text-xs text-slate-400 uppercase mb-1">US Embassy</p>
-                  <p className="text-xl font-black text-white">+54 11 5777-4533</p>
-                  <p className="text-xs text-slate-400 mt-1">Colombia 4300, Palermo</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase flex items-center gap-2">
-                <Heart className="w-5 h-5 text-pink-500" /> Hospitals & Pharmacies
-              </h3>
-              <div className="space-y-4 text-sm">
-                <div>
-                  <p className="font-bold text-white mb-1">Hospital Alemán</p>
-                  <p className="text-slate-400">Best private hospital. English spoken.</p>
-                  <p className="text-blue-400">Av. Pueyrredón 1640 - +54 11 4827-7000</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white mb-1">Farmacity (Pharmacy Chain)</p>
-                  <p className="text-slate-400">24/7 locations everywhere. Like Walgreens.</p>
-                  <p className="text-blue-400">Use their app to find closest one</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-green-500" /> Safety Tips
-              </h3>
-              <div className="space-y-3 text-sm text-slate-300">
-                <p>✅ Palermo (your base) is super safe. Relax.</p>
-                <p>✅ Keep phone in front pocket, don't flash jewelry</p>
-                <p>✅ Use Cabify not street taxis (way safer)</p>
-                <p>✅ Don't exchange money on random streets - use established cambios</p>
-                <p>✅ After midnight, stick to main streets</p>
-                <p>⚠️ Avoid: La Boca at night, Constitución station area</p>
-                <p>💡 Pickpockets exist but violent crime against tourists is rare</p>
-              </div>
-            </div>
-
-            <div className="bg-blue-600/10 p-6 rounded-3xl border border-blue-500/30">
-              <h3 className="font-black text-white mb-4 uppercase">Lost/Stolen Stuff</h3>
-              <div className="space-y-3 text-sm text-slate-300">
-                <div>
-                  <p className="font-bold text-white mb-1">Lost Phone</p>
-                  <p>Report to police for insurance. Most carriers have international plans. WiFi is everywhere.</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white mb-1">Lost Passport</p>
-                  <p>Call US Embassy immediately (+54 11 5777-4533). They'll issue emergency travel docs.</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white mb-1">Lost Credit Card</p>
-                  <p>Call your bank ASAP (use Google Voice over WiFi if needed). Most have 24/7 international lines.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'spanish' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-br from-yellow-600/10 to-orange-600/10 border border-yellow-500/30 p-6 rounded-3xl">
-              <h2 className="text-3xl font-black text-white mb-4 uppercase flex items-center gap-2">
-                <MessageCircle className="text-yellow-500" /> Spanish 101
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed mb-3">
-                Most people in BA speak some English, but knowing a few phrases = instant respect points.
-              </p>
-              <p className="text-xs text-slate-400 italic">
-                BTW: Argentine Spanish is DIFFERENT. They say "vos" instead of "tú" and pronounce "ll" and "y" like "sh". Don't worry about it, just vibe.
-              </p>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase">Essential Phrases</h3>
-              <div className="space-y-3">
-                <div className="bg-slate-800/50 p-4 rounded-2xl">
-                  <p className="text-lg font-bold text-white mb-1">¿Cuánto sale?</p>
-                  <p className="text-sm text-slate-400 italic">KWAN-toh SAH-leh</p>
-                  <p className="text-xs text-blue-400 mt-2">= How much is it?</p>
-                </div>
-                <div className="bg-slate-800/50 p-4 rounded-2xl">
-                  <p className="text-lg font-bold text-white mb-1">¿Dan el dólar blue?</p>
-                  <p className="text-sm text-slate-400 italic">dahn el DOH-lar BLOO</p>
-                  <p className="text-xs text-blue-400 mt-2">= Do you give the blue dollar rate? (CRITICAL)</p>
-                </div>
-                <div className="bg-slate-800/50 p-4 rounded-2xl">
-                  <p className="text-lg font-bold text-white mb-1">Una cerveza, por favor</p>
-                  <p className="text-sm text-slate-400 italic">OO-nah ser-VEH-sah por fah-VOR</p>
-                  <p className="text-xs text-blue-400 mt-2">= One beer, please</p>
-                </div>
-                <div className="bg-slate-800/50 p-4 rounded-2xl">
-                  <p className="text-lg font-bold text-white mb-1">La cuenta, por favor</p>
-                  <p className="text-sm text-slate-400 italic">lah KWEN-tah por fah-VOR</p>
-                  <p className="text-xs text-blue-400 mt-2">= The check, please</p>
-                </div>
-                <div className="bg-slate-800/50 p-4 rounded-2xl">
-                  <p className="text-lg font-bold text-white mb-1">¿Dónde está el baño?</p>
-                  <p className="text-sm text-slate-400 italic">DON-deh es-TAH el BAH-nyo</p>
-                  <p className="text-xs text-blue-400 mt-2">= Where's the bathroom?</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase">Ordering Food</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between items-start pb-3 border-b border-slate-800">
-                  <div>
-                    <p className="text-white font-bold">Bife de chorizo</p>
-                    <p className="text-slate-400 text-xs">BEE-feh deh cho-REE-so</p>
-                  </div>
-                  <span className="text-blue-400 text-xs">= Strip steak</span>
-                </div>
-                <div className="flex justify-between items-start pb-3 border-b border-slate-800">
-                  <div>
-                    <p className="text-white font-bold">Ojo de bife</p>
-                    <p className="text-slate-400 text-xs">OH-ho deh BEE-feh</p>
-                  </div>
-                  <span className="text-blue-400 text-xs">= Ribeye</span>
-                </div>
-                <div className="flex justify-between items-start pb-3 border-b border-slate-800">
-                  <div>
-                    <p className="text-white font-bold">Jugoso</p>
-                    <p className="text-slate-400 text-xs">hoo-GO-so</p>
-                  </div>
-                  <span className="text-blue-400 text-xs">= Medium rare</span>
-                </div>
-                <div className="flex justify-between items-start pb-3 border-b border-slate-800">
-                  <div>
-                    <p className="text-white font-bold">Chimichurri</p>
-                    <p className="text-slate-400 text-xs">chee-mee-CHOO-ree</p>
-                  </div>
-                  <span className="text-blue-400 text-xs">= Herb sauce (mandatory)</span>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-white font-bold">Empanadas de carne</p>
-                    <p className="text-slate-400 text-xs">em-pah-NAH-dahs deh CAR-neh</p>
-                  </div>
-                  <span className="text-blue-400 text-xs">= Beef empanadas</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-900 p-6 rounded-3xl border border-slate-800">
-              <h3 className="font-black text-white mb-4 uppercase">Slang You'll Hear</h3>
-              <div className="space-y-3 text-sm">
-                <div>
-                  <p className="font-bold text-white">Che!</p>
-                  <p className="text-slate-400">= Hey! / Dude! (Very Argentine. Think "Che Guevara")</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white">Boludo/a</p>
-                  <p className="text-slate-400">= Dude/idiot (term of endearment between friends)</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white">Copado/a</p>
-                  <p className="text-slate-400">= Cool, awesome</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white">Quilombo</p>
-                  <p className="text-slate-400">= Mess, chaos (you'll say this after Ultra)</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white">Fernet con coca</p>
-                  <p className="text-slate-400">= THE local drink. Tastes like medicine but you'll love it by day 3</p>
-                </div>
-                <div>
-                  <p className="font-bold text-white">Dale</p>
-                  <p className="text-slate-400">= OK / Let's go / Alright (used constantly)</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-600/10 p-6 rounded-3xl border border-blue-500/30">
-              <p className="text-sm text-slate-300 mb-3">
-                <span className="font-bold text-white">Pro tip:</span> If someone says something you don't understand, just smile and say "dale" or "sí, sí". You'll be fine lol.
-              </p>
-              <p className="text-xs text-slate-400 italic">
-                Download Google Translate and enable offline Spanish. The camera translation feature is clutch for menus.
-              </p>
-            </div>
-          </div>
-        )}
-
+        {/* PACKING TAB */}
         {activeTab === 'packing' && (
           <div className="bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-800 animate-in fade-in duration-500">
             <h3 className="text-2xl font-black text-white mb-6 uppercase flex items-center gap-2">
               <ShieldCheck className="text-green-500" /> The Survival Kit
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-4 border-b border-slate-800 pb-4">
-                <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-500" />
-                <div>
-                  <p className="font-bold text-sm">Physical Passport</p>
-                  <p className="text-xs text-slate-500">Needed for Colonia ferry and some clubs.</p>
+              {[
+                {
+                  title: 'Physical Passport',
+                  desc: 'MANDATORY for Colonia ferry and some club entries. Check expiration date (needs 6+ months validity).'
+                },
+                {
+                  title: 'Portable Power Bank (20,000+ mAh)',
+                  desc: 'Ultra kills phone batteries in 4 hours. Bad Bunny concert = no signal = constant searching = dead phone. Bring a beefy one.'
+                },
+                {
+                  title: 'Earplugs (Loop or similar)',
+                  desc: 'Stadium and festival acoustics are brutal. Protect your hearing. You can still hear music, just not the ringing.'
+                },
+                {
+                  title: '$500+ USD Cash (Clean Bills)',
+                  desc: 'For blue dollar exchange. $100 bills get best rate. Must be clean (no tears, marks, or old bills).'
+                },
+                {
+                  title: 'Backup "Fake" Wallet',
+                  desc: 'Small wallet with $20-30 USD and an old credit card. In case of pickpockets (rare but possible).'
+                },
+                {
+                  title: 'Comfortable Walking Shoes',
+                  desc: "You'll walk 10+ miles some days. Bring broken-in sneakers. Save dress shoes for nice dinners only."
+                },
+                {
+                  title: 'Light Jacket',
+                  desc: "BA in February = summer but evenings can be cool (60-65°F). Light jacket or hoodie for late nights."
+                },
+                {
+                  title: 'Sunscreen + Sunglasses',
+                  desc: "Southern hemisphere sun hits different. SPF 50 minimum. You'll be outside a LOT."
+                },
+                {
+                  title: 'Portable Phone Charger Cable',
+                  desc: 'Bring USB-C and Lightning cables. Everyone will forget theirs and borrow yours.'
+                },
+                {
+                  title: 'Daypack / Small Backpack',
+                  desc: 'For festivals, polo day, Colonia trip. Something light that can hold water, charger, sunscreen.'
+                },
+                {
+                  title: 'Advil / Ibuprofen',
+                  desc: 'For obvious reasons. You can buy it there but just bring a bottle.'
+                },
+                {
+                  title: 'Nice Outfit for Clubs',
+                  desc: 'Tequila and Faena have dress codes. Button-down shirt, nice jeans, leather shoes. No sneakers/flip-flops.'
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-start gap-4 border-b border-slate-800 pb-4">
+                  <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-500 cursor-pointer" />
+                  <div>
+                    <p className="font-bold text-sm text-white">{item.title}</p>
+                    <p className="text-xs text-slate-500 leading-relaxed mt-1">{item.desc}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-4 border-b border-slate-800 pb-4">
-                <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-500" />
-                <div>
-                  <p className="font-bold text-sm">Portable Power Bank</p>
-                  <p className="text-xs text-slate-500">Ultra kills batteries in 4 hours searching for signal.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 border-b border-slate-800 pb-4">
-                <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-500" />
-                <div>
-                  <p className="font-bold text-sm">Earplugs (Loop/Pro)</p>
-                  <p className="text-xs text-slate-500">Stadium acoustics are brutal. Protect the ears.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4 border-b border-slate-800 pb-4">
-                <input type="checkbox" className="mt-1 w-5 h-5 accent-blue-500" />
-                <div>
-                  <p className="font-bold text-sm">The 'Fake' Wallet</p>
-                  <p className="text-xs text-slate-500">
-                    Carry a small amount of cash in a separate pocket for quick buys.
-                  </p>
-                </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="mt-8 bg-blue-600/10 border border-blue-500/30 p-6 rounded-3xl">
+              <h3 className="text-sm font-black text-white mb-3 uppercase">Don't Bring / Not Needed</h3>
+              <ul className="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <li>• <strong>Plug adapter:</strong> Argentina uses Type I plugs (same as Australia). Buy one at EZE airport if needed.</li>
+                <li>• <strong>Lots of electronics:</strong> Laptop stays home unless you're working remote. This is vacation mode.</li>
+                <li>• <strong>Fancy camera:</strong> Phone cameras are great and less conspicuous. Leave the DSLR at home.</li>
+                <li>• <strong>Winter clothes:</strong> It's summer in BA (75-85°F). No need for heavy jackets.</li>
+                <li>• <strong>Tons of toiletries:</strong> Buy shampoo/deodorant there. It's cheap and saves luggage space.</li>
+              </ul>
             </div>
           </div>
         )}
       </main>
 
+      {/* Detail Modal */}
       {selectedDest && (
         <div className="fixed inset-0 z-50 bg-black animate-in fade-in duration-300 overflow-y-auto">
           <div className="relative min-h-screen pb-20">
             <button
               onClick={() => setSelectedDest(null)}
-              className="fixed top-6 right-6 z-50 bg-black/50 hover:bg-black p-3 rounded-full backdrop-blur-md border border-white/10"
+              className="fixed top-6 right-6 z-50 bg-black/50 hover:bg-black p-3 rounded-full backdrop-blur-md border border-white/10 transition-all"
               aria-label="Close destination details"
             >
               <X className="w-6 h-6 text-white" />
@@ -1373,9 +1105,7 @@ const App = () => {
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mt-2 mb-6 leading-tight">
                   {selectedDest.title}
                 </h2>
-                <p className="text-slate-400 leading-relaxed text-base sm:text-lg mb-8">
-                  {selectedDest.description}
-                </p>
+                <p className="text-slate-400 leading-relaxed text-base sm:text-lg mb-8">{selectedDest.description}</p>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
                   <div className="bg-white/5 p-4 rounded-3xl flex flex-col justify-center items-center border border-white/5">
@@ -1405,13 +1135,11 @@ const App = () => {
                     </div>
                     <p className="text-sm text-slate-200 italic">"{selectedDest.vibe}"</p>
                   </div>
-                )}
-
-                {selectedDest.mustTry && (
-                  <div className="bg-orange-600/10 p-5 rounded-3xl border border-orange-600/20 mb-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Star className="w-4 h-4 text-orange-400" />
-                      <h4 className="text-orange-300 font-black uppercase text-xs tracking-widest">Must Try</h4>
+                  <div className="bg-white/5 p-5 rounded-3xl flex items-center gap-4 border border-white/5">
+                    <Clock className="w-6 h-6 text-blue-500" />
+                    <div>
+                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Drive Time</p>
+                      <p className="text-white font-bold">{selectedDest.driveTime}</p>
                     </div>
                     <p className="text-sm text-slate-200">{selectedDest.mustTry}</p>
                   </div>
@@ -1420,7 +1148,7 @@ const App = () => {
                 <div className="space-y-6 mb-10">
                   <div className="bg-blue-600/5 p-6 rounded-3xl border border-blue-600/20">
                     <h4 className="flex items-center gap-2 text-blue-400 font-black mb-3 uppercase text-xs tracking-widest">
-                      <Zap className="w-4 h-4" /> Why this is a win
+                      <Zap className="w-4 h-4" /> Why This Is a Win
                     </h4>
                     <p className="text-sm text-slate-300 leading-relaxed">{selectedDest.why}</p>
                   </div>
@@ -1432,21 +1160,35 @@ const App = () => {
                   </div>
                 </div>
 
-                <a
-                  href={selectedDest.directions}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-4 w-full py-4 sm:py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-3xl font-black transition-all shadow-xl shadow-blue-600/20 text-sm sm:text-base"
-                >
-                  <MapPin className="w-5 h-5" /> OPEN NAVIGATION FROM BASE
-                </a>
+                {selectedDest.directions.startsWith('http') && (
+                  <a
+                    href={selectedDest.directions}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center gap-4 w-full py-4 sm:py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-3xl font-black transition-all shadow-xl shadow-blue-600/20 text-sm sm:text-base mb-4"
+                  >
+                    <MapPin className="w-5 h-5" /> OPEN NAVIGATION FROM BASE
+                  </a>
+                )}
+
+                {selectedDest.website && (
+                  <a
+                    href={selectedDest.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center gap-4 w-full py-4 sm:py-5 bg-slate-800 hover:bg-slate-700 text-white rounded-3xl font-black transition-all text-sm sm:text-base"
+                  >
+                    <Star className="w-5 h-5" /> VISIT WEBSITE
+                  </a>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      <footer className="fixed bottom-0 w-full bg-black/80 backdrop-blur-md border-t border-slate-800 p-4 text-center">
+      {/* Footer */}
+      <footer className="fixed bottom-0 w-full bg-black/80 backdrop-blur-md border-t border-slate-800 p-4 text-center z-20">
         <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">
           Wolfpack BA 2026 // No Regrets
         </p>
