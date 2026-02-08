@@ -24,7 +24,6 @@ import {
   Wine,
   ShoppingBag,
   Camera,
-  Palmtree,
   Building,
   Sparkles,
   TrendingUp,
@@ -324,16 +323,16 @@ const EMERGENCY_INFO = [
 ];
 
 const BOOKINGS_CHECKLIST = [
-  { item: 'Don Julio Dinner Reservation', date: 'Feb 18, 8:30 PM', priority: 'critical', bookBy: '90 days before' },
-  { item: 'Ultra Buenos Aires Tickets', date: 'Feb 14-15', priority: 'critical', bookBy: 'ASAP - selling out' },
-  { item: 'Bad Bunny Concert Tickets', date: 'Feb 15, 8 PM', priority: 'critical', bookBy: 'Already on sale' },
-  { item: 'Polo Day Estancia', date: 'Feb 17', priority: 'high', bookBy: '2-3 weeks before' },
-  { item: 'La Bomba de Tiempo Tickets', date: 'Feb 16', priority: 'high', bookBy: '1 week before' },
-  { item: 'Colonia Ferry (Buquebus)', date: 'Feb 19', priority: 'medium', bookBy: '1 week before' },
-  { item: 'Anchoita Dinner', date: 'Feb 20', priority: 'medium', bookBy: '2-3 weeks before' },
-  { item: 'Florería Atlántico Reservation', date: 'TBD', priority: 'low', bookBy: 'Few days before' },
-  { item: 'Faena Pool Day Pass', date: 'Feb 20', priority: 'low', bookBy: 'Few days before' },
-  { item: 'Download Cabify App', date: 'Before arrival', priority: 'critical', bookBy: 'Now' }
+  { id: 'don-julio', item: 'Don Julio Reservation (Lunch)', date: 'Feb 16, 11:30 AM', priority: 'critical', bookBy: '90 days before' },
+  { id: 'ultra', item: 'Ultra Buenos Aires Tickets', date: 'Feb 14-15', priority: 'critical', bookBy: 'ASAP - selling out' },
+  { id: 'bad-bunny', item: 'Bad Bunny @ River Plate', date: 'Feb 15, 8:00 PM', priority: 'critical', bookBy: 'Already on sale' },
+  { id: 'polo', item: 'Polo Day Estancia', date: 'Feb 17, 9:00 AM', priority: 'high', bookBy: '2-3 weeks before' },
+  { id: 'la-bomba', item: 'La Bomba de Tiempo Tickets', date: 'Feb 17, 12:30 AM', priority: 'high', bookBy: '1 week before' },
+  { id: 'colonia', item: 'Buquebus Ferry (Colonia)', date: 'Feb 18', priority: 'high', bookBy: '1 week before' },
+  { id: 'aramburu', item: 'Aramburu Dinner (Confirmed)', date: 'Feb 20, 9:00 PM', priority: 'high', bookBy: 'ASAP (set menu)' },
+  { id: 'movistar', item: 'Movistar Arena Show', date: 'Feb 19, 8:00 PM', priority: 'medium', bookBy: 'ASAP' },
+  { id: 'el-preferido', item: 'El Preferido de Palermo', date: 'Feb 21, 9:00 PM', priority: 'medium', bookBy: '1-2 weeks before' },
+  { id: 'cabify', item: 'Download Cabify App', date: 'Before arrival', priority: 'critical', bookBy: 'Now' }
 ];
 
 const CAST_MEMBERS = [
@@ -344,7 +343,6 @@ const CAST_MEMBERS = [
     bullets: [
       'Last visited BA in 2012, still claims he could run the city',
       '28-hour flight strategist with layovers he calls “me time”',
-      'Convinced Alana this trip is essential for his mental health',
       'May never return (his words, not ours)'
     ]
   },
@@ -355,7 +353,6 @@ const CAST_MEMBERS = [
     bullets: [
       'Columbus, OH’s finest export to Argentina',
       'Will be scouting the “finest bars of the city” for research',
-      'Motto: “From señor to mamacita!” 🔥',
       'Currently practicing his tango for the wedding'
     ]
   },
@@ -365,7 +362,6 @@ const CAST_MEMBERS = [
     description: 'The responsible one who loves a clean bed and a reasonable bedtime.',
     bullets: [
       'Lives in Lisbon, sleeps in Lisbon time',
-      'Professional bed-maker and designated early-bedder',
       'Fab owes him about six months for the 11-day single dad stint',
       'Gets bedroom #1 because there’s no hot tub'
     ]
@@ -409,26 +405,1146 @@ const PROBABLY_NOT = [
   'Coming home with money left over'
 ];
 
+const LOGISTICS = [
+  {
+    title: 'Base Camp',
+    description: 'República Árabe Siria 3026, Palermo.',
+    href: 'https://www.google.com/maps/search/Rep%C3%BAblica+%C3%81rabe+Siria+3026,+Palermo',
+    linkLabel: 'Open in Maps',
+    icon: <Home className="w-5 h-5 text-blue-400" />
+  },
+  {
+    title: 'The Money Move',
+    description: 'Use Visa/Mastercard for everything. You automatically get the tourist rate (MEP), which is nearly double the official rate.',
+    href: 'https://www.visa.com.ar/en_AR/support/consumer/travel-support/exchange-rate-calculator.html',
+    linkLabel: 'Visa Exchange Rate',
+    icon: <Banknote className="w-5 h-5 text-green-400" />
+  },
+  {
+    title: 'Getting Around',
+    description: 'Download Cabify or use Uber. Safer than street taxis and cheaper than NYC.',
+    href: 'https://cabify.com/ar',
+    linkLabel: 'Download Cabify',
+    icon: <Navigation className="w-5 h-5 text-purple-400" />
+  }
+];
+
+const ITINERARY_DAYS = [
+  {
+    day: 'FRI',
+    date: 'FEB 13',
+    title: 'The Solo Landing',
+    description: 'Nate lands first. Use this quiet night to scope the neighborhood and stock supplies.',
+    summary: [
+      {
+        time: '9:30 PM',
+        label: 'Arrival at EZE Airport',
+        location: 'Cabify to base (~$25 USD)',
+        icon: <Plane />,
+        href: 'https://cabify.com/ar'
+      },
+      {
+        time: '10:30 PM',
+        label: 'Check-in & Supply Run',
+        location: 'Jumbo (Palermo)',
+        icon: <ShoppingBag />
+      },
+      {
+        time: '11:30 PM',
+        label: 'Midnight Warm-up @ Club Lucero',
+        location: 'Palermo',
+        icon: <Music />,
+        href: 'https://www.instagram.com/clublucero/'
+      }
+    ],
+    schedule: [
+      {
+        time: '9:30 PM',
+        label: 'Arrival at EZE Airport',
+        location: 'Ezeiza International Airport',
+        note: 'Grab a Cabify to base (~$25 USD).',
+        sellingPoint: 'Fastest way in without haggling.',
+        icon: <Plane />,
+        href: 'https://cabify.com/ar'
+      },
+      {
+        time: '10:30 PM',
+        label: 'Check-in & Supply Run',
+        location: 'Jumbo (Palermo)',
+        note: 'Water, Gatorade, Malbec, and snacks.',
+        sellingPoint: 'Set up the whole weekend in one trip.',
+        icon: <ShoppingBag />
+      },
+      {
+        time: '11:30 PM',
+        label: 'Midnight Warm-up @ Club Lucero',
+        location: 'Palermo',
+        note: 'Event listings via Eventbrite.',
+        sellingPoint: 'Hidden gem with the “volate la peluca” Friday series.',
+        icon: <Music />,
+        href: 'https://www.instagram.com/clublucero/',
+        links: [
+          { label: 'Event Listings', href: 'https://www.eventbrite.ca/d/argentina/events/' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Under Club',
+        time: 'Late night',
+        location: 'Niceto Vega 5699',
+        href: 'https://venti.com.ar/evento/ana-hagen-manu-oubi-a-quest',
+        sellingPoint: 'The city’s legendary dark techno basement.'
+      },
+      {
+        title: 'Virasoro Bar',
+        time: '8:30 PM',
+        location: 'Guatemala 4328',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'High-end jazz in an intimate Art Deco building.'
+      },
+      {
+        title: 'Lomond (San Telmo) – Chef Gino’s Italian Pop-Up',
+        time: '7:00 PM',
+        location: 'Carlos Calvo 463',
+        href: 'https://www.eventbrite.com/e/cena-italiana-pop-up-en-san-telmo-tickets-1981867986498',
+        sellingPoint: 'Three-course modern Italian with wine pairings.'
+      },
+      {
+        title: 'Teatro Ciego',
+        time: '11:00 PM',
+        location: 'Pasaje Zelaya 3122',
+        href: 'https://teatrociego.org/carteleratc/',
+        sellingPoint: 'A play performed in 100% total darkness.'
+      },
+      {
+        title: 'Solo Travelers Hangout (Meetup Palermo)',
+        time: 'Various',
+        location: 'Palermo',
+        href: 'https://www.eventbrite.com/d/argentina--buenos-aires/events/',
+        sellingPoint: 'Low-key networking before the storm.'
+      }
+    ]
+  },
+  {
+    day: 'SAT',
+    date: 'FEB 14',
+    title: 'The Boys Unite + Ultra Day 1',
+    badge: 'Festival',
+    description: 'The crew unites. Drop the bags, hydrate, and head south for the first massive festival leg.',
+    summary: [
+      {
+        time: '7:20 AM',
+        label: 'Eagle & Nasir Land (EZE)',
+        location: 'Direct Uber to Palermo',
+        icon: <Plane />
+      },
+      {
+        time: '12:00 PM',
+        label: 'Fuel & Strategy @ Cafe Tortoni',
+        location: 'Classic BA cafe',
+        icon: <Coffee />,
+        href: 'https://www.cafetortoni.com.ar/'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Ultra Buenos Aires',
+        location: 'Parque de la Ciudad',
+        icon: <Music />,
+        destId: 'ultra'
+      }
+    ],
+    schedule: [
+      {
+        time: '7:20 AM',
+        label: 'Eagle & Nasir Land (EZE)',
+        location: 'Ezeiza International Airport',
+        note: 'Direct Uber to Palermo.',
+        sellingPoint: 'Get settled early and save energy for the night.',
+        icon: <Plane />
+      },
+      {
+        time: '12:00 PM',
+        label: 'Fuel & Strategy @ Cafe Tortoni',
+        location: 'Avenida de Mayo 825',
+        note: 'Classic BA vibes at the city’s oldest cafe.',
+        sellingPoint: 'A historic pit stop with serious atmosphere.',
+        icon: <Coffee />,
+        href: 'https://www.cafetortoni.com.ar/'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Ultra Buenos Aires',
+        location: 'Parque de la Ciudad',
+        note: 'Headliners and stages listed online.',
+        sellingPoint: 'The massive Resistance Stage in a brutalist industrial park.',
+        icon: <Music />,
+        destId: 'ultra',
+        links: [
+          { label: 'Lineup', href: 'https://ultrabuenosaires.com/lineup/' },
+          { label: 'Festival Site', href: 'https://ultrabuenosaires.com/' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Chinese New Year (Barrio Chino)',
+        time: 'Afternoon',
+        location: 'Barrio Chino',
+        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
+        sellingPoint: 'Street food, lion dances, and huge crowds.'
+      },
+      {
+        title: 'Palacio Libertad (CCK) – Outdoor Music',
+        time: '6:00 PM - 10:00 PM',
+        location: 'Explanada',
+        href: 'https://palaciolibertad.gob.ar/agenda/',
+        sellingPoint: 'Free outdoor music at a world-class cultural center.'
+      },
+      {
+        title: 'Fiesta 505',
+        time: 'Midnight',
+        location: 'Niceto Bar',
+        href: 'https://nicetoclub.com/agenda/',
+        sellingPoint: 'When you need a break from techno.'
+      },
+      {
+        title: 'Patricio Carpossi Trio',
+        time: '8:30 PM & 11:00 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Sophisticated escape from the festival noise.'
+      },
+      {
+        title: 'Flechazo Party',
+        time: 'Midnight',
+        location: 'Ciudad Cultural Konex',
+        href: 'https://www.cckonex.org/',
+        sellingPoint: 'Iconic open-air patio with the city’s coolest crowd.'
+      }
+    ]
+  },
+  {
+    day: 'SUN',
+    date: 'FEB 15',
+    title: 'The Iron Man Challenge',
+    badge: 'Epic Day',
+    description: 'The most physical day of the trip. Pace yourself in the morning; save energy for the stadium.',
+    summary: [
+      {
+        time: '11:00 AM',
+        label: 'San Telmo Market Walk',
+        location: 'Defensa Street',
+        icon: <MapPin />,
+        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/feria-de-san-telmo'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Ultra Day 2 (Early Exit)',
+        location: 'Parque de la Ciudad',
+        icon: <Music />,
+        destId: 'ultra'
+      },
+      {
+        time: '8:00 PM',
+        label: 'Bad Bunny @ River Plate',
+        location: 'Estadio River Plate',
+        icon: <Zap />,
+        destId: 'bad-bunny'
+      }
+    ],
+    schedule: [
+      {
+        time: '11:00 AM',
+        label: 'Feria de San Telmo',
+        location: 'Defensa Street',
+        note: 'Walk the historic market district.',
+        sellingPoint: 'Street tango, rare antiques, peak local flavor.',
+        icon: <MapPin />,
+        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/feria-de-san-telmo'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Ultra Day 2 (Early Exit)',
+        location: 'Parque de la Ciudad',
+        note: 'Catch afternoon energy. Leave by 7 PM to beat traffic.',
+        sellingPoint: 'All the hype with a clean exit plan.',
+        icon: <Music />,
+        destId: 'ultra'
+      },
+      {
+        time: '8:00 PM',
+        label: 'Bad Bunny @ River Plate',
+        location: 'Estadio River Plate',
+        note: 'Doors at 8 PM.',
+        sellingPoint: 'One of the biggest nights of the tour.',
+        icon: <Zap />,
+        destId: 'bad-bunny',
+        links: [
+          { label: 'Tour Info', href: 'https://www.livenation.lat/' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Boca Juniors vs Platense',
+        time: '2:30 PM',
+        location: 'La Bombonera',
+        href: 'https://www.ligaprofesional.ar/torneo-apertura-2026/',
+        sellingPoint: 'The most intense sporting atmosphere in the world.'
+      },
+      {
+        title: 'Karaoke del Amor',
+        time: '5:00 PM - 7:00 PM',
+        location: 'Plaza Seca',
+        href: 'https://palaciolibertad.gob.ar/events/karaoke-del-amor/',
+        sellingPoint: 'Mass singalong of Latin romantic hits.'
+      },
+      {
+        title: 'Lans 4tet',
+        time: '8:30 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Complex, intimate musical narrative.'
+      },
+      {
+        title: 'Charlotte de Witte After-Hours',
+        time: '1:00 AM',
+        location: 'Crobar',
+        href: 'https://ra.co/events/ar/buenosaires/techno',
+        sellingPoint: 'Keep the Resistance Stage energy alive.'
+      },
+      {
+        title: 'Zabal Techno',
+        time: 'Late night',
+        location: 'Buenos Aires',
+        href: 'https://ra.co/events/2353011',
+        sellingPoint: 'Dark, industrial techno for the purists.'
+      }
+    ]
+  },
+  {
+    day: 'MON',
+    date: 'FEB 16',
+    title: 'Carnival Peak & The Steak Ritual',
+    description: 'National holiday. The highlight is the lunch Nate’s been planning for over a decade.',
+    summary: [
+      {
+        time: '11:30 AM',
+        label: 'Don Julio Lunch',
+        location: 'Guatemala 4699',
+        icon: <Utensils />,
+        destId: 'don-julio'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Carnival at Plaza Unidad Latinoamericana',
+        location: 'Almagro',
+        icon: <Sparkles />,
+        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/'
+      },
+      {
+        time: '12:30 AM',
+        label: 'La Bomba de Tiempo',
+        location: 'Ciudad Cultural Konex',
+        icon: <Music />,
+        destId: 'la-bomba'
+      }
+    ],
+    schedule: [
+      {
+        time: '11:30 AM',
+        label: 'Don Julio Lunch',
+        location: 'Guatemala 4699',
+        note: 'The gold standard of Argentine steak.',
+        sellingPoint: 'A 20-minute walk from the apartment and worth every bite.',
+        icon: <Utensils />,
+        destId: 'don-julio'
+      },
+      {
+        time: '4:00 PM',
+        label: 'Carnival at Plaza Unidad Latinoamericana',
+        location: 'Almagro',
+        note: 'Traditional carnival troupes with drums and cymbals.',
+        sellingPoint: 'Peak holiday energy in the streets.',
+        icon: <Sparkles />,
+        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/'
+      },
+      {
+        time: '12:30 AM (Tue)',
+        label: 'La Bomba de Tiempo',
+        location: 'Ciudad Cultural Konex',
+        note: 'Legendary percussion rave at an old factory.',
+        sellingPoint: 'The most iconic Monday night in BA.',
+        icon: <Music />,
+        destId: 'la-bomba',
+        links: [
+          { label: 'Tickets', href: 'https://www.labombadetiempo.com/' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Corso de Boedo',
+        time: 'From 6:30 PM',
+        location: 'Av. Boedo',
+        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
+        sellingPoint: 'The political and satirical heart of Carnival.'
+      },
+      {
+        title: 'Buenos Aires Extremo',
+        time: 'Evening',
+        location: 'Costanera',
+        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
+        sellingPoint: 'BMX, skate, and live bands on the river.'
+      },
+      {
+        title: 'Yamile Burich Trio',
+        time: '8:30 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Smooth holiday evening vibes.'
+      },
+      {
+        title: 'Cafe San Bernardo',
+        time: 'Late night',
+        location: 'Av. Corrientes 5436',
+        href: 'https://www.instagram.com/cafesanbernardo/',
+        sellingPoint: 'Historic pool hall with locals-only energy.'
+      },
+      {
+        title: 'Polenta en Hache',
+        time: 'Midnight',
+        location: 'Hache Club',
+        href: 'https://www.cafaccess.com/evento/1602-polenta-en-hache',
+        sellingPoint: 'High-intensity dance party with free churros at 4 AM.'
+      }
+    ]
+  },
+  {
+    day: 'TUE',
+    date: 'FEB 17',
+    title: 'The Polo Flex',
+    badge: 'Elite',
+    description: 'The ultimate holiday reset. Fresh air, open fields, and the “Sport of Kings.”',
+    summary: [
+      {
+        time: '9:00 AM',
+        label: 'Puesto Viejo Polo Day',
+        location: 'Countryside',
+        icon: <Star />,
+        destId: 'polo'
+      },
+      {
+        time: '7:00 PM',
+        label: 'El Ateneo Grand Splendid',
+        location: 'Av. Santa Fe 1860',
+        icon: <BookOpen />,
+        href: 'https://turismo.buenosaires.gob.ar/en/otros-establecimientos/el-ateneo-grand-splendid'
+      },
+      {
+        time: '10:00 PM',
+        label: 'Tres Monos',
+        location: 'Guatemala 4899',
+        icon: <GlassWater />,
+        destId: 'tres-monos'
+      }
+    ],
+    schedule: [
+      {
+        time: '9:00 AM',
+        label: 'Puesto Viejo Polo Day',
+        location: 'Countryside estancia',
+        note: 'Lessons, match, and a massive asado lunch.',
+        sellingPoint: 'Learn to play while riding polo ponies in the countryside.',
+        meta: 'Price: ~$295 each.',
+        icon: <Star />,
+        destId: 'polo',
+        links: [
+          { label: 'Polo Day Info', href: 'https://puestoviejo.com/en/lp-polo-day/' }
+        ]
+      },
+      {
+        time: '7:00 PM',
+        label: 'El Ateneo Grand Splendid',
+        location: 'Av. Santa Fe 1860',
+        note: 'One of the world’s most beautiful bookstores.',
+        sellingPoint: 'A grand old theater turned into a literary cathedral.',
+        icon: <BookOpen />,
+        href: 'https://turismo.buenosaires.gob.ar/en/otros-establecimientos/el-ateneo-grand-splendid'
+      },
+      {
+        time: '10:00 PM',
+        label: 'Tres Monos',
+        location: 'Guatemala 4899',
+        note: 'Warm hospitality and house-made spirits.',
+        sellingPoint: 'Voted a top bar in the world.',
+        icon: <GlassWater />,
+        destId: 'tres-monos',
+        links: [
+          { label: 'World’s 50 Best', href: 'https://www.theworlds50best.com/bars/the-list/tres-monos.html' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Los Fabulosos Cadillacs Tribute',
+        time: '7:00 PM',
+        location: 'CCK Auditorio Nacional',
+        href: 'https://palaciolibertad.gob.ar/events/carnaval-toda-la-orquesta-homenaje-a-los-fabulosos-cadillacs-por-la-orquesta-escuela-juvenil-de-san-telmo/',
+        sellingPoint: 'A symphonic twist on Argentine rock legends.'
+      },
+      {
+        title: 'Villa Urquiza Murgas',
+        time: 'From 6:30 PM',
+        location: 'Av. Triunvirato',
+        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
+        sellingPoint: 'Catch the closing energy of the long weekend.'
+      },
+      {
+        title: 'Hierro Bodegon',
+        time: '9:00 PM',
+        location: 'Fitz Roy 1722',
+        href: 'https://www.timeout.com/es/buenos-aires/aperturas-nuevos-restaurantes-hierro-bodegon-mambo-burdo',
+        sellingPoint: 'Modern techniques applied to classic barrio food.'
+      },
+      {
+        title: 'Teatro Ciego “Odd Man Out”',
+        time: '6:00 PM',
+        location: 'Teatro Ciego',
+        href: 'https://teatrociego.org/carteleratc/',
+        sellingPoint: 'A story told via non-visual senses.'
+      },
+      {
+        title: 'West Coast Swing',
+        time: '6:00 PM',
+        location: 'Puerto San Carlos',
+        href: 'https://barilocheinforma.gob.ar/agenda-cultural-bariloche-todas-las-actividades-del-9-al-15-de-febrero/',
+        sellingPoint: 'Open-air participatory dance on the waterfront.'
+      }
+    ]
+  },
+  {
+    day: 'WED',
+    date: 'FEB 18',
+    title: 'Uruguay Escape',
+    description: 'Fast ferry to Colonia, cobblestones, and a clean reset day.',
+    summary: [
+      {
+        time: '8:30 AM',
+        label: 'Fast Ferry to Colonia',
+        location: 'Buquebus Terminal',
+        icon: <Plane />,
+        destId: 'colonia'
+      },
+      {
+        time: '12:00 PM',
+        label: 'Golf Cart Exploration',
+        location: 'Colonia Historic Quarter',
+        icon: <Camera />
+      },
+      {
+        time: '8:00 PM',
+        label: 'Floreria Atlantico',
+        location: 'Arroyo 872',
+        icon: <Wine />,
+        destId: 'floreria-atlantico'
+      }
+    ],
+    schedule: [
+      {
+        time: '8:30 AM',
+        label: 'Fast Ferry to Colonia',
+        location: 'Buquebus Terminal',
+        note: 'Buy tickets online for the fast crossing.',
+        sellingPoint: 'One-hour ferry to a UNESCO-protected town.',
+        icon: <Plane />,
+        destId: 'colonia',
+        links: [
+          { label: 'Buquebus', href: 'https://www.buquebus.com/' }
+        ]
+      },
+      {
+        time: '12:00 PM',
+        label: 'Golf Cart Exploration',
+        location: 'Colonia Historic Quarter',
+        note: 'Rent a cart at the terminal to cruise the lighthouse and coast.',
+        sellingPoint: 'The most relaxed way to see everything quickly.',
+        meta: 'Price: ~$60 USD.',
+        icon: <Camera />
+      },
+      {
+        time: '8:00 PM',
+        label: 'Floreria Atlantico',
+        location: 'Arroyo 872',
+        note: 'Enter through the refrigerator door in a flower shop.',
+        sellingPoint: 'Voted top 50 in the world.',
+        icon: <Wine />,
+        destId: 'floreria-atlantico',
+        links: [
+          { label: 'World’s 50 Best', href: 'https://www.theworlds50best.com/bars/the-list/floreria-atlantico.html' },
+          { label: 'Official Site', href: 'http://www.floreriaatlantico.com.ar/' }
+        ]
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Anchoita Cava',
+        time: 'Opens 6:00 PM',
+        location: 'Juan Ramirez de Velasco 1456',
+        href: 'https://starwinelist.com/wine-guide/great-wine-bars-and-wine-restaurants-in-buenos-aires',
+        sellingPoint: '52 wines by the glass and 110 aged cheeses.'
+      },
+      {
+        title: 'Afters BA',
+        time: 'Evening',
+        location: 'Costanera Rafael Obligado 7010',
+        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
+        sellingPoint: 'Open-air electronic beats as the sun hits the river.'
+      },
+      {
+        title: 'Mayumana',
+        time: 'Evening',
+        location: 'Teatro Gran Rex',
+        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
+        sellingPoint: 'Mind-blowing percussion and physical theater.'
+      },
+      {
+        title: 'Jazz Voyeur Club',
+        time: '8:30 PM',
+        location: 'Posadas 1557',
+        href: 'https://www.facebook.com/jazzvoyeurBA',
+        sellingPoint: 'Free entry with luxury bites in a Recoleta basement.'
+      },
+      {
+        title: 'Teatro Ciego “Amores de Pelicula”',
+        time: '7:00 PM',
+        location: 'CCK',
+        href: 'https://palaciolibertad.gob.ar/events/amores-de-pelicula-con-ana-maria-bovo/',
+        sellingPoint: 'Cinematic love stories narrated in total darkness.'
+      }
+    ]
+  },
+  {
+    day: 'THU',
+    date: 'FEB 19',
+    title: 'Arena Vibes & Modern Villa Crespo',
+    description: 'Leather district by day, arena energy by night, and a late-night fuel stop.',
+    summary: [
+      {
+        time: 'Day',
+        label: 'Leather District Shopping',
+        location: 'Murillo 666',
+        icon: <ShoppingBag />,
+        href: 'https://www.murillo666.com.ar/'
+      },
+      {
+        time: '8:00 PM',
+        label: 'Movistar Arena',
+        location: 'Humboldt 450',
+        icon: <Music />,
+        href: 'https://www.movistararena.com.ar/'
+      },
+      {
+        time: '11:00 PM',
+        label: 'Post-Show Fuel @ Los Bohemios',
+        location: 'Humboldt 538',
+        icon: <Utensils />,
+        href: 'https://www.caatlanta.com.ar/los-bohemios-restaurante/'
+      }
+    ],
+    schedule: [
+      {
+        time: 'Day',
+        label: 'Leather District Shopping',
+        location: 'Murillo 666',
+        note: 'Custom-made leather jackets.',
+        sellingPoint: 'One of the best bargains in the city.',
+        meta: 'Price: $200-400.',
+        icon: <ShoppingBag />,
+        href: 'https://www.murillo666.com.ar/',
+        links: [
+          { label: 'Price Guide', href: 'https://www.rexby.com/solsalute/ttd/leather-jackets-and-accessories-in-buenos-aires' }
+        ]
+      },
+      {
+        time: '8:00 PM',
+        label: 'Movistar Arena',
+        location: 'Villa Crespo',
+        note: 'High-energy alternative dance in the city’s newest indoor arena.',
+        sellingPoint: 'Big production, great sound, no chaos.',
+        icon: <Music />,
+        href: 'https://www.movistararena.com.ar/'
+      },
+      {
+        time: '11:00 PM',
+        label: 'Post-Show Fuel @ Los Bohemios',
+        location: 'Humboldt 538',
+        note: 'Shared milanesas inside a local soccer club hall.',
+        sellingPoint: 'Monumental portions and neighborhood energy.',
+        icon: <Utensils />,
+        href: 'https://www.caatlanta.com.ar/los-bohemios-restaurante/'
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Track at Moly Club',
+        time: '10:00 PM',
+        location: 'Niceto Vega 5534',
+        href: 'https://www.passline.com/eventos/track-19226',
+        sellingPoint: 'Free entry for the new generation of clubbers.'
+      },
+      {
+        title: 'Cielo Sky Bar',
+        time: 'Opens 6:00 PM',
+        location: 'Grand Brizo Hotel',
+        href: 'https://www.instagram.com/cielo.skybar/',
+        sellingPoint: 'Best skyline sunset without a reservation.'
+      },
+      {
+        title: 'Casa SaltShaker',
+        time: '8:00 PM',
+        location: 'Recoleta',
+        href: 'https://www.casasaltshaker.com/schedule-reservations/',
+        sellingPoint: 'Secret five-course wine-paired communal dinner.'
+      },
+      {
+        title: 'Vino con Gente Equis',
+        time: '8:30 PM',
+        location: 'Palermo Wine Club',
+        href: 'https://www.eventbrite.com/d/argentina--buenos-aires/events/',
+        sellingPoint: 'Best way to meet local expat and creative community.'
+      },
+      {
+        title: 'Famin Lombardo de Urquiza',
+        time: '11:00 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Deep, soulful sax improvisations.'
+      }
+    ]
+  },
+  {
+    day: 'FRI',
+    date: 'FEB 20',
+    title: 'The Grand Finale',
+    badge: 'Final Bash',
+    description: 'Football tension followed by a two-Michelin-star marathon.',
+    summary: [
+      {
+        time: '8:00 PM',
+        label: 'Boca Juniors vs Racing Club',
+        location: 'La Bombonera',
+        icon: <Star />,
+        href: 'https://www.facebook.com/lxfargentina/'
+      },
+      {
+        time: '9:00 PM',
+        label: 'Aramburu (Confirmed)',
+        location: 'Vicente Lopez 1661',
+        icon: <Utensils />,
+        href: 'https://arambururesto.com.ar/'
+      },
+      {
+        time: '1:00 AM',
+        label: 'Tequila Club',
+        location: 'Costanera Norte',
+        icon: <Music />,
+        href: 'https://www.instagram.com/tequilaclubofficial/'
+      }
+    ],
+    schedule: [
+      {
+        time: '8:00 PM',
+        label: 'Boca Juniors vs Racing Club',
+        location: 'La Bombonera',
+        note: 'If you do not have tickets, watch at Locos x el Futbol (Av. Las Heras 2101).',
+        sellingPoint: 'The city will be electric.',
+        icon: <Star />,
+        href: 'https://www.facebook.com/lxfargentina/'
+      },
+      {
+        time: '9:00 PM',
+        label: 'Aramburu (Confirmed)',
+        location: 'Vicente Lopez 1661',
+        note: 'Technique-led 18-course tasting menu.',
+        sellingPoint: 'One of the top fine-dining experiences in the city.',
+        icon: <Utensils />,
+        href: 'https://arambururesto.com.ar/',
+        links: [
+          { label: 'Michelin Guide', href: 'https://guide.michelin.com/en/ciudad-autonoma-de-buenos-aires/buenos-aires_777009/restaurant/aramburu' }
+        ]
+      },
+      {
+        time: '1:00 AM',
+        label: 'Tequila Club',
+        location: 'Costanera Norte',
+        note: 'Dress sharp or do not bother showing up.',
+        sellingPoint: 'The most exclusive club in BA.',
+        icon: <Music />,
+        href: 'https://www.instagram.com/tequilaclubofficial/'
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Crystal Bar',
+        time: 'Opens 6:00 PM',
+        location: 'Alvear Icon, 32nd floor',
+        href: 'https://www.instagram.com/crystal.skybar/',
+        sellingPoint: 'Stunning panoramic views of the river and Uruguay.'
+      },
+      {
+        title: 'Buena Vibra Previa',
+        time: '8:00 PM',
+        location: 'Complejo C Art Media',
+        href: 'https://nosonhoras.com.ar/la-previa-buena-vibra-art-media-2026/',
+        sellingPoint: 'Gathering spot for the city’s alternative music youth.'
+      },
+      {
+        title: 'Alambre Gonzalez Trio',
+        time: '11:00 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Gritty, high-level instrumental evening.'
+      },
+      {
+        title: 'Uptown BA',
+        time: 'Opens 8:30 PM',
+        location: 'Arevalo 2030',
+        href: 'http://www.uptownba.com/',
+        sellingPoint: 'You enter through a subway train car.'
+      },
+      {
+        title: 'Paladium Latin Club',
+        time: 'Midnight',
+        location: 'Niceto Club',
+        href: 'https://nicetoclub.com/agenda/',
+        sellingPoint: 'Burn off the Aramburu meal on the dance floor.'
+      }
+    ]
+  },
+  {
+    day: 'SAT',
+    date: 'FEB 21',
+    title: 'The Flex Day',
+    description: 'Street art by day, farewell dinner by night.',
+    summary: [
+      {
+        time: '3:00 PM',
+        label: 'Graffitimundo Street Art Tour',
+        location: 'Starts in Colegiales',
+        icon: <Camera />,
+        href: 'https://graffitimundo.com/graffiti-street-art-tours-buenos-aires/'
+      },
+      {
+        time: '9:00 PM',
+        label: 'Farewell Dinner @ El Preferido',
+        location: 'Borges 2108',
+        icon: <Utensils />,
+        href: 'https://www.instagram.com/elpreferidodepalermo/'
+      },
+      {
+        time: '11:55 PM',
+        label: 'Eagle Departs (EZE)',
+        location: 'Airport run',
+        icon: <Plane />
+      }
+    ],
+    schedule: [
+      {
+        time: '3:00 PM',
+        label: 'Graffitimundo Street Art Tour',
+        location: 'Starts in Colegiales',
+        note: 'World-class mural scene in off-the-beaten-path neighborhoods.',
+        sellingPoint: 'The best way to understand BA’s street art culture.',
+        icon: <Camera />,
+        href: 'https://graffitimundo.com/graffiti-street-art-tours-buenos-aires/'
+      },
+      {
+        time: '9:00 PM',
+        label: 'Farewell Dinner @ El Preferido de Palermo',
+        location: 'Borges 2108',
+        note: 'Iconic pink building and legendary schnitzel.',
+        sellingPoint: 'A final night meal that feels classic BA.',
+        icon: <Utensils />,
+        href: 'https://www.instagram.com/elpreferidodepalermo/'
+      },
+      {
+        time: '11:55 PM',
+        label: 'Eagle Departs (EZE)',
+        location: 'Airport run',
+        note: 'Adios, legend.',
+        sellingPoint: 'The first farewell of the trip.',
+        icon: <Plane />
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Cumbia Konex',
+        time: '12:30 AM',
+        location: 'Ciudad Cultural Konex',
+        href: 'https://reventick.com/event/cumbia-konex-ciudad-cultural-konex-21-02-2026',
+        sellingPoint: 'Final heavy night with cumbia beats.'
+      },
+      {
+        title: 'Boom Boom Kid',
+        time: '8:30 PM',
+        location: 'Niceto Club',
+        href: 'https://nicetoclub.com/agenda/',
+        sellingPoint: 'High-energy Argentine punk/indie icon.'
+      },
+      {
+        title: 'Tardes de Folclore',
+        time: '7:00 PM',
+        location: 'Plaza Seca',
+        href: 'https://palaciolibertad.gob.ar/events/tardes-de-folclore-nomas-asi-presenta-de-muchas-formas-lo-mismo/',
+        sellingPoint: 'Authentic Argentine country music in an urban setting.'
+      },
+      {
+        title: 'Barbie Martinez Trio',
+        time: '8:30 PM',
+        location: 'Virasoro Bar',
+        href: 'https://www.virasorobar.com.ar/eventos.php',
+        sellingPoint: 'Classy vocal standards for a relaxed final night.'
+      },
+      {
+        title: 'Playon San Lorenzo',
+        time: 'From 6:30 PM',
+        location: 'Av. La Plata 1700',
+        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
+        sellingPoint: 'The city’s largest local carnival closing.'
+      }
+    ]
+  },
+  {
+    day: 'SUN',
+    date: 'FEB 22',
+    title: 'Departure Day',
+    description: 'Recovery brunch and the final airport run.',
+    summary: [
+      {
+        time: '12:00 PM',
+        label: 'Recovery Brunch @ Cafe Crespin',
+        location: 'Vera 699',
+        icon: <Coffee />,
+        href: 'https://www.cafecrespin.com.ar/'
+      },
+      {
+        time: '8:55 PM',
+        label: 'Nasir Departs (EZE)',
+        location: 'Airport run',
+        icon: <Plane />
+      }
+    ],
+    schedule: [
+      {
+        time: '12:00 PM',
+        label: 'Recovery Brunch @ Cafe Crespin',
+        location: 'Vera 699',
+        note: 'Best medialunas and cinnamon rolls in Villa Crespo.',
+        sellingPoint: 'Perfect reset after the long week.',
+        icon: <Coffee />,
+        href: 'https://www.cafecrespin.com.ar/'
+      },
+      {
+        time: '8:55 PM',
+        label: 'Nasir Departs (EZE)',
+        location: 'Airport run',
+        note: 'From bachelor to husband.',
+        sellingPoint: 'The second farewell of the trip.',
+        icon: <Plane />
+      }
+    ],
+    alternatives: [
+      {
+        title: 'Salon 1923',
+        time: '8:00 PM shift',
+        location: '16th floor',
+        href: 'https://salon1923.com/en/',
+        sellingPoint: 'Best view of the National Congress dome.'
+      },
+      {
+        title: 'Nirvana Unplugged Tribute',
+        time: '8:00 PM',
+        location: 'Niceto Club',
+        href: 'https://nicetoclub.com/agenda/',
+        sellingPoint: 'Nostalgic rock cover show in a world-class venue.'
+      },
+      {
+        title: 'Tardes de Groove',
+        time: '6:00 PM',
+        location: 'CCK Plaza Seca',
+        href: 'https://palaciolibertad.gob.ar/events/tardes-de-groove-mariu-fernandez/',
+        sellingPoint: 'Perfect outdoor finale vibes.'
+      },
+      {
+        title: 'Chakras Meditation',
+        time: '6:00 PM',
+        location: 'Teatro Ciego',
+        href: 'https://teatrociego.org/carteleratc/',
+        sellingPoint: '360-sound tech in darkness, ultimate mental recovery.'
+      },
+      {
+        title: 'Crepusculares',
+        time: '7:30 PM',
+        location: 'CCK La Cupula',
+        href: 'https://palaciolibertad.gob.ar/events/crepusculares-instalacion-i-por-arquitectura-y-cuarteto/',
+        sellingPoint: 'High-art dance inside the iconic glass dome.'
+      }
+    ]
+  },
+  {
+    day: 'MON',
+    date: 'FEB 23',
+    title: 'The Last Man Standing',
+    description: 'Nate’s solo exit and one last lap through the city.',
+    summary: [
+      {
+        time: 'Morning',
+        label: 'Final Walk Through Parque Tres de Febrero',
+        location: 'Palermo',
+        icon: <MapPin />,
+        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/parque-tres-de-febrero'
+      },
+      {
+        time: 'Later',
+        label: 'Nate Departs (EZE)',
+        location: 'Airport run',
+        icon: <Plane />
+      }
+    ],
+    schedule: [
+      {
+        time: 'Morning',
+        label: 'Final Walk Through Parque Tres de Febrero',
+        location: 'Palermo',
+        note: 'One last walk before heading to EZE.',
+        sellingPoint: 'The calmest possible sendoff.',
+        icon: <MapPin />,
+        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/parque-tres-de-febrero'
+      },
+      {
+        time: 'Later',
+        label: 'Nate Departs (EZE)',
+        location: 'Airport run',
+        note: 'Recovery begins. Memories forever.',
+        sellingPoint: 'The final exit.',
+        icon: <Plane />
+      }
+    ],
+    alternatives: []
+  }
+];
+
 
 const App = () => {
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeTab, setActiveTab] = useState('itinerary');
   const [checkedBookings, setCheckedBookings] = useState([]);
+  const bookingIds = BOOKINGS_CHECKLIST.map((booking) => booking.id);
 
   useEffect(() => {
     const saved = localStorage.getItem('ba-bookings');
-    if (saved) setCheckedBookings(JSON.parse(saved));
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return;
+      const hasIndexValues = parsed.some((value) => typeof value === 'number');
+      const normalized = hasIndexValues
+        ? parsed.map((index) => bookingIds[index]).filter(Boolean)
+        : parsed.filter((id) => bookingIds.includes(id));
+      setCheckedBookings([...new Set(normalized)]);
+    } catch {
+      setCheckedBookings([]);
+    }
   }, []);
 
-  const toggleBooking = (index) => {
-    const updated = checkedBookings.includes(index)
-      ? checkedBookings.filter(i => i !== index)
-      : [...checkedBookings, index];
+  const toggleBooking = (id) => {
+    const updated = checkedBookings.includes(id)
+      ? checkedBookings.filter((savedId) => savedId !== id)
+      : [...checkedBookings, id];
     setCheckedBookings(updated);
     localStorage.setItem('ba-bookings', JSON.stringify(updated));
   };
 
-  const DayCard = ({ day, date, title, items, badge, description }) => (
+  const ItineraryItem = ({ item, variant = 'compact' }) => {
+    const isDestination = Boolean(item.destId);
+    const isExternal = Boolean(item.href);
+    const isClickable = isDestination || isExternal;
+    const wrapperClasses = `flex items-start gap-3 p-4 rounded-xl transition-all border border-transparent w-full text-left ${
+      isClickable
+        ? 'bg-white/5 hover:bg-white/10 hover:border-white/10 cursor-pointer group'
+        : 'bg-slate-800/30'
+    }`;
+
+    const content = (
+      <>
+        <div className="text-blue-500 bg-blue-500/10 p-2 rounded-lg mt-0.5">{item.icon}</div>
+        <div className="flex-1">
+          <p className="text-sm font-bold text-slate-100">
+            {item.time && <span className="text-blue-400">{item.time}</span>}
+            {item.time ? ' — ' : ''}
+            {item.label}
+          </p>
+          {item.location && <p className="text-xs text-slate-500">{item.location}</p>}
+          {variant === 'detailed' && item.note && (
+            <p className="text-xs text-slate-400 mt-1">{item.note}</p>
+          )}
+          {variant === 'detailed' && item.meta && (
+            <p className="text-xs text-slate-500 mt-1">{item.meta}</p>
+          )}
+          {variant === 'detailed' && item.sellingPoint && (
+            <p className="text-xs text-emerald-300 mt-1">Selling Point: {item.sellingPoint}</p>
+          )}
+          {variant === 'detailed' && item.links?.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2">
+              {item.links.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        {isDestination && (
+          <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
+        )}
+        {isExternal && !isDestination && (
+          <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
+        )}
+      </>
+    );
+
+    if (isExternal) {
+      return (
+        <a href={item.href} target="_blank" rel="noreferrer" className={wrapperClasses}>
+          {content}
+        </a>
+      );
+    }
+
+    if (isDestination) {
+      return (
+        <button
+          type="button"
+          onClick={() => setSelectedDest(DESTINATIONS[item.destId])}
+          className={wrapperClasses}
+        >
+          {content}
+        </button>
+      );
+    }
+
+    return <div className={wrapperClasses}>{content}</div>;
+  };
+
+  const DayCard = ({ day, date, title, summary, schedule, alternatives, badge, description }) => (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-6 hover:border-blue-500/30 transition-all shadow-xl">
       <div className="flex flex-wrap justify-between items-start gap-4 mb-2">
         <div>
@@ -445,27 +1561,51 @@ const App = () => {
       </div>
       <p className="text-slate-400 text-sm mb-4 leading-relaxed italic">{description}</p>
       <div className="space-y-3">
-        {items.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => (item.destId ? setSelectedDest(DESTINATIONS[item.destId]) : null)}
-            className={`flex items-center gap-3 p-4 rounded-xl transition-all border border-transparent ${
-              item.destId
-                ? 'bg-white/5 hover:bg-white/10 hover:border-white/10 cursor-pointer group'
-                : 'bg-slate-800/30'
-            }`}
-          >
-            <div className="text-blue-500 bg-blue-500/10 p-2 rounded-lg">{item.icon}</div>
-            <div className="flex-1">
-              <p className="text-sm font-bold text-slate-100">{item.label}</p>
-              <p className="text-xs text-slate-500">{item.sub}</p>
-            </div>
-            {item.destId && (
-              <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
-            )}
-          </div>
+        {summary.map((item) => (
+          <ItineraryItem key={`${item.time}-${item.label}`} item={item} variant="compact" />
         ))}
       </div>
+      <details className="mt-4 group">
+        <summary className="flex items-center justify-between cursor-pointer bg-slate-800/40 px-4 py-3 rounded-2xl text-xs uppercase tracking-widest font-bold text-slate-300">
+          Dive Deeper: Full Schedule + Alternatives
+          <ChevronDown className="w-4 h-4 text-slate-400 transition-transform group-open:rotate-180" />
+        </summary>
+        <div className="mt-4 space-y-6">
+          <div>
+            <h4 className="text-xs font-black uppercase tracking-widest text-blue-400 mb-3">Full Schedule</h4>
+            <div className="space-y-3">
+              {schedule.map((item) => (
+                <ItineraryItem key={`${item.time}-${item.label}`} item={item} variant="detailed" />
+              ))}
+            </div>
+          </div>
+          {alternatives?.length > 0 && (
+            <div>
+              <h4 className="text-xs font-black uppercase tracking-widest text-yellow-400 mb-3">Top Alternatives</h4>
+              <div className="space-y-3">
+                {alternatives.map((alt) => (
+                  <a
+                    key={`${alt.title}-${alt.time}`}
+                    href={alt.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 hover:border-slate-500 transition-all"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm font-bold text-slate-100">{alt.title}</p>
+                      <ArrowUpRight className="w-4 h-4 text-slate-500" />
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1">
+                      {alt.time} · {alt.location}
+                    </p>
+                    <p className="text-xs text-emerald-300 mt-2">Selling Point: {alt.sellingPoint}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </details>
     </div>
   );
 
@@ -493,10 +1633,10 @@ const App = () => {
         <div className="relative z-10 w-full">
           <div className="flex gap-2 mb-3">
             <span className="bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
-              Feb 13 - 22, 2026
+              Feb 13 - 23, 2026
             </span>
             <span className="bg-green-600 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
-              9 DAYS
+              11 DAYS
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white leading-none">
@@ -589,6 +1729,31 @@ const App = () => {
             </div>
 
             <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
+              <h3 className="text-xl font-black text-white mb-4">Logistics & Tactical Mobility</h3>
+              <div className="space-y-3">
+                {LOGISTICS.map((item) => (
+                  <a
+                    key={item.title}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-start gap-4 bg-slate-800/40 border border-slate-700/50 rounded-2xl p-4 hover:border-slate-500 transition-all"
+                  >
+                    <div className="bg-slate-900/60 p-2 rounded-xl">{item.icon}</div>
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-white">{item.title}</p>
+                      <p className="text-xs text-slate-400 mt-1">{item.description}</p>
+                      <span className="inline-block mt-3 text-[10px] uppercase tracking-widest font-bold text-blue-400">
+                        {item.linkLabel}
+                      </span>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-slate-500" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
               <h3 className="text-xl font-black text-white mb-4">FAQ (a.k.a. the chaos brief)</h3>
               <div className="space-y-4">
                 {FAQS.map((faq) => (
@@ -625,141 +1790,9 @@ const App = () => {
               </div>
             </div>
 
-            <DayCard
-              day="FRI"
-              date="FEB 13"
-              title="The Solo Landing"
-              description="First to arrive. Use this quiet night to scope the neighborhood, stock supplies, and adjust to the 12-hour time difference. BA doesn't wake up until noon anyway."
-              items={[
-                { icon: <Plane />, label: 'Arrival at EZE Airport', sub: 'Taxi to base ~$25 USD (1 hour drive)' },
-                { icon: <Home />, label: 'Check-in at Base', sub: 'República Árabe Siria 3026, Palermo' },
-                { icon: <Utensils />, label: 'Solo Steak Recon', sub: "La Carnicería (10 min walk) - casual, great meat", destId: 'la-cabrera' },
-                { icon: <ShoppingBag />, label: 'Supply Run', sub: 'Jumbo: water, Gatorade, Quilmes beer, Malbec, snacks' },
-                { icon: <Coffee />, label: 'Evening Walk', sub: 'Stroll Palermo Soho, get the lay of the land' }
-              ]}
-            />
-
-            <DayCard
-              day="SAT"
-              date="FEB 14"
-              title="The Boys Arrive + Ultra Day 1"
-              badge="Festival"
-              description="The crew unites. Drop the bags and head straight to Ultra. Tonight is about energy, top DJs, and losing your mind on the dance floor. Come back late, sleep later."
-              items={[
-                { icon: <Clock />, label: 'Morning Arrivals', sub: 'Airport pickups / Uber to base' },
-                { icon: <Coffee />, label: 'Brunch & Strategy', sub: 'Café Tortoni or local café - fuel up' },
-                { icon: <Music />, label: 'Ultra Day 1', sub: 'Gates at 2 PM. Plan: arrive at 4 PM, stay until 11:30 PM', destId: 'ultra' },
-                { icon: <GlassWater />, label: 'Post-Ultra Debrief', sub: "Drinks at Boticario Bar if you have energy left" }
-              ]}
-            />
-
-            <DayCard
-              day="SUN"
-              date="FEB 15"
-              title="The Iron Man Challenge"
-              badge="Epic Day"
-              description="Ultra Day 2 followed by Bad Bunny at River Plate. This is the most physical day of the trip. Pace yourself on the afternoon. Save energy for Benito. You'll thank me later."
-              items={[
-                { icon: <Coffee />, label: 'Recovery Brunch', sub: 'Late start. Eggs, coffee, hydration.' },
-                { icon: <Music />, label: 'Ultra Day 2', sub: 'Final sets. Leave by 7 PM for Bad Bunny.', destId: 'ultra' },
-                { icon: <Zap />, label: 'Bad Bunny @ River Plate', sub: '8 PM doors. Reggaeton til midnight.', destId: 'bad-bunny' },
-                { icon: <Utensils />, label: 'Late Night Fuel', sub: 'Pony Line burger or street choripán', destId: 'pony-line' }
-              ]}
-            />
-
-            <DayCard
-              day="MON"
-              date="FEB 16"
-              title="Recovery + Monday Night Ritual"
-              description="Sleep in. This is mandatory. Your body needs it. Spend the afternoon horizontal. Then rally for La Bomba—it's every Monday and you can't miss it."
-              items={[
-                { icon: <Clock />, label: 'Sleep Until Noon', sub: 'Seriously. No shame. This is the plan.' },
-                { icon: <Coffee />, label: 'Slow Afternoon', sub: 'Walk Palermo, get empanadas, hydrate' },
-                { icon: <Music />, label: 'La Bomba de Tiempo', sub: '8 PM. Percussion rave at an old factory.', destId: 'la-bomba' },
-                { icon: <Utensils />, label: 'Late Burger', sub: 'Pony Line @ Four Seasons', destId: 'pony-line' }
-              ]}
-            />
-
-            <DayCard
-              day="TUE"
-              date="FEB 17"
-              title="The Polo Flex"
-              badge="Elite"
-              description="Best hangover cure ever: fresh air, horses, unlimited wine, and learning to play polo. Van picks you up, brings you back. All you do is show up and look cool."
-              items={[
-                { icon: <Star />, label: 'Polo Day Estancia', sub: '9 AM pickup. Full day: lessons, match, asado lunch.', destId: 'polo' },
-                { icon: <Clock />, label: 'Return to Palermo', sub: 'Back by 6 PM, nap if needed' },
-                { icon: <GlassWater />, label: 'Tres Monos Cocktails', sub: "Top 50 bar. Arrive before 10 PM.", destId: 'tres-monos' }
-              ]}
-            />
-
-            <DayCard
-              day="WED"
-              date="FEB 18"
-              title="Old School BA + The Big Steak"
-              description="Explore historic San Telmo in the afternoon. Antiques, street tango, cobblestones. Then: Don Julio. The main event. The steak you'll talk about for years."
-              items={[
-                { icon: <Clock />, label: 'Lazy Morning', sub: 'Sleep in, coffee, chill' },
-                { icon: <MapPin />, label: 'San Telmo Market', sub: 'Wander antiques, Plaza Dorrego, street tango' },
-                { icon: <Coffee />, label: 'Café Afternoon', sub: 'Espresso at a classic BA café' },
-                { icon: <Utensils />, label: 'Don Julio Dinner', sub: '8:30 PM reservation. THE steak dinner.', destId: 'don-julio' },
-                { icon: <Wine />, label: 'Post-Dinner Drinks', sub: 'Digestif at Florería Atlántico', destId: 'floreria-atlantico' }
-              ]}
-            />
-
-            <DayCard
-              day="THU"
-              date="FEB 19"
-              title="Uruguay Escape"
-              description="Ferry to Colonia del Sacramento. Golf carts, cobblestone streets, uruguayan wine, zero stress. Perfect reset day. Bring your passport or you're not getting on the boat."
-              items={[
-                { icon: <Plane />, label: 'Ferry to Colonia', sub: '8 AM or 9 AM fast ferry (1 hour)', destId: 'colonia' },
-                { icon: <Camera />, label: 'Golf Cart Day', sub: 'Rent cart, cruise historic quarter, lighthouse, coast' },
-                { icon: <Utensils />, label: 'Lunch in Uruguay', sub: 'Try uruguayan chivito sandwich' },
-                { icon: <Navigation />, label: 'Return Ferry', sub: 'Evening ferry back to BA' },
-                { icon: <GlassWater />, label: 'BA Nightcap', sub: 'Low-key drinks in Palermo' }
-              ]}
-            />
-
-            <DayCard
-              day="FRI"
-              date="FEB 20"
-              title="The Grand Finale"
-              badge="Final Bash"
-              description="Last big night. Faena pool party during the day, elite dinner at Anchoita, then close it out at Tequila nightclub. Go big or go home. Actually, go big—you're not home yet."
-              items={[
-                { icon: <Palmtree />, label: 'Faena Pool Party', sub: 'Book day pass. Arrive at noon. Red velvet vibes.', destId: 'faena' },
-                { icon: <Utensils />, label: 'Anchoita Dinner', sub: 'Trendiest dinner in town (if you can get a table)' },
-                { icon: <Music />, label: 'Tequila Nightclub', sub: 'Most exclusive club in BA. Dress well. Arrive after 1 AM.' },
-                { icon: <Zap />, label: 'Alternate: Club Araoz', sub: 'Underground house/techno if Tequila is too much', destId: 'club-araoz' }
-              ]}
-            />
-
-            <DayCard
-              day="SAT"
-              date="FEB 21"
-              title="The Flex Day"
-              description="No agenda. Sleep late. Walk Palermo. Buy leather jackets (seriously, they're incredible). Get coffee. Take it easy. You've earned it."
-              items={[
-                { icon: <Clock />, label: 'Sleep In', sub: 'No alarm. No plans. Just vibes.' },
-                { icon: <ShoppingBag />, label: 'Leather Shopping', sub: 'Murillo 666 district - custom jackets $200-400' },
-                { icon: <Coffee />, label: 'Café Culture', sub: 'LAB, Lattente, or Full City Coffee' },
-                { icon: <Camera />, label: 'Teatro Colón Tour', sub: 'World-class opera house (optional)' },
-                { icon: <Utensils />, label: 'Farewell Dinner', sub: 'Pick your favorite spot from the week' }
-              ]}
-            />
-
-            <DayCard
-              day="SUN"
-              date="FEB 22"
-              title="Departure Day"
-              description="Pack up. Head to EZE. Start planning the next trip because you're definitely coming back."
-              items={[
-                { icon: <Coffee />, label: 'Final Argentine Coffee', sub: 'One last cortado and medialunas' },
-                { icon: <Plane />, label: 'EZE Airport', sub: 'Allow 1.5 hours for taxi, arrive 3 hours early' },
-                { icon: <Navigation />, label: 'Adiós, Buenos Aires', sub: 'Recovery begins. Memories forever.' }
-              ]}
-            />
+            {ITINERARY_DAYS.map((day) => (
+              <DayCard key={`${day.day}-${day.date}`} {...day} />
+            ))}
           </div>
         )}
 
@@ -779,10 +1812,10 @@ const App = () => {
             <div className="space-y-3">
               {BOOKINGS_CHECKLIST.map((booking, idx) => (
                 <div
-                  key={idx}
-                  onClick={() => toggleBooking(idx)}
+                  key={booking.id}
+                  onClick={() => toggleBooking(booking.id)}
                   className={`bg-slate-900/60 border rounded-2xl p-5 cursor-pointer transition-all ${
-                    checkedBookings.includes(idx)
+                    checkedBookings.includes(booking.id)
                       ? 'border-green-500/50 bg-green-500/5'
                       : booking.priority === 'critical'
                       ? 'border-red-500/30 hover:border-red-500/50'
@@ -793,7 +1826,7 @@ const App = () => {
                 >
                   <div className="flex items-start gap-4">
                     <div className="mt-1">
-                      {checkedBookings.includes(idx) ? (
+                      {checkedBookings.includes(booking.id) ? (
                         <CheckCircle2 className="w-6 h-6 text-green-500" />
                       ) : (
                         <Circle className="w-6 h-6 text-slate-600" />
@@ -801,7 +1834,7 @@ const App = () => {
                     </div>
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <h3 className={`font-bold text-white ${checkedBookings.includes(idx) ? 'line-through opacity-50' : ''}`}>
+                        <h3 className={`font-bold text-white ${checkedBookings.includes(booking.id) ? 'line-through opacity-50' : ''}`}>
                           {booking.item}
                         </h3>
                         <span
@@ -963,7 +1996,7 @@ const App = () => {
               </div>
               <p className="text-xs text-slate-500 mt-4">
                 Add ~$300 for Don Julio dinner, ~$150 for polo day, ~$200 for Ultra tickets. You're looking at $1,500-2,000 for
-                the entire 9-day trip (excluding flights/accommodation).
+                the entire 11-day trip (excluding flights/accommodation).
               </p>
             </div>
           </div>
