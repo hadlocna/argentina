@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
-  ChevronDown,
   ChevronRight,
   X,
   Music,
@@ -342,30 +341,29 @@ const CAST_MEMBERS = [
   {
     name: 'Nate',
     title: 'The OG BA Expert',
-    description: 'The man, the myth, the guy who actually knows where we are going. Birthday boy trading Hawaii for South American chaos.',
+    description: 'Birthday boy trading Hawaii for South American chaos.',
     bullets: [
-      'Last visited BA in 2012, still claims he could run the city',
-      '28-hour flight strategist with layovers he calls “me time”',
+      'Last visited in 2012; 28-hour flight strategist',
+      'Convinced Alana this is essential for his mental health',
       'May never return (his words, not ours)'
     ]
   },
   {
     name: 'Nasir',
     title: 'The Future Groom',
-    description: 'Bachelor party edition. The man Ava put a ring on and the diplomat of the group.',
+    description: 'Bachelor party edition. Columbus, OH’s finest export.',
     bullets: [
-      'Columbus, OH’s finest export to Argentina',
-      'Will be scouting the “finest bars of the city” for research',
+      'Scouting the finest bars for “research”',
       'Currently practicing his tango for the wedding'
     ]
   },
   {
     name: 'Nathan',
     title: 'Dad Mode Activated',
-    description: 'The responsible one who loves a clean bed and a reasonable bedtime.',
+    description: 'Lives in Lisbon, sleeps in Lisbon time.',
     bullets: [
-      'Lives in Lisbon, sleeps in Lisbon time',
-      'Fab owes him about six months for the 11-day single dad stint',
+      'Professional bed-maker',
+      'Fab owes him six months for this 11-day stint',
       'Gets bedroom #1 because there’s no hot tub'
     ]
   }
@@ -418,14 +416,14 @@ const LOGISTICS = [
   },
   {
     title: 'The Money Move',
-    description: 'Use Visa/Mastercard for everything. You automatically get the tourist rate (MEP), which is nearly double the official rate.',
+    description: 'Use Visa/Mastercard for everything; you automatically get the tourist rate, nearly double the official rate.',
     href: 'https://www.visa.com.ar/en_AR/support/consumer/travel-support/exchange-rate-calculator.html',
     linkLabel: 'Visa Exchange Rate',
     icon: <Banknote className="w-5 h-5 text-green-400" />
   },
   {
     title: 'Getting Around',
-    description: 'Download Cabify or use Uber. Safer than street taxis and cheaper than NYC.',
+    description: 'Download Cabify or use Uber. Safer, cheaper than NYC, and the apps work perfectly here.',
     href: 'https://cabify.com/ar',
     linkLabel: 'Download Cabify',
     icon: <Navigation className="w-5 h-5 text-purple-400" />
@@ -437,92 +435,73 @@ const ITINERARY_DAYS = [
     day: 'FRI',
     date: 'FEB 13',
     title: 'The Solo Landing',
-    description: 'Nate lands first. Use this quiet night to scope the neighborhood and stock supplies.',
-    summary: [
-      {
-        label: 'Arrival + settle in',
-        location: 'Airport to Palermo',
-        icon: <Plane />,
-        href: 'https://cabify.com/ar'
-      },
-      {
-        label: 'Supplies + reset',
-        location: 'Jumbo (Palermo)',
-        icon: <ShoppingBag />
-      },
-      {
-        label: 'Warm-up night',
-        location: 'Palermo nightlife',
-        icon: <Music />,
-        href: 'https://www.instagram.com/clublucero/'
-      }
-    ],
-    schedule: [
+    description: 'Nate lands first. Use this quiet night to scope the neighborhood, stock supplies, and adjust to the time difference.',
+    confirmed: [
       {
         time: '9:30 PM',
         label: 'Arrival at EZE Airport',
-        location: 'Ezeiza International Airport',
-        note: 'Grab a Cabify to base (~$25 USD).',
-        sellingPoint: 'Fastest way in without haggling.',
+        location: 'Ezeiza International Airport (EZE)',
         icon: <Plane />,
-        href: 'https://cabify.com/ar'
+        href: 'https://www.google.com/maps/search/Ezeiza+International+Airport',
+        detail: 'Grab a Cabify to Palermo base (~$25 USD).'
       },
       {
         time: '10:30 PM',
-        label: 'Check-in & Supply Run',
-        location: 'Jumbo (Palermo)',
-        note: 'Water, Gatorade, Malbec, and snacks.',
-        sellingPoint: 'Set up the whole weekend in one trip.',
-        icon: <ShoppingBag />
+        label: 'Supply Run @ Jumbo Palermo',
+        location: 'Av. Int. Bullrich 345',
+        icon: <ShoppingBag />,
+        href: 'https://www.google.com/maps/search/Jumbo+Palermo+Av.+Int.+Bullrich+345',
+        detail: 'Stock up on Gatorade, Quilmes, and Malbec.'
       },
       {
         time: '11:30 PM',
         label: 'Midnight Warm-up @ Club Lucero',
-        location: 'Palermo',
-        note: 'Event listings via Eventbrite.',
-        sellingPoint: 'Hidden gem with the “volate la peluca” Friday series.',
+        location: 'Nicaragua 6048',
         icon: <Music />,
-        href: 'https://www.instagram.com/clublucero/',
-        links: [
-          { label: 'Event Listings', href: 'https://www.eventbrite.ca/d/argentina/events/' }
-        ]
+        href: 'https://www.google.com/maps/search/Club+Lucero+Nicaragua+6048',
+        detail: 'Friday series "Viernes de volate la peluca" with local DJs. Time: 10:00 PM – late.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Under Club',
-        time: 'Late night',
+        time: 'Midnight',
+        label: 'Under Club (Minimal Techno with Quest)',
         location: 'Niceto Vega 5699',
-        href: 'https://venti.com.ar/evento/ana-hagen-manu-oubi-a-quest',
-        sellingPoint: 'The city’s legendary dark techno basement.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Under+Club+Niceto+Vega+5699',
+        detail: 'Legendary dark techno basement for pure heads.'
       },
       {
-        title: 'Virasoro Bar',
         time: '8:30 PM',
+        label: 'Virasoro Bar',
         location: 'Guatemala 4328',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'High-end jazz in an intimate Art Deco building.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Intimate Art Deco jazz vibe to ease into the city.'
       },
       {
-        title: 'Lomond (San Telmo) – Chef Gino’s Italian Pop-Up',
         time: '7:00 PM',
+        label: 'Lomond: Chef Gino’s Italian Pop-Up',
         location: 'Carlos Calvo 463',
-        href: 'https://www.eventbrite.com/e/cena-italiana-pop-up-en-san-telmo-tickets-1981867986498',
-        sellingPoint: 'Three-course modern Italian with wine pairings.'
+        icon: <Utensils />,
+        href: 'https://www.google.com/maps/search/Lomond+Carlos+Calvo+463',
+        detail: '3-course modern Italian with wine pairings.'
       },
       {
-        title: 'Teatro Ciego',
         time: '11:00 PM',
-        location: 'Pasaje Zelaya 3122',
-        href: 'https://teatrociego.org/carteleratc/',
-        sellingPoint: 'A play performed in 100% total darkness.'
+        label: 'Teatro Ciego',
+        location: 'Borges 1974',
+        icon: <Zap />,
+        href: 'https://www.google.com/maps/search/Teatro+Ciego+Borges+1974',
+        detail: 'Immersive horror in 100% total darkness.'
       },
       {
-        title: 'Solo Travelers Hangout (Meetup Palermo)',
-        time: 'Various',
-        location: 'Palermo',
-        href: 'https://www.eventbrite.com/d/argentina--buenos-aires/events/',
-        sellingPoint: 'Low-key networking before the storm.'
+        time: '9:00 PM',
+        label: 'Maricafé',
+        location: 'Honduras 4096',
+        icon: <Coffee />,
+        href: 'https://www.google.com/maps/search/Maricafe+Honduras+4096',
+        detail: 'High-energy LGBTQ+ bookstore/bar in the heart of Palermo.'
       }
     ]
   },
@@ -531,93 +510,73 @@ const ITINERARY_DAYS = [
     date: 'FEB 14',
     title: 'The Boys Unite + Ultra Day 1',
     badge: 'Festival',
-    description: 'The crew unites. Drop the bags, hydrate, and head south for the first massive festival leg.',
-    summary: [
-      {
-        label: 'Crew arrival + reset',
-        location: 'EZE to Palermo',
-        icon: <Plane />
-      },
-      {
-        label: 'Fuel up at a classic cafe',
-        location: 'Cafe Tortoni',
-        icon: <Coffee />,
-        href: 'https://www.cafetortoni.com.ar/'
-      },
-      {
-        label: 'Festival kickoff',
-        location: 'Parque de la Ciudad',
-        icon: <Music />,
-        destId: 'ultra'
-      }
-    ],
-    schedule: [
+    description: 'The crew unites. Drop the bags, fuel up, and head south for the first massive festival leg.',
+    confirmed: [
       {
         time: '7:20 AM',
         label: 'Eagle & Nasir Land (EZE)',
-        location: 'Ezeiza International Airport',
-        note: 'Direct Uber to Palermo.',
-        sellingPoint: 'Get settled early and save energy for the night.',
-        icon: <Plane />
+        location: 'Ezeiza International Airport (EZE)',
+        icon: <Plane />,
+        href: 'https://www.google.com/maps/search/Ezeiza+International+Airport',
+        detail: 'Direct Cabify to the Palermo base.'
       },
       {
         time: '12:00 PM',
         label: 'Fuel & Strategy @ Cafe Tortoni',
-        location: 'Avenida de Mayo 825',
-        note: 'Classic BA vibes at the city’s oldest cafe.',
-        sellingPoint: 'A historic pit stop with serious atmosphere.',
+        location: 'Av. de Mayo 825',
         icon: <Coffee />,
-        href: 'https://www.cafetortoni.com.ar/'
+        href: 'https://www.google.com/maps/search/Cafe+Tortoni+Av.+de+Mayo+825',
+        detail: 'The city’s oldest cafe (est. 1858). Pure BA history.'
       },
       {
         time: '4:00 PM',
         label: 'Ultra Buenos Aires',
         location: 'Parque de la Ciudad',
-        note: 'Headliners and stages listed online.',
-        sellingPoint: 'The massive Resistance Stage in a brutalist industrial park.',
         icon: <Music />,
         destId: 'ultra',
-        links: [
-          { label: 'Lineup', href: 'https://ultrabuenosaires.com/lineup/' },
-          { label: 'Festival Site', href: 'https://ultrabuenosaires.com/' }
-        ]
+        detail: 'Richie Hawtin and Charlotte de Witte on the massive industrial Resistance Stage.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Chinese New Year (Barrio Chino)',
         time: 'Afternoon',
-        location: 'Barrio Chino',
-        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
-        sellingPoint: 'Street food, lion dances, and huge crowds.'
+        label: 'Chinese New Year',
+        location: 'Barrio Chino, Belgrano',
+        icon: <Sparkles />,
+        href: 'https://www.google.com/maps/search/Barrio+Chino+Buenos+Aires',
+        detail: 'Massive street food stalls and lion dances in Belgrano.'
       },
       {
-        title: 'Palacio Libertad (CCK) – Outdoor Music',
-        time: '6:00 PM - 10:00 PM',
-        location: 'Explanada',
-        href: 'https://palaciolibertad.gob.ar/agenda/',
-        sellingPoint: 'Free outdoor music at a world-class cultural center.'
+        time: '6:00 PM',
+        label: 'CCK Explanada Outdoor Music',
+        location: 'Sarmiento 151',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/CCK+Sarmiento+151',
+        detail: 'Free outdoor music at the world’s 4th largest cultural center.'
       },
       {
-        title: 'Fiesta 505',
         time: 'Midnight',
-        location: 'Niceto Bar',
-        href: 'https://nicetoclub.com/agenda/',
-        sellingPoint: 'When you need a break from techno.'
+        label: 'Niceto Bar: Fiesta 505',
+        location: 'Niceto Vega 5507',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5507',
+        detail: 'Arctic Monkeys vs. The Neighbourhood themed indie party.'
       },
       {
-        title: 'Patricio Carpossi Trio',
-        time: '8:30 PM & 11:00 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Sophisticated escape from the festival noise.'
+        time: '11:00 PM',
+        label: 'Virasoro Bar (Jazz)',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'High-end jazz escape from the electronic noise.'
       },
       {
-        title: 'Flechazo Party',
         time: 'Midnight',
-        location: 'Ciudad Cultural Konex',
-        href: 'https://www.cckonex.org/',
-        sellingPoint: 'Iconic open-air patio with the city’s coolest crowd.'
+        label: "Konex: Flechazo Valentine’s Party",
+        location: 'Sarmiento 3131',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Ciudad+Cultural+Konex+Sarmiento+3131',
+        detail: 'Open-air indie-pop party in the city’s coolest cultural factory.'
       }
     ]
   },
@@ -627,93 +586,72 @@ const ITINERARY_DAYS = [
     title: 'The Iron Man Challenge',
     badge: 'Epic Day',
     description: 'The most physical day of the trip. Pace yourself in the morning; save energy for the stadium.',
-    summary: [
-      {
-        label: 'San Telmo stroll',
-        location: 'Defensa Street',
-        icon: <MapPin />,
-        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/feria-de-san-telmo'
-      },
-      {
-        label: 'Festival exit plan',
-        location: 'Parque de la Ciudad',
-        icon: <Music />,
-        destId: 'ultra'
-      },
-      {
-        label: 'Stadium main event',
-        location: 'Estadio River Plate',
-        icon: <Zap />,
-        destId: 'bad-bunny'
-      }
-    ],
-    schedule: [
+    confirmed: [
       {
         time: '11:00 AM',
         label: 'Feria de San Telmo',
-        location: 'Defensa Street',
-        note: 'Walk the historic market district.',
-        sellingPoint: 'Street tango, rare antiques, peak local flavor.',
+        location: 'Plaza Dorrego, San Telmo',
         icon: <MapPin />,
-        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/feria-de-san-telmo'
+        href: 'https://www.google.com/maps/search/Plaza+Dorrego+San+Telmo',
+        detail: 'Cobblestones, antiques, and improvised street tango.'
       },
       {
         time: '4:00 PM',
         label: 'Ultra Day 2 (Early Exit)',
         location: 'Parque de la Ciudad',
-        note: 'Catch afternoon energy. Leave by 7 PM to beat traffic.',
-        sellingPoint: 'All the hype with a clean exit plan.',
         icon: <Music />,
-        destId: 'ultra'
+        destId: 'ultra',
+        detail: 'Catch the afternoon vibe, then leave by 7 PM to beat traffic to Nunez.'
       },
       {
         time: '8:00 PM',
         label: 'Bad Bunny @ River Plate',
         location: 'Estadio River Plate',
-        note: 'Doors at 8 PM.',
-        sellingPoint: 'One of the biggest nights of the tour.',
         icon: <Zap />,
         destId: 'bad-bunny',
-        links: [
-          { label: 'Tour Info', href: 'https://www.livenation.lat/' }
-        ]
+        detail: 'One of the hottest tickets globally; Benito’s first post-Super Bowl residency.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Boca Juniors vs Platense',
-        time: '2:30 PM',
-        location: 'La Bombonera',
-        href: 'https://www.ligaprofesional.ar/torneo-apertura-2026/',
-        sellingPoint: 'The most intense sporting atmosphere in the world.'
+        time: '7:30 PM',
+        label: 'Boca Juniors vs Platense',
+        location: 'La Bombonera, Brandsen 805',
+        icon: <Star />,
+        href: 'https://www.google.com/maps/search/La+Bombonera+Brandsen+805',
+        detail: 'The most vibrating stadium atmosphere on Earth.'
       },
       {
-        title: 'Karaoke del Amor',
-        time: '5:00 PM - 7:00 PM',
-        location: 'Plaza Seca',
-        href: 'https://palaciolibertad.gob.ar/events/karaoke-del-amor/',
-        sellingPoint: 'Mass singalong of Latin romantic hits.'
+        time: '5:00 PM',
+        label: 'Karaoke del Amor',
+        location: 'CCK Plaza Seca, Sarmiento 151',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/CCK+Sarmiento+151',
+        detail: 'Open-air mass participation singing Latin hits.'
       },
       {
-        title: 'Lans 4tet',
-        time: '8:30 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Complex, intimate musical narrative.'
-      },
-      {
-        title: 'Charlotte de Witte After-Hours',
         time: '1:00 AM',
-        location: 'Crobar',
-        href: 'https://ra.co/events/ar/buenosaires/techno',
-        sellingPoint: 'Keep the Resistance Stage energy alive.'
+        label: 'Crobar (After-Hours Techno)',
+        location: 'Av. Marcelino Freyre s/n',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Crobar+Av.+Marcelino+Freyre',
+        detail: 'Resistance Stage headliner in a proper nightclub setting.'
       },
       {
-        title: 'Zabal Techno',
-        time: 'Late night',
-        location: 'Buenos Aires',
-        href: 'https://ra.co/events/2353011',
-        sellingPoint: 'Dark, industrial techno for the purists.'
+        time: '8:30 PM',
+        label: 'Lans 4tet Jazz Fusion',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Chill, complex jazz for those skipping the stadium.'
+      },
+      {
+        time: '6:00 PM',
+        label: 'Teatro Ciego: Meditation “Chakras”',
+        location: 'Borges 1974',
+        icon: <Zap />,
+        href: 'https://www.google.com/maps/search/Teatro+Ciego+Borges+1974',
+        detail: '360-sound meditation in total darkness for sensory recovery.'
       }
     ]
   },
@@ -721,94 +659,73 @@ const ITINERARY_DAYS = [
     day: 'MON',
     date: 'FEB 16',
     title: 'Carnival Peak & The Steak Ritual',
-    description: 'National holiday. The highlight is the lunch Nate’s been planning for over a decade.',
-    summary: [
-      {
-        label: 'Steak ritual lunch',
-        location: 'Palermo',
-        icon: <Utensils />,
-        destId: 'don-julio'
-      },
-      {
-        label: 'Carnival energy',
-        location: 'Almagro',
-        icon: <Sparkles />,
-        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/'
-      },
-      {
-        label: 'Late-night drums',
-        location: 'Ciudad Cultural Konex',
-        icon: <Music />,
-        destId: 'la-bomba'
-      }
-    ],
-    schedule: [
+    description: 'National holiday. Full Carnival mode, featuring the lunch Nate’s been planning for 14 years.',
+    confirmed: [
       {
         time: '11:30 AM',
         label: 'Don Julio Lunch',
         location: 'Guatemala 4699',
-        note: 'The gold standard of Argentine steak.',
-        sellingPoint: 'A 20-minute walk from the apartment and worth every bite.',
         icon: <Utensils />,
-        destId: 'don-julio'
+        destId: 'don-julio',
+        detail: 'Voted #1 restaurant in Latin America. The absolute gold standard of steak.'
       },
       {
         time: '4:00 PM',
         label: 'Carnival at Plaza Unidad Latinoamericana',
-        location: 'Almagro',
-        note: 'Traditional carnival troupes with drums and cymbals.',
-        sellingPoint: 'Peak holiday energy in the streets.',
+        location: 'Plaza Unidad Latinoamericana, Almagro',
         icon: <Sparkles />,
-        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/'
+        href: 'https://www.google.com/maps/search/Plaza+Unidad+Latinoamericana',
+        detail: 'Local murgas performing satirical songs and dances in the park.'
       },
       {
         time: '12:30 AM (Tue)',
         label: 'La Bomba de Tiempo',
-        location: 'Ciudad Cultural Konex',
-        note: 'Legendary percussion rave at an old factory.',
-        sellingPoint: 'The most iconic Monday night in BA.',
+        location: 'Ciudad Cultural Konex, Sarmiento 3131',
         icon: <Music />,
         destId: 'la-bomba',
-        links: [
-          { label: 'Tickets', href: 'https://www.labombadetiempo.com/' }
-        ]
+        detail: 'Legendary percussion rave at the Konex factory. Mandatory Monday night ritual.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Corso de Boedo',
-        time: 'From 6:30 PM',
+        time: '6:30 PM',
+        label: 'Corso de Boedo: Main Carnival Parade',
         location: 'Av. Boedo',
-        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
-        sellingPoint: 'The political and satirical heart of Carnival.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Av+Boedo+Buenos+Aires',
+        detail: 'The city’s most traditional and political carnival street closure.'
       },
       {
-        title: 'Buenos Aires Extremo',
-        time: 'Evening',
+        time: 'Afternoon',
+        label: 'BA Extremo',
         location: 'Costanera',
-        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
-        sellingPoint: 'BMX, skate, and live bands on the river.'
+        icon: <Zap />,
+        href: 'https://www.google.com/maps/search/Costanera+Buenos+Aires',
+        detail: 'BMX, skate, and live bands on the riverbanks.'
       },
       {
-        title: 'Yamile Burich Trio',
-        time: '8:30 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Smooth holiday evening vibes.'
-      },
-      {
-        title: 'Cafe San Bernardo',
-        time: 'Late night',
+        time: 'Late Night',
+        label: 'Cafe San Bernardo',
         location: 'Av. Corrientes 5436',
-        href: 'https://www.instagram.com/cafesanbernardo/',
-        sellingPoint: 'Historic pool hall with locals-only energy.'
+        icon: <Coffee />,
+        href: 'https://www.google.com/maps/search/Cafe+San+Bernardo+Av.+Corrientes+5436',
+        detail: 'Pool, ping-pong, and beer with old-school locals.'
       },
       {
-        title: 'Polenta en Hache',
         time: 'Midnight',
-        location: 'Hache Club',
-        href: 'https://www.cafaccess.com/evento/1602-polenta-en-hache',
-        sellingPoint: 'High-intensity dance party with free churros at 4 AM.'
+        label: 'Hache Club: Fiesta Polenta',
+        location: 'Hache Club, Don Torcuato',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Hache+Club+Don+Torcuato',
+        detail: 'Reggaeton and lasers with free churros at 4 AM.'
+      },
+      {
+        time: '8:30 PM',
+        label: 'Virasoro Bar (Jazz)',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Sophisticated saxophone-led jazz for a classy holiday night.'
       }
     ]
   },
@@ -817,98 +734,73 @@ const ITINERARY_DAYS = [
     date: 'FEB 17',
     title: 'The Polo Flex',
     badge: 'Elite',
-    description: 'The ultimate holiday reset. Fresh air, open fields, and the “Sport of Kings.”',
-    summary: [
-      {
-        label: 'Polo day reset',
-        location: 'Countryside',
-        icon: <Star />,
-        destId: 'polo'
-      },
-      {
-        label: 'Iconic bookstore stop',
-        location: 'Recoleta',
-        icon: <BookOpen />,
-        href: 'https://turismo.buenosaires.gob.ar/en/otros-establecimientos/el-ateneo-grand-splendid'
-      },
-      {
-        label: 'World-class cocktails',
-        location: 'Palermo',
-        icon: <GlassWater />,
-        destId: 'tres-monos'
-      }
-    ],
-    schedule: [
+    description: 'The ultimate holiday reset. Fresh air, open fields, and learning the "Sport of Kings."',
+    confirmed: [
       {
         time: '9:00 AM',
         label: 'Puesto Viejo Polo Day',
-        location: 'Countryside estancia',
-        note: 'Lessons, match, and a massive asado lunch.',
-        sellingPoint: 'Learn to play while riding polo ponies in the countryside.',
-        meta: 'Price: ~$295 each.',
+        location: 'Puesto Viejo, Canuelas',
         icon: <Star />,
         destId: 'polo',
-        links: [
-          { label: 'Polo Day Info', href: 'https://puestoviejo.com/en/lp-polo-day/' }
-        ]
+        detail: 'Includes polo lessons, a full match, and a massive asado lunch with unlimited wine.'
       },
       {
         time: '7:00 PM',
         label: 'El Ateneo Grand Splendid',
         location: 'Av. Santa Fe 1860',
-        note: 'One of the world’s most beautiful bookstores.',
-        sellingPoint: 'A grand old theater turned into a literary cathedral.',
         icon: <BookOpen />,
-        href: 'https://turismo.buenosaires.gob.ar/en/otros-establecimientos/el-ateneo-grand-splendid'
+        href: 'https://www.google.com/maps/search/El+Ateneo+Santa+Fe+1860',
+        detail: 'Voted the world’s most beautiful bookstore. Converted 1919 theater.'
       },
       {
         time: '10:00 PM',
         label: 'Tres Monos',
         location: 'Guatemala 4899',
-        note: 'Warm hospitality and house-made spirits.',
-        sellingPoint: 'Voted a top bar in the world.',
         icon: <GlassWater />,
         destId: 'tres-monos',
-        links: [
-          { label: 'World’s 50 Best', href: 'https://www.theworlds50best.com/bars/the-list/tres-monos.html' }
-        ]
+        detail: 'Voted #7 best bar in the world. Punk aesthetic with world-class hospitality.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Los Fabulosos Cadillacs Tribute',
         time: '7:00 PM',
-        location: 'CCK Auditorio Nacional',
-        href: 'https://palaciolibertad.gob.ar/events/carnaval-toda-la-orquesta-homenaje-a-los-fabulosos-cadillacs-por-la-orquesta-escuela-juvenil-de-san-telmo/',
-        sellingPoint: 'A symphonic twist on Argentine rock legends.'
+        label: 'CCK Auditorio: Youth Orchestra Plays Argentine Rock',
+        location: 'CCK, Sarmiento 151',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/CCK+Sarmiento+151',
+        detail: 'Argentine rock hits performed by a youth orchestra.'
       },
       {
-        title: 'Villa Urquiza Murgas',
-        time: 'From 6:30 PM',
+        time: '6:30 PM',
+        label: 'Villa Urquiza: Final Carnival Parade',
         location: 'Av. Triunvirato',
-        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
-        sellingPoint: 'Catch the closing energy of the long weekend.'
+        icon: <Sparkles />,
+        href: 'https://www.google.com/maps/search/Av+Triunvirato+Buenos+Aires',
+        detail: 'Catch the closing night energy of the national holiday.'
       },
       {
-        title: 'Hierro Bodegon',
+        time: 'Midnight',
+        label: 'Kika Club',
+        location: 'Honduras 5339',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Honduras+5339+Buenos+Aires',
+        detail: 'The #1 Tuesday night club party in Palermo for global beats.'
+      },
+      {
         time: '9:00 PM',
+        label: 'Hierro Bodegon',
         location: 'Fitz Roy 1722',
-        href: 'https://www.timeout.com/es/buenos-aires/aperturas-nuevos-restaurantes-hierro-bodegon-mambo-burdo',
-        sellingPoint: 'Modern techniques applied to classic barrio food.'
+        icon: <Utensils />,
+        href: 'https://www.google.com/maps/search/Fitz+Roy+1722+Buenos+Aires',
+        detail: 'Neo-bodegon vibes with elite grill techniques.'
       },
       {
-        title: 'Teatro Ciego “Odd Man Out”',
         time: '6:00 PM',
-        location: 'Teatro Ciego',
-        href: 'https://teatrociego.org/carteleratc/',
-        sellingPoint: 'A story told via non-visual senses.'
-      },
-      {
-        title: 'West Coast Swing',
-        time: '6:00 PM',
+        label: 'Puerto San Carlos (Bariloche)',
         location: 'Puerto San Carlos',
-        href: 'https://barilocheinforma.gob.ar/agenda-cultural-bariloche-todas-las-actividades-del-9-al-15-de-febrero/',
-        sellingPoint: 'Open-air participatory dance on the waterfront.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Puerto+San+Carlos',
+        detail: 'Participatory outdoor dancing at sunset.'
       }
     ]
   },
@@ -916,97 +808,73 @@ const ITINERARY_DAYS = [
     day: 'WED',
     date: 'FEB 18',
     title: 'Uruguay Escape',
-    description: 'Fast ferry to Colonia, cobblestones, and a clean reset day.',
-    summary: [
-      {
-        label: 'Uruguay escape',
-        location: 'Buquebus Terminal',
-        icon: <Plane />,
-        destId: 'colonia'
-      },
-      {
-        label: 'Historic quarter cruise',
-        location: 'Colonia',
-        icon: <Camera />
-      },
-      {
-        label: 'Speakeasy return',
-        location: 'Arroyo 872',
-        icon: <Wine />,
-        destId: 'floreria-atlantico'
-      }
-    ],
-    schedule: [
+    description: 'Ferry to the UNESCO-protected town in Uruguay for a reset. Bring your passport.',
+    confirmed: [
       {
         time: '8:30 AM',
         label: 'Fast Ferry to Colonia',
-        location: 'Buquebus Terminal',
-        note: 'Buy tickets online for the fast crossing.',
-        sellingPoint: 'One-hour ferry to a UNESCO-protected town.',
+        location: 'Buquebus Terminal, Buenos Aires',
         icon: <Plane />,
         destId: 'colonia',
-        links: [
-          { label: 'Buquebus', href: 'https://www.buquebus.com/' }
-        ]
+        detail: 'Fast 1.25-hour crossing across the river to cobblestones and wine.'
       },
       {
         time: '12:00 PM',
         label: 'Golf Cart Exploration',
-        location: 'Colonia Historic Quarter',
-        note: 'Rent a cart at the terminal to cruise the lighthouse and coast.',
-        sellingPoint: 'The most relaxed way to see everything quickly.',
-        meta: 'Price: ~$60 USD.',
-        icon: <Camera />
+        location: 'Colonia del Sacramento Terminal',
+        icon: <Camera />,
+        href: 'https://www.google.com/maps/search/Colonia+del+Sacramento+Terminal',
+        detail: 'Cruise the lighthouse, historic quarter, and coast in your own cart (~$60 USD).'
       },
       {
         time: '8:00 PM',
         label: 'Floreria Atlantico',
         location: 'Arroyo 872',
-        note: 'Enter through the refrigerator door in a flower shop.',
-        sellingPoint: 'Voted top 50 in the world.',
         icon: <Wine />,
         destId: 'floreria-atlantico',
-        links: [
-          { label: 'World’s 50 Best', href: 'https://www.theworlds50best.com/bars/the-list/floreria-atlantico.html' },
-          { label: 'Official Site', href: 'http://www.floreriaatlantico.com.ar/' }
-        ]
+        detail: 'Secret bar hidden behind a refrigerator door in a flower shop. Top 50 in the world.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Anchoita Cava',
         time: 'Opens 6:00 PM',
-        location: 'Juan Ramirez de Velasco 1456',
-        href: 'https://starwinelist.com/wine-guide/great-wine-bars-and-wine-restaurants-in-buenos-aires',
-        sellingPoint: '52 wines by the glass and 110 aged cheeses.'
+        label: 'Anchoita Cava',
+        location: 'Chacarita',
+        icon: <Wine />,
+        href: 'https://www.google.com/maps/search/Anchoita+Cava+Chacarita',
+        detail: '52 wines by the glass and over 100 aged cheeses.'
       },
       {
-        title: 'Afters BA',
+        time: '6:00 PM',
+        label: 'Costanera Sunset Beats',
+        location: 'Rafael Obligado 7010',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Rafael+Obligado+7010',
+        detail: 'Electronic beats on the riverbank as the sun goes down.'
+      },
+      {
         time: 'Evening',
-        location: 'Costanera Rafael Obligado 7010',
-        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
-        sellingPoint: 'Open-air electronic beats as the sun hits the river.'
+        label: 'Teatro Gran Rex',
+        location: 'Av. Corrientes 857',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Teatro+Gran+Rex+Av.+Corrientes+857',
+        detail: 'International percussion and physical theater spectacle.'
       },
       {
-        title: 'Mayumana',
-        time: 'Evening',
-        location: 'Teatro Gran Rex',
-        href: 'https://turismo.buenosaires.gob.ar/es/eventos',
-        sellingPoint: 'Mind-blowing percussion and physical theater.'
+        time: '9:00 PM',
+        label: 'Girl Ultra Live @ Niceto',
+        location: 'Niceto Vega 5510',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5510',
+        detail: 'Cool Mexican R&B at the city’s premier indie venue.'
       },
       {
-        title: 'Jazz Voyeur Club',
         time: '8:30 PM',
+        label: 'Jazz Voyeur Club: After-Office Jazz',
         location: 'Posadas 1557',
-        href: 'https://www.facebook.com/jazzvoyeurBA',
-        sellingPoint: 'Free entry with luxury bites in a Recoleta basement.'
-      },
-      {
-        title: 'Teatro Ciego “Amores de Pelicula”',
-        time: '7:00 PM',
-        location: 'CCK',
-        href: 'https://palaciolibertad.gob.ar/events/amores-de-pelicula-con-ana-maria-bovo/',
-        sellingPoint: 'Cinematic love stories narrated in total darkness.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Posadas+1557+Buenos+Aires',
+        detail: 'Basement jazz in a high-end Recoleta hotel.'
       }
     ]
   },
@@ -1015,94 +883,72 @@ const ITINERARY_DAYS = [
     date: 'FEB 19',
     title: 'Arena Vibes & Modern Villa Crespo',
     description: 'Leather district by day, arena energy by night, and a late-night fuel stop.',
-    summary: [
+    confirmed: [
       {
-        label: 'Leather district hunt',
-        location: 'Murillo 666',
-        icon: <ShoppingBag />,
-        href: 'https://www.murillo666.com.ar/'
-      },
-      {
-        label: 'Arena night',
-        location: 'Movistar Arena',
-        icon: <Music />,
-        href: 'https://www.movistararena.com.ar/'
-      },
-      {
-        label: 'Post-show fuel',
-        location: 'Humboldt 538',
-        icon: <Utensils />,
-        href: 'https://www.caatlanta.com.ar/los-bohemios-restaurante/'
-      }
-    ],
-    schedule: [
-      {
-        time: 'Day',
+        time: 'Daytime',
         label: 'Leather District Shopping',
-        location: 'Murillo 666',
-        note: 'Custom-made leather jackets.',
-        sellingPoint: 'One of the best bargains in the city.',
-        meta: 'Price: $200-400.',
+        location: 'Murillo 666 (Murillo & Malabia)',
         icon: <ShoppingBag />,
-        href: 'https://www.murillo666.com.ar/',
-        links: [
-          { label: 'Price Guide', href: 'https://www.rexby.com/solsalute/ttd/leather-jackets-and-accessories-in-buenos-aires' }
-        ]
+        href: 'https://www.google.com/maps/search/Murillo+666+Buenos+Aires',
+        detail: 'Shop the "Leather Route" for custom jackets ($200-400 USD).'
       },
       {
         time: '8:00 PM',
         label: 'Movistar Arena',
-        location: 'Humboldt 450',
-        note: 'High-energy alternative dance in the city’s newest indoor arena.',
-        sellingPoint: 'Big production, great sound, no chaos.',
+        location: 'Movistar Arena, Buenos Aires',
         icon: <Music />,
-        href: 'https://www.movistararena.com.ar/'
+        href: 'https://www.google.com/maps/search/Movistar+Arena+Buenos+Aires',
+        detail: 'Prime alternative dance show at the city’s newest major arena.'
       },
       {
         time: '11:00 PM',
-        label: 'Post-Show Fuel @ Los Bohemios',
+        label: 'Los Bohemios Restaurant',
         location: 'Humboldt 538',
-        note: 'Shared milanesas inside a local soccer club hall.',
-        sellingPoint: 'Monumental portions and neighborhood energy.',
         icon: <Utensils />,
-        href: 'https://www.caatlanta.com.ar/los-bohemios-restaurante/'
+        href: 'https://www.google.com/maps/search/Los+Bohemios+Humboldt+538',
+        detail: 'Monumental shared milanesas inside a local soccer club.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Track at Moly Club',
         time: '10:00 PM',
+        label: 'Moly Club: Track Night',
         location: 'Niceto Vega 5534',
-        href: 'https://www.passline.com/eventos/track-19226',
-        sellingPoint: 'Free entry for the new generation of clubbers.'
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5534',
+        detail: 'Trap, house, and tech night with live art visual activations.'
       },
       {
-        title: 'Cielo Sky Bar',
         time: 'Opens 6:00 PM',
-        location: 'Grand Brizo Hotel',
-        href: 'https://www.instagram.com/cielo.skybar/',
-        sellingPoint: 'Best skyline sunset without a reservation.'
+        label: 'Cielo Sky Bar',
+        location: 'Cerrito 180',
+        icon: <Wine />,
+        href: 'https://www.google.com/maps/search/Cerrito+180+Buenos+Aires',
+        detail: 'Best sunset view overlooking 9 de Julio and the Obelisk.'
       },
       {
-        title: 'Casa SaltShaker',
         time: '8:00 PM',
-        location: 'Recoleta',
-        href: 'https://www.casasaltshaker.com/schedule-reservations/',
-        sellingPoint: 'Secret five-course wine-paired communal dinner.'
+        label: 'Casa SaltShaker',
+        location: 'Uriburu, Recoleta',
+        icon: <Utensils />,
+        href: 'https://www.google.com/maps/search/Casa+SaltShaker+Uriburu',
+        detail: '5-course wine-paired dinner in a private home kitchen ($90 USD).'
       },
       {
-        title: 'Vino con Gente Equis',
         time: '8:30 PM',
+        label: 'Palermo Wine Club: Vino con Gente Equis',
         location: 'Palermo Wine Club',
-        href: 'https://www.eventbrite.com/d/argentina--buenos-aires/events/',
-        sellingPoint: 'Best way to meet local expat and creative community.'
+        icon: <Wine />,
+        href: 'https://www.google.com/maps/search/Palermo+Wine+Club+Buenos+Aires',
+        detail: 'Social wine tasting to meet local expats and creatives.'
       },
       {
-        title: 'Famin Lombardo de Urquiza',
-        time: '11:00 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Deep, soulful sax improvisations.'
+        time: '8:00 PM',
+        label: 'Virasoro Bar',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Soulful sax and vocal standards in an intimate house.'
       }
     ]
   },
@@ -1111,94 +957,73 @@ const ITINERARY_DAYS = [
     date: 'FEB 20',
     title: 'The Grand Finale',
     badge: 'Final Bash',
-    description: 'Football tension followed by a two-Michelin-star marathon.',
-    summary: [
-      {
-        label: 'Football electricity',
-        location: 'La Bombonera',
-        icon: <Star />,
-        href: 'https://www.facebook.com/lxfargentina/'
-      },
-      {
-        label: 'Tasting menu marathon',
-        location: 'Vicente Lopez 1661',
-        icon: <Utensils />,
-        href: 'https://arambururesto.com.ar/'
-      },
-      {
-        label: 'Late-night club',
-        location: 'Costanera Norte',
-        icon: <Music />,
-        href: 'https://www.instagram.com/tequilaclubofficial/'
-      }
-    ],
-    schedule: [
+    description: 'Football tension followed by a Two-Michelin-Star marathon. Go big or go home.',
+    confirmed: [
       {
         time: '8:00 PM',
-        label: 'Boca Juniors vs Racing Club',
-        location: 'La Bombonera',
-        note: 'If you do not have tickets, watch at Locos x el Futbol (Av. Las Heras 2101).',
-        sellingPoint: 'The city will be electric.',
+        label: 'Boca vs Racing Watch Party',
+        location: 'Locos x el Futbol, Av. Las Heras 2101',
         icon: <Star />,
-        href: 'https://www.facebook.com/lxfargentina/'
+        href: 'https://www.google.com/maps/search/Locos+x+el+Futbol+Av.+Las+Heras+2101',
+        detail: 'The city is split for Boca vs. Racing. A literal temple of screens and chants.'
       },
       {
         time: '9:00 PM',
         label: 'Aramburu (Confirmed)',
         location: 'Vicente Lopez 1661',
-        note: 'Technique-led 18-course tasting menu.',
-        sellingPoint: 'One of the top fine-dining experiences in the city.',
         icon: <Utensils />,
-        href: 'https://arambururesto.com.ar/',
-        links: [
-          { label: 'Michelin Guide', href: 'https://guide.michelin.com/en/ciudad-autonoma-de-buenos-aires/buenos-aires_777009/restaurant/aramburu' }
-        ]
+        href: 'https://www.google.com/maps/search/Aramburu+Vicente+Lopez+1661',
+        detail: 'Intimate 18-course technique-led tasting menu. Two Michelin stars.'
       },
       {
         time: '1:00 AM',
         label: 'Tequila Club',
-        location: 'Costanera Norte',
-        note: 'Dress sharp or do not bother showing up.',
-        sellingPoint: 'The most exclusive club in BA.',
+        location: 'Av. Costanera Norte',
         icon: <Music />,
-        href: 'https://www.instagram.com/tequilaclubofficial/'
+        href: 'https://www.google.com/maps/search/Tequila+Club+Costanera+Norte',
+        detail: 'The city’s most exclusive club. Dress sharp or don’t bother.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Crystal Bar',
         time: 'Opens 6:00 PM',
-        location: 'Alvear Icon, 32nd floor',
-        href: 'https://www.instagram.com/crystal.skybar/',
-        sellingPoint: 'Stunning panoramic views of the river and Uruguay.'
+        label: 'Crystal Bar',
+        location: 'Aimé Painé 1130',
+        icon: <Wine />,
+        href: 'https://www.google.com/maps/search/Aime+Paine+1130+Buenos+Aires',
+        detail: 'Highest point in the city with river views to Uruguay.'
       },
       {
-        title: 'Buena Vibra Previa',
         time: '8:00 PM',
-        location: 'Complejo C Art Media',
-        href: 'https://nosonhoras.com.ar/la-previa-buena-vibra-art-media-2026/',
-        sellingPoint: 'Gathering spot for the city’s alternative music youth.'
+        label: 'Complejo C Art Media',
+        location: 'Av. Corrientes 6271',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Av.+Corrientes+6271+Buenos+Aires',
+        detail: 'Indie-pop warm-up fest for the city’s alternative music youth.'
       },
       {
-        title: 'Alambre Gonzalez Trio',
         time: '11:00 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Gritty, high-level instrumental evening.'
+        label: 'Virasoro Bar',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Gritty, high-level instrumental blues and jazz.'
       },
       {
-        title: 'Uptown BA',
-        time: 'Opens 8:30 PM',
+        time: '8:30 PM',
+        label: 'Uptown BA',
         location: 'Arevalo 2030',
-        href: 'http://www.uptownba.com/',
-        sellingPoint: 'You enter through a subway train car.'
+        icon: <Zap />,
+        href: 'https://www.google.com/maps/search/Arevalo+2030+Buenos+Aires',
+        detail: 'You literally enter through a NYC subway car. Pure Instagram gold.'
       },
       {
-        title: 'Paladium Latin Club',
         time: 'Midnight',
-        location: 'Niceto Club',
-        href: 'https://nicetoclub.com/agenda/',
-        sellingPoint: 'Burn off the Aramburu meal on the dance floor.'
+        label: 'Moly Club: Sweat',
+        location: 'Niceto Vega 5534',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5534',
+        detail: 'High-intensity "summer in the city" pop and reggaeton party.'
       }
     ]
   },
@@ -1207,88 +1032,72 @@ const ITINERARY_DAYS = [
     date: 'FEB 21',
     title: 'The Flex Day',
     description: 'Street art by day, farewell dinner by night.',
-    summary: [
-      {
-        label: 'Street art tour',
-        location: 'Colegiales',
-        icon: <Camera />,
-        href: 'https://graffitimundo.com/graffiti-street-art-tours-buenos-aires/'
-      },
-      {
-        label: 'Farewell feast',
-        location: 'Borges 2108',
-        icon: <Utensils />,
-        href: 'https://www.instagram.com/elpreferidodepalermo/'
-      },
-      {
-        label: 'EZE send-off',
-        location: 'Airport run',
-        icon: <Plane />
-      }
-    ],
-    schedule: [
+    confirmed: [
       {
         time: '3:00 PM',
         label: 'Graffitimundo Street Art Tour',
-        location: 'Starts in Colegiales',
-        note: 'World-class mural scene in off-the-beaten-path neighborhoods.',
-        sellingPoint: 'The best way to understand BA’s street art culture.',
+        location: 'Colegiales (meet point)',
         icon: <Camera />,
-        href: 'https://graffitimundo.com/graffiti-street-art-tours-buenos-aires/'
+        href: 'https://www.google.com/maps/search/Graffitimundo+Buenos+Aires',
+        detail: 'Led by local artists; discover the political history hidden in the murals.'
       },
       {
         time: '9:00 PM',
-        label: 'Farewell Dinner @ El Preferido de Palermo',
+        label: 'El Preferido de Palermo',
         location: 'Borges 2108',
-        note: 'Iconic pink building and legendary schnitzel.',
-        sellingPoint: 'A final night meal that feels classic BA.',
         icon: <Utensils />,
-        href: 'https://www.instagram.com/elpreferidodepalermo/'
+        href: 'https://www.google.com/maps/search/El+Preferido+de+Palermo+Borges+2108',
+        detail: 'The iconic pink building serving the city’s best milanesa.'
       },
       {
         time: '11:55 PM',
         label: 'Eagle Departs (EZE)',
-        location: 'Airport run',
-        note: 'Adios, legend.',
-        sellingPoint: 'The first farewell of the trip.',
-        icon: <Plane />
+        location: 'Ezeiza International Airport (EZE)',
+        icon: <Plane />,
+        href: 'https://www.google.com/maps/search/Ezeiza+International+Airport',
+        detail: 'Adios, legend. Recovery starts now.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Cumbia Konex',
         time: '12:30 AM',
-        location: 'Ciudad Cultural Konex',
-        href: 'https://reventick.com/event/cumbia-konex-ciudad-cultural-konex-21-02-2026',
-        sellingPoint: 'Final heavy night with cumbia beats.'
+        label: 'Konex: Cumbia Konex Finale',
+        location: 'Sarmiento 3131',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Ciudad+Cultural+Konex+Sarmiento+3131',
+        detail: 'The last heavy dance ritual with local cumbia beats.'
       },
       {
-        title: 'Boom Boom Kid',
         time: '8:30 PM',
-        location: 'Niceto Club',
-        href: 'https://nicetoclub.com/agenda/',
-        sellingPoint: 'High-energy Argentine punk/indie icon.'
+        label: 'Niceto Club',
+        location: 'Niceto Vega 5510',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5510',
+        detail: 'High-energy Argentine punk/indie icon in a world-class venue.'
       },
       {
-        title: 'Tardes de Folclore',
         time: '7:00 PM',
-        location: 'Plaza Seca',
-        href: 'https://palaciolibertad.gob.ar/events/tardes-de-folclore-nomas-asi-presenta-de-muchas-formas-lo-mismo/',
-        sellingPoint: 'Authentic Argentine country music in an urban setting.'
+        label: 'CCK Plaza Seca',
+        location: 'Sarmiento 151',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/CCK+Sarmiento+151',
+        detail: 'Authentic Argentine country music in the city’s grandest space.'
       },
       {
-        title: 'Barbie Martinez Trio',
         time: '8:30 PM',
-        location: 'Virasoro Bar',
-        href: 'https://www.virasorobar.com.ar/eventos.php',
-        sellingPoint: 'Classy vocal standards for a relaxed final night.'
+        label: 'Virasoro Bar',
+        location: 'Guatemala 4328',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Virasoro+Bar+Guatemala+4328',
+        detail: 'Classy swing jazz standards for a relaxed final group night.'
       },
       {
-        title: 'Playon San Lorenzo',
-        time: 'From 6:30 PM',
+        time: '6:30 PM',
+        label: 'Boedo Carnival Closing',
         location: 'Av. La Plata 1700',
-        href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/',
-        sellingPoint: 'The city’s largest local carnival closing.'
+        icon: <Sparkles />,
+        href: 'https://www.google.com/maps/search/Av.+La+Plata+1700+Buenos+Aires',
+        detail: 'The city’s largest local carnival closing parade.'
       }
     ]
   },
@@ -1297,73 +1106,64 @@ const ITINERARY_DAYS = [
     date: 'FEB 22',
     title: 'Departure Day',
     description: 'Recovery brunch and the final airport run.',
-    summary: [
-      {
-        label: 'Recovery brunch',
-        location: 'Vera 699',
-        icon: <Coffee />,
-        href: 'https://www.cafecrespin.com.ar/'
-      },
-      {
-        label: 'Final airport run',
-        location: 'EZE',
-        icon: <Plane />
-      }
-    ],
-    schedule: [
+    confirmed: [
       {
         time: '12:00 PM',
-        label: 'Recovery Brunch @ Cafe Crespin',
-        location: 'Vera 699',
-        note: 'Best medialunas and cinnamon rolls in Villa Crespo.',
-        sellingPoint: 'Perfect reset after the long week.',
+        label: 'Cafe Crespín',
+        location: 'Vera 699, Villa Crespo',
         icon: <Coffee />,
-        href: 'https://www.cafecrespin.com.ar/'
+        href: 'https://www.google.com/maps/search/Cafe+Crespin+Vera+699',
+        detail: 'The best medialunas and cinnamon rolls in the neighborhood.'
       },
       {
         time: '8:55 PM',
         label: 'Nasir Departs (EZE)',
-        location: 'Airport run',
-        note: 'From bachelor to husband.',
-        sellingPoint: 'The second farewell of the trip.',
-        icon: <Plane />
+        location: 'Ezeiza International Airport (EZE)',
+        icon: <Plane />,
+        href: 'https://www.google.com/maps/search/Ezeiza+International+Airport',
+        detail: 'From bachelor to husband. Mission accomplished.'
       }
     ],
-    alternatives: [
+    ideas: [
       {
-        title: 'Salon 1923',
-        time: '8:00 PM shift',
-        location: '16th floor',
-        href: 'https://salon1923.com/en/',
-        sellingPoint: 'Best view of the National Congress dome.'
+        time: '6:00 PM',
+        label: 'Palacio Barolo (Salon 1923)',
+        location: 'Av. de Mayo 1370',
+        icon: <Wine />,
+        href: 'https://www.google.com/maps/search/Av.+de+Mayo+1370+Buenos+Aires',
+        detail: 'Unrivaled views of the National Congress dome.'
       },
       {
-        title: 'Nirvana Unplugged Tribute',
         time: '8:00 PM',
-        location: 'Niceto Club',
-        href: 'https://nicetoclub.com/agenda/',
-        sellingPoint: 'Nostalgic rock cover show in a world-class venue.'
+        label: 'Niceto Club',
+        location: 'Niceto Vega 5510',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/Niceto+Vega+5510',
+        detail: 'Nostalgic rock covers in an intimate venue.'
       },
       {
-        title: 'Tardes de Groove',
         time: '6:00 PM',
-        location: 'CCK Plaza Seca',
-        href: 'https://palaciolibertad.gob.ar/events/tardes-de-groove-mariu-fernandez/',
-        sellingPoint: 'Perfect outdoor finale vibes.'
+        label: 'CCK Plaza Seca',
+        location: 'Sarmiento 151',
+        icon: <Music />,
+        href: 'https://www.google.com/maps/search/CCK+Sarmiento+151',
+        detail: 'Funk and soul sets for an easy outdoor finale.'
       },
       {
-        title: 'Chakras Meditation',
         time: '6:00 PM',
-        location: 'Teatro Ciego',
-        href: 'https://teatrociego.org/carteleratc/',
-        sellingPoint: '360-sound tech in darkness, ultimate mental recovery.'
+        label: 'Teatro Ciego',
+        location: 'Borges 1974',
+        icon: <Zap />,
+        href: 'https://www.google.com/maps/search/Teatro+Ciego+Borges+1974',
+        detail: 'Reset your nervous system with 360-degree sound in the dark.'
       },
       {
-        title: 'Crepusculares',
         time: '7:30 PM',
-        location: 'CCK La Cupula',
-        href: 'https://palaciolibertad.gob.ar/events/crepusculares-instalacion-i-por-arquitectura-y-cuarteto/',
-        sellingPoint: 'High-art dance inside the iconic glass dome.'
+        label: 'CCK La Cupula',
+        location: 'Sarmiento 151',
+        icon: <Sparkles />,
+        href: 'https://www.google.com/maps/search/CCK+La+Cupula',
+        detail: 'Contemporary dance inside the building’s iconic glass dome.'
       }
     ]
   },
@@ -1371,40 +1171,26 @@ const ITINERARY_DAYS = [
     day: 'MON',
     date: 'FEB 23',
     title: 'The Last Man Standing',
-    description: 'Nate’s solo exit and one last lap through the city.',
-    summary: [
-      {
-        label: 'Final Palermo lap',
-        location: 'Parque Tres de Febrero',
-        icon: <MapPin />,
-        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/parque-tres-de-febrero'
-      },
-      {
-        label: 'Nate exit',
-        location: 'EZE',
-        icon: <Plane />
-      }
-    ],
-    schedule: [
+    description: 'Nate’s solo exit — one final walk through the park before heading to EZE.',
+    confirmed: [
       {
         time: 'Morning',
         label: 'Final Walk Through Parque Tres de Febrero',
-        location: 'Palermo',
-        note: 'One last walk before heading to EZE.',
-        sellingPoint: 'The calmest possible sendoff.',
+        location: 'Parque Tres de Febrero, Palermo',
         icon: <MapPin />,
-        href: 'https://turismo.buenosaires.gob.ar/es/atractivo/parque-tres-de-febrero'
+        href: 'https://www.google.com/maps/search/Parque+Tres+de+Febrero',
+        detail: 'One final walk before heading to EZE.'
       },
       {
         time: 'Later',
         label: 'Nate Departs (EZE)',
-        location: 'Airport run',
-        note: 'Recovery begins. Memories forever.',
-        sellingPoint: 'The final exit.',
-        icon: <Plane />
+        location: 'Ezeiza International Airport (EZE)',
+        icon: <Plane />,
+        href: 'https://www.google.com/maps/search/Ezeiza+International+Airport',
+        detail: 'Recovery begins. Memories forever.'
       }
     ],
-    alternatives: []
+    ideas: []
   }
 ];
 
@@ -1439,13 +1225,13 @@ const App = () => {
     localStorage.setItem('ba-bookings', JSON.stringify(updated));
   };
 
-  const ItineraryItem = ({ item, variant = 'compact' }) => {
+  const ItineraryItem = ({ item }) => {
     const isDestination = Boolean(item.destId);
     const isExternal = Boolean(item.href);
     const isClickable = isDestination || isExternal;
-    const inferredAddress =
-      item.address || (item.location && /\d/.test(item.location) ? item.location : null);
-    const addressLine = inferredAddress || 'Not provided';
+    const timeLabel = item.time || 'TBD';
+    const locationLabel = item.location || 'Location TBD';
+    const detail = item.detail || item.sellingPoint || item.note;
     const wrapperClasses = `flex items-start gap-3 p-4 rounded-xl transition-all border border-transparent w-full text-left ${
       isClickable
         ? 'bg-white/5 hover:bg-white/10 hover:border-white/10 cursor-pointer group'
@@ -1454,41 +1240,15 @@ const App = () => {
 
     const content = (
       <>
-        <div className="text-blue-500 bg-blue-500/10 p-2 rounded-lg mt-0.5">{item.icon}</div>
+        <div className="text-blue-500 bg-blue-500/10 p-2 rounded-lg mt-0.5">
+          {item.icon || <Info className="w-4 h-4" />}
+        </div>
         <div className="flex-1">
           <p className="text-sm font-bold text-slate-100">
-            {item.time && <span className="text-blue-400">{item.time}</span>}
-            {item.time ? ' — ' : ''}
-            {item.label}
+            <span className="text-blue-400">{timeLabel}</span> — {item.label}
           </p>
-          {item.location && <p className="text-xs text-slate-500">{item.location}</p>}
-          {variant === 'detailed' && (
-            <p className="text-xs text-slate-500 mt-1">Address: {addressLine}</p>
-          )}
-          {variant === 'detailed' && item.note && (
-            <p className="text-xs text-slate-400 mt-1">{item.note}</p>
-          )}
-          {variant === 'detailed' && item.meta && (
-            <p className="text-xs text-slate-500 mt-1">{item.meta}</p>
-          )}
-          {variant === 'detailed' && item.sellingPoint && (
-            <p className="text-xs text-emerald-300 mt-1">Selling Point: {item.sellingPoint}</p>
-          )}
-          {variant === 'detailed' && item.links?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {item.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[10px] uppercase tracking-widest font-bold px-2 py-1 rounded-full bg-slate-800 text-slate-300 hover:text-white"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          )}
+          <p className="text-xs text-slate-500">{locationLabel}</p>
+          {detail && <p className="text-xs text-slate-400 mt-1">{detail}</p>}
         </div>
         {isDestination && (
           <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
@@ -1522,7 +1282,7 @@ const App = () => {
     return <div className={wrapperClasses}>{content}</div>;
   };
 
-  const DayCard = ({ day, date, title, summary, schedule, alternatives, badge, description }) => (
+  const DayCard = ({ day, date, title, confirmed, ideas, badge, description }) => (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-6 hover:border-blue-500/30 transition-all shadow-xl">
       <div className="flex flex-wrap justify-between items-start gap-4 mb-2">
         <div>
@@ -1538,52 +1298,26 @@ const App = () => {
         )}
       </div>
       <p className="text-slate-400 text-sm mb-4 leading-relaxed italic">{description}</p>
-      <div className="space-y-3">
-        {summary.map((item) => (
-          <ItineraryItem key={`${item.time}-${item.label}`} item={item} variant="compact" />
-        ))}
-      </div>
-      <details className="mt-4 group">
-        <summary className="flex items-center justify-between cursor-pointer bg-slate-800/40 px-4 py-3 rounded-2xl text-xs uppercase tracking-widest font-bold text-slate-300">
-          Dive Deeper: Full Schedule + Alternatives
-          <ChevronDown className="w-4 h-4 text-slate-400 transition-transform group-open:rotate-180" />
-        </summary>
-        <div className="mt-4 space-y-6">
+      <div className="space-y-6">
+        <div>
+          <h4 className="text-xs font-black uppercase tracking-widest text-emerald-400 mb-3">Confirmed</h4>
+          <div className="space-y-3">
+            {confirmed.map((item) => (
+              <ItineraryItem key={`${item.time}-${item.label}`} item={item} />
+            ))}
+          </div>
+        </div>
+        {ideas?.length > 0 && (
           <div>
-            <h4 className="text-xs font-black uppercase tracking-widest text-blue-400 mb-3">Full Schedule</h4>
+            <h4 className="text-xs font-black uppercase tracking-widest text-yellow-400 mb-3">Other Ideas</h4>
             <div className="space-y-3">
-              {schedule.map((item) => (
-                <ItineraryItem key={`${item.time}-${item.label}`} item={item} variant="detailed" />
+              {ideas.map((item) => (
+                <ItineraryItem key={`${item.time}-${item.label}`} item={item} />
               ))}
             </div>
           </div>
-          {alternatives?.length > 0 && (
-            <div>
-              <h4 className="text-xs font-black uppercase tracking-widest text-yellow-400 mb-3">Top Alternatives</h4>
-              <div className="space-y-3">
-                {alternatives.map((alt) => (
-                  <a
-                    key={`${alt.title}-${alt.time}`}
-                    href={alt.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="block bg-slate-800/30 border border-slate-700/50 rounded-2xl p-4 hover:border-slate-500 transition-all"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-bold text-slate-100">{alt.title}</p>
-                      <ArrowUpRight className="w-4 h-4 text-slate-500" />
-                    </div>
-                    <p className="text-xs text-slate-400 mt-1">
-                      {alt.time} · {alt.location}
-                    </p>
-                    <p className="text-xs text-emerald-300 mt-2">Selling Point: {alt.sellingPoint}</p>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </details>
+        )}
+      </div>
     </div>
   );
 
@@ -1683,7 +1417,7 @@ const App = () => {
             </div>
 
             <div className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 mb-8 shadow-xl">
-              <h2 className="text-2xl font-black text-white mb-3">Meet the cast of characters</h2>
+              <h2 className="text-2xl font-black text-white mb-3">Meet the Cast of Characters</h2>
               <p className="text-sm text-slate-400 mb-6">
                 Official trip motto: <span className="text-blue-400 font-semibold">“We’re not getting any younger, but we’re definitely getting dumber together.”</span>
               </p>
