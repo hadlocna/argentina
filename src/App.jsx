@@ -409,8 +409,8 @@ const PROBABLY_NOT = [
 const LOGISTICS = [
   {
     title: 'Base Camp',
-    description: 'República Árabe Siria 3026, Palermo.',
-    href: 'https://www.google.com/maps/search/Rep%C3%BAblica+%C3%81rabe+Siria+3026,+Palermo',
+    description: 'República Árabe Siria 3026, Palermo, Buenos Aires, Argentina.',
+    href: 'https://www.google.com/maps/search/Rep%C3%BAblica+%C3%81rabe+Siria+3026,+Palermo,+Buenos+Aires,+Argentina',
     linkLabel: 'Open in Maps',
     icon: <Home className="w-5 h-5 text-blue-400" />
   },
@@ -431,6 +431,20 @@ const LOGISTICS = [
 ];
 
 const MAPS_SCRIPT_ID = 'google-maps-script';
+const formatLocation = (location) => {
+  if (!location) return 'Location TBD';
+  const lower = location.toLowerCase();
+  if (lower.includes('uruguay')) return location;
+  if (lower.includes('colonia')) return `${location}, Uruguay`;
+  if (lower.includes('bariloche') || lower.includes('puerto san carlos')) {
+    return lower.includes('argentina') ? location : `${location}, Bariloche, Argentina`;
+  }
+  if (lower.includes('canuelas') || lower.includes('cañuelas')) {
+    return `${location}, Buenos Aires Province, Argentina`;
+  }
+  if (lower.includes('buenos aires') || lower.includes('argentina')) return location;
+  return `${location}, Buenos Aires, Argentina`;
+};
 const loadGoogleMaps = (apiKey) => {
   if (typeof window === 'undefined') return Promise.reject(new Error('No window'));
   if (window.google?.maps) return Promise.resolve(window.google.maps);
@@ -1286,7 +1300,7 @@ const App = () => {
         const geocodePromises = items.map(
           (item) =>
             new Promise((resolve) => {
-              geocoder.geocode({ address: item.location }, (results, status) => {
+              geocoder.geocode({ address: formatLocation(item.location) }, (results, status) => {
                 if (status === 'OK' && results?.[0]) {
                   resolve({ item, position: results[0].geometry.location });
                 } else {
@@ -1311,7 +1325,7 @@ const App = () => {
               const content = `
                 <div style="min-width:200px;font-family:Arial,sans-serif;">
                   <div style="font-weight:700;margin-bottom:4px;">${item.time || 'TBD'} — ${item.label}</div>
-                  <div style="font-size:12px;color:#444;">${item.location || ''}</div>
+                  <div style="font-size:12px;color:#444;">${formatLocation(item.location || '')}</div>
                   ${detail ? `<div style="font-size:12px;margin-top:6px;">${detail}</div>` : ''}
                   ${
                     infoHref
@@ -1351,9 +1365,10 @@ const App = () => {
     const isDestination = Boolean(item.destId);
     const isClickable = isDestination;
     const timeLabel = item.time || 'TBD';
-    const locationLabel = item.location || 'Location TBD';
+    const rawLocation = item.location || 'Location TBD';
+    const locationLabel = formatLocation(rawLocation);
     const mapHref =
-      item.mapHref || (item.location ? `https://www.google.com/maps/search/${encodeURIComponent(item.location)}` : null);
+      item.mapHref || (item.location ? `https://www.google.com/maps/search/${encodeURIComponent(locationLabel)}` : null);
     const detail = item.detail || item.sellingPoint || item.note;
     const wrapperClasses = `flex items-start gap-3 p-4 rounded-xl transition-all border border-transparent w-full text-left ${
       isClickable
