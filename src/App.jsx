@@ -1227,10 +1227,11 @@ const App = () => {
 
   const ItineraryItem = ({ item }) => {
     const isDestination = Boolean(item.destId);
-    const isExternal = Boolean(item.href);
-    const isClickable = isDestination || isExternal;
+    const isClickable = isDestination;
     const timeLabel = item.time || 'TBD';
     const locationLabel = item.location || 'Location TBD';
+    const mapHref =
+      item.mapHref || (item.location ? `https://www.google.com/maps/search/${encodeURIComponent(item.location)}` : null);
     const detail = item.detail || item.sellingPoint || item.note;
     const wrapperClasses = `flex items-start gap-3 p-4 rounded-xl transition-all border border-transparent w-full text-left ${
       isClickable
@@ -1247,25 +1248,26 @@ const App = () => {
           <p className="text-sm font-bold text-slate-100">
             <span className="text-blue-400">{timeLabel}</span> — {item.label}
           </p>
-          <p className="text-xs text-slate-500">{locationLabel}</p>
+          {mapHref ? (
+            <a
+              href={mapHref}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(event) => event.stopPropagation()}
+              className="text-xs text-blue-400 hover:text-blue-300 underline underline-offset-4"
+            >
+              {locationLabel}
+            </a>
+          ) : (
+            <p className="text-xs text-slate-500">{locationLabel}</p>
+          )}
           {detail && <p className="text-xs text-slate-400 mt-1">{detail}</p>}
         </div>
         {isDestination && (
           <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
         )}
-        {isExternal && !isDestination && (
-          <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-white group-hover:translate-x-1 transition-all" />
-        )}
       </>
     );
-
-    if (isExternal) {
-      return (
-        <a href={item.href} target="_blank" rel="noreferrer" className={wrapperClasses}>
-          {content}
-        </a>
-      );
-    }
 
     if (isDestination) {
       return (
