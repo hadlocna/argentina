@@ -440,22 +440,19 @@ const ITINERARY_DAYS = [
     description: 'Nate lands first. Use this quiet night to scope the neighborhood and stock supplies.',
     summary: [
       {
-        time: '9:30 PM',
-        label: 'Arrival at EZE Airport',
-        location: 'Cabify to base (~$25 USD)',
+        label: 'Arrival + settle in',
+        location: 'Airport to Palermo',
         icon: <Plane />,
         href: 'https://cabify.com/ar'
       },
       {
-        time: '10:30 PM',
-        label: 'Check-in & Supply Run',
+        label: 'Supplies + reset',
         location: 'Jumbo (Palermo)',
         icon: <ShoppingBag />
       },
       {
-        time: '11:30 PM',
-        label: 'Midnight Warm-up @ Club Lucero',
-        location: 'Palermo',
+        label: 'Warm-up night',
+        location: 'Palermo nightlife',
         icon: <Music />,
         href: 'https://www.instagram.com/clublucero/'
       }
@@ -537,21 +534,18 @@ const ITINERARY_DAYS = [
     description: 'The crew unites. Drop the bags, hydrate, and head south for the first massive festival leg.',
     summary: [
       {
-        time: '7:20 AM',
-        label: 'Eagle & Nasir Land (EZE)',
-        location: 'Direct Uber to Palermo',
+        label: 'Crew arrival + reset',
+        location: 'EZE to Palermo',
         icon: <Plane />
       },
       {
-        time: '12:00 PM',
-        label: 'Fuel & Strategy @ Cafe Tortoni',
-        location: 'Classic BA cafe',
+        label: 'Fuel up at a classic cafe',
+        location: 'Cafe Tortoni',
         icon: <Coffee />,
         href: 'https://www.cafetortoni.com.ar/'
       },
       {
-        time: '4:00 PM',
-        label: 'Ultra Buenos Aires',
+        label: 'Festival kickoff',
         location: 'Parque de la Ciudad',
         icon: <Music />,
         destId: 'ultra'
@@ -635,22 +629,19 @@ const ITINERARY_DAYS = [
     description: 'The most physical day of the trip. Pace yourself in the morning; save energy for the stadium.',
     summary: [
       {
-        time: '11:00 AM',
-        label: 'San Telmo Market Walk',
+        label: 'San Telmo stroll',
         location: 'Defensa Street',
         icon: <MapPin />,
         href: 'https://turismo.buenosaires.gob.ar/es/atractivo/feria-de-san-telmo'
       },
       {
-        time: '4:00 PM',
-        label: 'Ultra Day 2 (Early Exit)',
+        label: 'Festival exit plan',
         location: 'Parque de la Ciudad',
         icon: <Music />,
         destId: 'ultra'
       },
       {
-        time: '8:00 PM',
-        label: 'Bad Bunny @ River Plate',
+        label: 'Stadium main event',
         location: 'Estadio River Plate',
         icon: <Zap />,
         destId: 'bad-bunny'
@@ -733,22 +724,19 @@ const ITINERARY_DAYS = [
     description: 'National holiday. The highlight is the lunch Nate’s been planning for over a decade.',
     summary: [
       {
-        time: '11:30 AM',
-        label: 'Don Julio Lunch',
-        location: 'Guatemala 4699',
+        label: 'Steak ritual lunch',
+        location: 'Palermo',
         icon: <Utensils />,
         destId: 'don-julio'
       },
       {
-        time: '4:00 PM',
-        label: 'Carnival at Plaza Unidad Latinoamericana',
+        label: 'Carnival energy',
         location: 'Almagro',
         icon: <Sparkles />,
         href: 'https://www.puraciudad.com.ar/confirmaron-el-cronograma-de-corsos-del-carnaval-porteno-2026-sedes-fechas-y-barrios/'
       },
       {
-        time: '12:30 AM',
-        label: 'La Bomba de Tiempo',
+        label: 'Late-night drums',
         location: 'Ciudad Cultural Konex',
         icon: <Music />,
         destId: 'la-bomba'
@@ -832,23 +820,20 @@ const ITINERARY_DAYS = [
     description: 'The ultimate holiday reset. Fresh air, open fields, and the “Sport of Kings.”',
     summary: [
       {
-        time: '9:00 AM',
-        label: 'Puesto Viejo Polo Day',
+        label: 'Polo day reset',
         location: 'Countryside',
         icon: <Star />,
         destId: 'polo'
       },
       {
-        time: '7:00 PM',
-        label: 'El Ateneo Grand Splendid',
-        location: 'Av. Santa Fe 1860',
+        label: 'Iconic bookstore stop',
+        location: 'Recoleta',
         icon: <BookOpen />,
         href: 'https://turismo.buenosaires.gob.ar/en/otros-establecimientos/el-ateneo-grand-splendid'
       },
       {
-        time: '10:00 PM',
-        label: 'Tres Monos',
-        location: 'Guatemala 4899',
+        label: 'World-class cocktails',
+        location: 'Palermo',
         icon: <GlassWater />,
         destId: 'tres-monos'
       }
@@ -934,21 +919,18 @@ const ITINERARY_DAYS = [
     description: 'Fast ferry to Colonia, cobblestones, and a clean reset day.',
     summary: [
       {
-        time: '8:30 AM',
-        label: 'Fast Ferry to Colonia',
+        label: 'Uruguay escape',
         location: 'Buquebus Terminal',
         icon: <Plane />,
         destId: 'colonia'
       },
       {
-        time: '12:00 PM',
-        label: 'Golf Cart Exploration',
-        location: 'Colonia Historic Quarter',
+        label: 'Historic quarter cruise',
+        location: 'Colonia',
         icon: <Camera />
       },
       {
-        time: '8:00 PM',
-        label: 'Floreria Atlantico',
+        label: 'Speakeasy return',
         location: 'Arroyo 872',
         icon: <Wine />,
         destId: 'floreria-atlantico'
@@ -1035,22 +1017,19 @@ const ITINERARY_DAYS = [
     description: 'Leather district by day, arena energy by night, and a late-night fuel stop.',
     summary: [
       {
-        time: 'Day',
-        label: 'Leather District Shopping',
+        label: 'Leather district hunt',
         location: 'Murillo 666',
         icon: <ShoppingBag />,
         href: 'https://www.murillo666.com.ar/'
       },
       {
-        time: '8:00 PM',
-        label: 'Movistar Arena',
-        location: 'Humboldt 450',
+        label: 'Arena night',
+        location: 'Movistar Arena',
         icon: <Music />,
         href: 'https://www.movistararena.com.ar/'
       },
       {
-        time: '11:00 PM',
-        label: 'Post-Show Fuel @ Los Bohemios',
+        label: 'Post-show fuel',
         location: 'Humboldt 538',
         icon: <Utensils />,
         href: 'https://www.caatlanta.com.ar/los-bohemios-restaurante/'
@@ -1073,7 +1052,7 @@ const ITINERARY_DAYS = [
       {
         time: '8:00 PM',
         label: 'Movistar Arena',
-        location: 'Villa Crespo',
+        location: 'Humboldt 450',
         note: 'High-energy alternative dance in the city’s newest indoor arena.',
         sellingPoint: 'Big production, great sound, no chaos.',
         icon: <Music />,
@@ -1135,22 +1114,19 @@ const ITINERARY_DAYS = [
     description: 'Football tension followed by a two-Michelin-star marathon.',
     summary: [
       {
-        time: '8:00 PM',
-        label: 'Boca Juniors vs Racing Club',
+        label: 'Football electricity',
         location: 'La Bombonera',
         icon: <Star />,
         href: 'https://www.facebook.com/lxfargentina/'
       },
       {
-        time: '9:00 PM',
-        label: 'Aramburu (Confirmed)',
+        label: 'Tasting menu marathon',
         location: 'Vicente Lopez 1661',
         icon: <Utensils />,
         href: 'https://arambururesto.com.ar/'
       },
       {
-        time: '1:00 AM',
-        label: 'Tequila Club',
+        label: 'Late-night club',
         location: 'Costanera Norte',
         icon: <Music />,
         href: 'https://www.instagram.com/tequilaclubofficial/'
@@ -1233,22 +1209,19 @@ const ITINERARY_DAYS = [
     description: 'Street art by day, farewell dinner by night.',
     summary: [
       {
-        time: '3:00 PM',
-        label: 'Graffitimundo Street Art Tour',
-        location: 'Starts in Colegiales',
+        label: 'Street art tour',
+        location: 'Colegiales',
         icon: <Camera />,
         href: 'https://graffitimundo.com/graffiti-street-art-tours-buenos-aires/'
       },
       {
-        time: '9:00 PM',
-        label: 'Farewell Dinner @ El Preferido',
+        label: 'Farewell feast',
         location: 'Borges 2108',
         icon: <Utensils />,
         href: 'https://www.instagram.com/elpreferidodepalermo/'
       },
       {
-        time: '11:55 PM',
-        label: 'Eagle Departs (EZE)',
+        label: 'EZE send-off',
         location: 'Airport run',
         icon: <Plane />
       }
@@ -1326,16 +1299,14 @@ const ITINERARY_DAYS = [
     description: 'Recovery brunch and the final airport run.',
     summary: [
       {
-        time: '12:00 PM',
-        label: 'Recovery Brunch @ Cafe Crespin',
+        label: 'Recovery brunch',
         location: 'Vera 699',
         icon: <Coffee />,
         href: 'https://www.cafecrespin.com.ar/'
       },
       {
-        time: '8:55 PM',
-        label: 'Nasir Departs (EZE)',
-        location: 'Airport run',
+        label: 'Final airport run',
+        location: 'EZE',
         icon: <Plane />
       }
     ],
@@ -1403,16 +1374,14 @@ const ITINERARY_DAYS = [
     description: 'Nate’s solo exit and one last lap through the city.',
     summary: [
       {
-        time: 'Morning',
-        label: 'Final Walk Through Parque Tres de Febrero',
-        location: 'Palermo',
+        label: 'Final Palermo lap',
+        location: 'Parque Tres de Febrero',
         icon: <MapPin />,
         href: 'https://turismo.buenosaires.gob.ar/es/atractivo/parque-tres-de-febrero'
       },
       {
-        time: 'Later',
-        label: 'Nate Departs (EZE)',
-        location: 'Airport run',
+        label: 'Nate exit',
+        location: 'EZE',
         icon: <Plane />
       }
     ],
@@ -1474,6 +1443,9 @@ const App = () => {
     const isDestination = Boolean(item.destId);
     const isExternal = Boolean(item.href);
     const isClickable = isDestination || isExternal;
+    const inferredAddress =
+      item.address || (item.location && /\d/.test(item.location) ? item.location : null);
+    const addressLine = inferredAddress || 'Not provided';
     const wrapperClasses = `flex items-start gap-3 p-4 rounded-xl transition-all border border-transparent w-full text-left ${
       isClickable
         ? 'bg-white/5 hover:bg-white/10 hover:border-white/10 cursor-pointer group'
@@ -1490,6 +1462,9 @@ const App = () => {
             {item.label}
           </p>
           {item.location && <p className="text-xs text-slate-500">{item.location}</p>}
+          {variant === 'detailed' && (
+            <p className="text-xs text-slate-500 mt-1">Address: {addressLine}</p>
+          )}
           {variant === 'detailed' && item.note && (
             <p className="text-xs text-slate-400 mt-1">{item.note}</p>
           )}
