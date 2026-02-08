@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   MapPin,
   Clock,
+  ChevronDown,
   ChevronRight,
   X,
   Music,
@@ -20,6 +21,8 @@ import {
   Coffee,
   Home,
   AlertCircle,
+  ArrowUpRight,
+  BookOpen,
   Plane,
   Wine,
   ShoppingBag,
