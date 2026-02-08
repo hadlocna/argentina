@@ -1323,13 +1323,13 @@ const App = () => {
               const detail = item.detail || item.sellingPoint || item.note || '';
               const infoHref = getInfoLink(item);
               const content = `
-                <div style="min-width:200px;font-family:Arial,sans-serif;">
+                <div style="min-width:200px;font-family:Arial,sans-serif;color:#111;">
                   <div style="font-weight:700;margin-bottom:4px;">${item.time || 'TBD'} — ${item.label}</div>
-                  <div style="font-size:12px;color:#444;">${formatLocation(item.location || '')}</div>
-                  ${detail ? `<div style="font-size:12px;margin-top:6px;">${detail}</div>` : ''}
+                  <div style="font-size:12px;color:#111;">${formatLocation(item.location || '')}</div>
+                  ${detail ? `<div style="font-size:12px;margin-top:6px;color:#111;">${detail}</div>` : ''}
                   ${
                     infoHref
-                      ? `<div style="margin-top:8px;"><a href="${infoHref}" target="_blank" rel="noreferrer">More info</a></div>`
+                      ? `<div style="margin-top:8px;"><a href="${infoHref}" target="_blank" rel="noreferrer" style="color:#111;text-decoration:underline;">More info</a></div>`
                       : ''
                   }
                 </div>
