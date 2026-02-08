@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   MapPin,
   Clock,
@@ -429,6 +429,33 @@ const LOGISTICS = [
     icon: <Navigation className="w-5 h-5 text-purple-400" />
   }
 ];
+
+const MAPS_SCRIPT_ID = 'google-maps-script';
+const loadGoogleMaps = (apiKey) => {
+  if (typeof window === 'undefined') return Promise.reject(new Error('No window'));
+  if (window.google?.maps) return Promise.resolve(window.google.maps);
+  const existingScript = document.getElementById(MAPS_SCRIPT_ID);
+  if (existingScript) {
+    return new Promise((resolve, reject) => {
+      existingScript.addEventListener('load', () => resolve(window.google.maps));
+      existingScript.addEventListener('error', () => reject(new Error('Failed to load Google Maps')));
+    });
+  }
+  return new Promise((resolve, reject) => {
+    if (!apiKey) {
+      reject(new Error('Missing Google Maps API key'));
+      return;
+    }
+    const script = document.createElement('script');
+    script.id = MAPS_SCRIPT_ID;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve(window.google.maps);
+    script.onerror = () => reject(new Error('Failed to load Google Maps'));
+    document.head.appendChild(script);
+  });
+};
 
 const ITINERARY_DAYS = [
   {
@@ -1199,6 +1226,10 @@ const App = () => {
   const [selectedDest, setSelectedDest] = useState(null);
   const [activeTab, setActiveTab] = useState('itinerary');
   const [checkedBookings, setCheckedBookings] = useState([]);
+  const [mapDay, setMapDay] = useState(null);
+  const [mapError, setMapError] = useState('');
+  const mapContainerRef = useRef(null);
+  const mapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const bookingIds = BOOKINGS_CHECKLIST.map((booking) => booking.id);
 
   useEffect(() => {
@@ -1216,6 +1247,97 @@ const App = () => {
       setCheckedBookings([]);
     }
   }, []);
+
+  useEffect(() => {
+    if (!mapDay) return;
+    let cancelled = false;
+    setMapError('');
+    const items = [...(mapDay.confirmed || []), ...(mapDay.ideas || [])].filter((item) => item?.location);
+
+    if (!mapsApiKey) {
+      setMapError('Missing Google Maps API key.');
+      return;
+    }
+
+    loadGoogleMaps(mapsApiKey)
+      .then(() => {
+        if (cancelled || !mapContainerRef.current) return;
+        const googleMaps = window.google.maps;
+        const map = new googleMaps.Map(mapContainerRef.current, {
+          center: { lat: -34.6037, lng: -58.3816 },
+          zoom: 12,
+          mapTypeControl: false,
+          fullscreenControl: false
+        });
+        const geocoder = new googleMaps.Geocoder();
+        const bounds = new googleMaps.LatLngBounds();
+        const infoWindow = new googleMaps.InfoWindow();
+
+        const getInfoLink = (item) => {
+          if (item.infoHref) return item.infoHref;
+          if (item.href && !item.href.includes('google.com/maps')) return item.href;
+          if (item.destId) {
+            const dest = DESTINATIONS[item.destId];
+            return dest?.website || dest?.directions || item.href;
+          }
+          return item.href || `https://www.google.com/maps/search/${encodeURIComponent(item.location)}`;
+        };
+
+        const geocodePromises = items.map(
+          (item) =>
+            new Promise((resolve) => {
+              geocoder.geocode({ address: item.location }, (results, status) => {
+                if (status === 'OK' && results?.[0]) {
+                  resolve({ item, position: results[0].geometry.location });
+                } else {
+                  resolve(null);
+                }
+              });
+            })
+        );
+
+        Promise.all(geocodePromises).then((results) => {
+          if (cancelled) return;
+          const valid = results.filter(Boolean);
+          valid.forEach(({ item, position }) => {
+            const marker = new googleMaps.Marker({
+              map,
+              position,
+              title: item.label
+            });
+            marker.addListener('click', () => {
+              const detail = item.detail || item.sellingPoint || item.note || '';
+              const infoHref = getInfoLink(item);
+              const content = `
+                <div style="min-width:200px;font-family:Arial,sans-serif;">
+                  <div style="font-weight:700;margin-bottom:4px;">${item.time || 'TBD'} — ${item.label}</div>
+                  <div style="font-size:12px;color:#444;">${item.location || ''}</div>
+                  ${detail ? `<div style="font-size:12px;margin-top:6px;">${detail}</div>` : ''}
+                  ${
+                    infoHref
+                      ? `<div style="margin-top:8px;"><a href="${infoHref}" target="_blank" rel="noreferrer">More info</a></div>`
+                      : ''
+                  }
+                </div>
+              `;
+              infoWindow.setContent(content);
+              infoWindow.open(map, marker);
+            });
+            bounds.extend(position);
+          });
+          if (valid.length > 0) {
+            map.fitBounds(bounds);
+          }
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setMapError('Unable to load Google Maps. Check your API key and billing.');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [mapDay, mapsApiKey]);
 
   const toggleBooking = (id) => {
     const updated = checkedBookings.includes(id)
@@ -1284,7 +1406,7 @@ const App = () => {
     return <div className={wrapperClasses}>{content}</div>;
   };
 
-  const DayCard = ({ day, date, title, confirmed, ideas, badge, description }) => (
+  const DayCard = ({ day, date, title, confirmed, ideas, badge, description, onOpenMap }) => (
     <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 sm:p-6 mb-6 hover:border-blue-500/30 transition-all shadow-xl">
       <div className="flex flex-wrap justify-between items-start gap-4 mb-2">
         <div>
@@ -1319,6 +1441,16 @@ const App = () => {
             </div>
           </div>
         )}
+      </div>
+      <div className="mt-6 flex justify-end">
+        <button
+          type="button"
+          onClick={onOpenMap}
+          className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-blue-300 hover:text-blue-200"
+        >
+          <MapPin className="w-4 h-4" />
+          Open Map View
+        </button>
       </div>
     </div>
   );
@@ -1505,7 +1637,7 @@ const App = () => {
             </div>
 
             {ITINERARY_DAYS.map((day) => (
-              <DayCard key={`${day.day}-${day.date}`} {...day} />
+              <DayCard key={`${day.day}-${day.date}`} {...day} onOpenMap={() => setMapDay(day)} />
             ))}
           </div>
         )}
@@ -2073,6 +2205,49 @@ const App = () => {
                     <Star className="w-5 h-5" /> VISIT WEBSITE
                   </a>
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Map Modal */}
+      {mapDay && (
+        <div className="fixed inset-0 z-50 bg-black/90 animate-in fade-in duration-300 overflow-y-auto">
+          <div className="relative min-h-screen px-4 py-20">
+            <button
+              onClick={() => setMapDay(null)}
+              className="fixed top-6 right-6 z-50 bg-black/50 hover:bg-black p-3 rounded-full backdrop-blur-md border border-white/10 transition-all"
+              aria-label="Close map view"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-[#0c0c0c] rounded-[32px] sm:rounded-[40px] p-6 sm:p-8 border border-white/10 shadow-2xl">
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-blue-400 font-bold">
+                      Map View · {mapDay.day} — {mapDay.date}
+                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-white mt-2">{mapDay.title}</h2>
+                  </div>
+                  <span className="text-[10px] uppercase tracking-widest text-slate-400">
+                    Click any pin for details
+                  </span>
+                </div>
+                {mapError ? (
+                  <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-2xl text-sm text-red-200">
+                    {mapError}
+                  </div>
+                ) : (
+                  <div
+                    ref={mapContainerRef}
+                    className="w-full h-[60vh] rounded-3xl border border-white/10"
+                  />
+                )}
+                <p className="text-xs text-slate-500 mt-4">
+                  Tip: zoom out to see all ideas at once if the map feels too tight.
+                </p>
               </div>
             </div>
           </div>
