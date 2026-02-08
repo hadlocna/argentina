@@ -1,5 +1,4 @@
-services:
-  - type: static
-    name: argentina
+staticSites:
+  - name: argentina
     buildCommand: npm install && npm run build
     staticPublishPath: dist
